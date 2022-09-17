@@ -1,6 +1,6 @@
 extends TextureRect
 
-var m_index = 0
+onready var explodeTimer : Timer = $ExplodeTimer
 
 var List = [
 	{
@@ -31,7 +31,12 @@ var DEF_DARK : Color
 var DEF_LIGHT : Color
 var DEF_LIGHTEST : Color
 
+var m_index = 0
+var m_invert : bool = false
+
 func _ready():
+	Events.connect("bomb_timer_finished", self, "_on_bomb_timer_finished")
+
 	DEF_DARKEST = Color()
 	DEF_DARKEST.r8 = List[0].darkest.r
 	DEF_DARKEST.g8 = List[0].darkest.g
@@ -53,6 +58,17 @@ func _ready():
 	material.set_shader_param("default_dark", DEF_DARK)
 	material.set_shader_param("default_light", DEF_LIGHT)
 	material.set_shader_param("default_lightest", DEF_LIGHTEST)
+
+	material.set_shader_param("color_darkest", DEF_DARKEST)
+	material.set_shader_param("color_dark", DEF_DARK)
+	material.set_shader_param("color_light", DEF_LIGHT)
+	material.set_shader_param("color_lightest", DEF_LIGHTEST)
+
+func _process(delta):
+	if !explodeTimer.is_stopped():
+		var FLASH_INTERVAL = 0.15
+		var steps : int = floor(explodeTimer.time_left / FLASH_INTERVAL)
+		SetInvert(steps % 2 == 0)
 
 func _input(event):
 	if event.is_action_pressed("switchPalette"):
@@ -79,3 +95,19 @@ func _input(event):
 		material.set_shader_param("color_dark", new_dark)
 		material.set_shader_param("color_light", new_light)
 		material.set_shader_param("color_lightest", new_lightest)
+	
+	elif event.is_action_pressed("invertPalette"):
+		SetInvert(!m_invert)
+	
+	elif event.is_action_pressed("testBombFlash"):
+		_on_bomb_timer_finished()
+
+func SetInvert(isInvert):
+	m_invert = isInvert
+	material.set_shader_param("invert", m_invert)
+
+func _on_bomb_timer_finished():
+	explodeTimer.start()
+
+func _on_ExplodeTimer_timeout():
+	SetInvert(false)

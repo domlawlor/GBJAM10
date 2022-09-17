@@ -177,3 +177,5 @@ script = ExtResource( 4 )
 [node name="TimerColon" type="Sprite" parent="."]
 position = Vector2( 32, 8 )
 texture = ExtResource( 3 )
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

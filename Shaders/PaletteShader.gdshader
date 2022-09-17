@@ -17,28 +17,57 @@ uniform vec4 color_dark;
 uniform vec4 color_light;
 uniform vec4 color_lightest;
 
+// options
+uniform bool invert;
+
 const float precision = 0.1;
 
-vec4 swap_color(vec4 color){
-	if (distance(color, default_darkest) <= precision)
-		return color_darkest;
-	if (distance(color, default_dark) <= precision)
-		return color_dark;
-	if (distance(color, default_light) <= precision)
-		return color_light;
-	if (distance(color, default_lightest) <= precision)
+vec4 get_darkest(bool isInverted)
+{
+	if (isInverted)
 		return color_lightest;
+	else
+		return color_darkest;
+}
+
+vec4 get_dark(bool isInverted)
+{
+	if (isInverted)
+		return color_light;
+	else
+		return color_dark;
+}
+
+vec4 get_light(bool isInverted)
+{
+	if (isInverted)
+		return color_dark;
+	else
+		return color_light;
+}
+
+vec4 get_lightest(bool isInverted)
+{
+	if (isInverted)
+		return color_darkest;
+	else
+		return color_lightest;
+}
+
+vec4 swap_color(vec4 color)
+{
+	if (distance(color, default_darkest) <= precision)
+		return get_darkest(invert);
+	if (distance(color, default_dark) <= precision)
+		return get_dark(invert);
+	if (distance(color, default_light) <= precision)
+		return get_light(invert);
+	if (distance(color, default_lightest) <= precision)
+		return get_lightest(invert);
 	return color;
 }
 
-void fragment() {
+void fragment()
+{
 	COLOR = swap_color(textureLod(SCREEN_TEXTURE, SCREEN_UV, 0.0));
-	
-//	if (c == default_darkest) { c = color_darkest; }
-//	else if (c == default_dark) { c = color_dark; }
-//	else if (c == default_light) { c = color_light; }
-//	else if (c == default_lightest) { c = color_lightest; }
-//
-//	if (c.r > )
-//	COLOR.rgb = c;
 }

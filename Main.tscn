@@ -15,6 +15,7 @@ shader_param/color_darkest = null
 shader_param/color_dark = null
 shader_param/color_light = null
 shader_param/color_lightest = null
+shader_param/invert = null
 
 [sub_resource type="ProxyTexture" id=2]
 
@@ -24,6 +25,8 @@ script = ExtResource( 2 )
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 23, 87 )
 
+[node name="Main2D" type="Node2D" parent="."]
+
 [node name="PaletteShader" type="TextureRect" parent="."]
 material = SubResource( 1 )
 margin_right = 160.0
@@ -31,11 +34,10 @@ margin_bottom = 144.0
 texture = SubResource( 2 )
 expand = true
 script = ExtResource( 4 )
-__meta__ = {
-"_edit_lock_": true
-}
 
-[node name="Main2D" type="Node2D" parent="."]
+[node name="ExplodeTimer" type="Timer" parent="PaletteShader"]
+wait_time = 2.0
+one_shot = true
 
 [node name="Menu" type="Control" parent="."]
 margin_right = 160.0
@@ -62,5 +64,6 @@ margin_right = 58.0
 margin_bottom = 44.0
 text = "Level 2"
 
+[connection signal="timeout" from="PaletteShader/ExplodeTimer" to="PaletteShader" method="_on_ExplodeTimer_timeout"]
 [connection signal="pressed" from="Menu/LevelList/LoadLevel1" to="." method="_on_LoadLevel1_pressed"]
 [connection signal="pressed" from="Menu/LevelList/LoadLevel2" to="." method="_on_LoadLevel2_pressed"]

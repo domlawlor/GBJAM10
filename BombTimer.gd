@@ -30,3 +30,6 @@ func PauseTimer():
 
 func UnpauseTimer():
 	timer.set_paused(false)
+
+func _on_Timer_timeout():
+	Events.emit_signal("bomb_timer_finished")
