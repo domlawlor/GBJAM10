@@ -116,7 +116,7 @@ func _input(event):
 		elif m_mode == Mode.WIRE_LAYERDOWN:
 			if pickedWire:
 				var orderIndex = pickedWire.get_index()
-				if orderIndex > 1:
+				if orderIndex > 0:
 					LevelData.move_child(pickedWire, orderIndex - 1)
 		elif m_mode == Mode.WIRE_LAYERUP:
 			if pickedWire:
