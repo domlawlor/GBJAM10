@@ -8,6 +8,7 @@ var GRIDSIZE = 16
 var LOGICGRID_WIDTH = 8
 var LOGICGRID_HEIGHT = 6
 
+var activeBombPuzzle : Node2D = null
 
 func USecToMSec(usec : float):
 	return usec / 1000.0

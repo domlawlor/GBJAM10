@@ -2,30 +2,93 @@ extends KinematicBody2D
 
 signal update_position(pos)
 
-var VELOCITY_X : float = 100.0
-var VELOCITY_Y : float = 100.0
+onready var animatedSprite : AnimatedSprite = $PixelLockedSprite
 
+const SpriteSizeX = 16
+const SpriteSizeY = 16
+
+var VELOCITY_X : float = 65.0
+var VELOCITY_Y : float = 65.0
+
+enum FaceDir {
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+}
+
+var m_frozen : bool = false
 var m_vel : Vector2 = Vector2.ZERO
+var m_faceDir = FaceDir.DOWN
+
+var m_canInteractWithBomb : bool= false
+
+
 
 func _ready():
-	set_process_input(true)
+	Events.connect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
 
-func _unhandled_input(event):
-	if event.is_action("moveLeft"):
+	set_process_input(true)
+	animatedSprite.set_animation("down")
+
+func _exit():
+	Events.disconnect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
+
+func _on_bomb_puzzle_complete():
+	m_frozen = false
+
+func _physics_process(delta):
+	if m_frozen:
+		return
+
+	m_vel = Vector2.ZERO
+
+	if Input.is_action_pressed("gameboy_a"):
+		InteractPressed()
+
+	if Input.is_action_pressed("moveLeft"):
 		m_vel.x = -VELOCITY_X
-	elif event.is_action("moveRight"):
+		m_faceDir = FaceDir.LEFT
+		animatedSprite.set_animation("left")
+
+	elif Input.is_action_pressed("moveRight"):
 		m_vel.x = VELOCITY_X
+		m_faceDir = FaceDir.RIGHT
+		animatedSprite.set_animation("right")
 	elif !Input.is_action_pressed("moveLeft") and !Input.is_action_pressed("moveRight"):
 		m_vel.x = 0
 	
-	if event.is_action("moveUp"):
+	if Input.is_action_pressed("moveUp"):
 		m_vel.y = -VELOCITY_Y
-	elif event.is_action("moveDown"):
+		m_faceDir = FaceDir.UP
+		animatedSprite.set_animation("up")
+	elif Input.is_action_pressed("moveDown"):
 		m_vel.y = VELOCITY_Y
+		animatedSprite.set_animation("down")
+		m_faceDir = FaceDir.DOWN
 	elif !Input.is_action_pressed("moveUp") and !Input.is_action_pressed("moveDown"):
 		m_vel.y = 0
 
-func _physics_process(delta):
+	if m_vel.length() > 0:
+		animatedSprite.play()
+	else:
+		animatedSprite.stop()
+		animatedSprite.set_frame(0) # set to default idle frame for facing direction
+
 	move_and_collide(m_vel * delta)
 
 	emit_signal("update_position", position)
+
+func EnterBombInteractArea():
+	print("EnterBombInteractArea")
+	m_canInteractWithBomb = true
+
+func ExitBombInteractArea():
+	print("ExitBombInteractArea")
+	m_canInteractWithBomb = false
+
+func InteractPressed():
+	if m_canInteractWithBomb:
+		m_frozen = true
+		Events.emit_signal("view_bomb")
+

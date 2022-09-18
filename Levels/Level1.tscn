@@ -1,20 +1,60 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://BombPuzzle.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Art/background.png" type="Texture" id=2]
+[ext_resource path="res://Bomb.tscn" type="PackedScene" id=2]
 [ext_resource path="res://BombTimer.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Art/overworld_spritesheet.tres" type="TileSet" id=4]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Bomb.gd" type="Script" id=6]
 
-[node name="Level" type="Node2D"]
+[node name="Level1" type="Node2D"]
 
-[node name="Background" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-centered = false
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 160.0
+margin_bottom = 144.0
+color = Color( 0.607843, 0.737255, 0.0588235, 1 )
 
-[node name="BombPuzzle" parent="." instance=ExtResource( 1 )]
-position = Vector2( 16, 16 )
+[node name="Background" type="TileMap" parent="."]
+tile_set = ExtResource( 4 )
+cell_size = Vector2( 8, 8 )
+format = 1
+tile_data = PoolIntArray( 0, 22, 0, 1, 22, 0, 2, 22, 0, 3, 22, 0, 4, 22, 0, 5, 22, 0, 6, 22, 0, 7, 22, 0, 8, 22, 0, 9, 22, 0, 10, 22, 0, 11, 22, 0, 12, 22, 0, 13, 22, 0, 14, 22, 0, 15, 22, 0, 16, 22, 0, 17, 22, 0, 18, 22, 0, 19, 22, 0, 65536, 22, 0, 65537, 22, 0, 65538, 22, 0, 65539, 22, 0, 65540, 22, 0, 65541, 22, 0, 65542, 22, 0, 65543, 22, 0, 65544, 22, 0, 65545, 22, 0, 65546, 22, 0, 65547, 22, 0, 65548, 22, 0, 65549, 22, 0, 65550, 22, 0, 65551, 22, 0, 65552, 22, 0, 65553, 22, 0, 65554, 22, 0, 65555, 22, 0, 131072, 22, 0, 131073, 22, 0, 131074, 24, 0, 131075, 24, 0, 131076, 24, 0, 131077, 24, 0, 131078, 24, 0, 131079, 24, 0, 131080, 24, 0, 131081, 24, 0, 131082, 24, 0, 131083, 24, 0, 131084, 24, 0, 131085, 24, 0, 131086, 24, 0, 131087, 24, 0, 131088, 24, 0, 131089, 24, 0, 131090, 22, 0, 131091, 22, 0, 196608, 22, 0, 196609, 22, 0, 196610, 23, 0, 196611, 23, 0, 196612, 23, 0, 196613, 23, 0, 196614, 23, 0, 196615, 23, 0, 196616, 23, 0, 196617, 23, 0, 196618, 23, 0, 196619, 23, 0, 196620, 23, 0, 196621, 23, 0, 196622, 23, 0, 196623, 23, 0, 196624, 23, 0, 196625, 23, 0, 196626, 22, 0, 196627, 22, 0, 262144, 22, 0, 262145, 22, 0, 262162, 22, 0, 262163, 22, 0, 327680, 22, 0, 327681, 22, 0, 327683, 15, 0, 327684, 15, 0, 327685, 15, 0, 327686, 15, 0, 327698, 22, 0, 327699, 22, 0, 393216, 22, 0, 393217, 22, 0, 393219, 2, 0, 393220, 2, 0, 393221, 2, 0, 393222, 2, 0, 393234, 22, 0, 393235, 22, 0, 458752, 22, 0, 458753, 22, 0, 458755, 16, 0, 458756, 16, 0, 458757, 16, 0, 458758, 16, 0, 458770, 22, 0, 458771, 22, 0, 524288, 22, 0, 524289, 22, 0, 524306, 22, 0, 524307, 22, 0, 589824, 22, 0, 589825, 22, 0, 589842, 22, 0, 589843, 22, 0, 655360, 22, 0, 655361, 22, 0, 655378, 22, 0, 655379, 22, 0, 720896, 22, 0, 720897, 22, 0, 720914, 22, 0, 720915, 22, 0, 786432, 22, 0, 786433, 22, 0, 786450, 22, 0, 786451, 22, 0, 851968, 22, 0, 851969, 22, 0, 851986, 22, 0, 851987, 22, 0, 917504, 22, 0, 917505, 22, 0, 917522, 22, 0, 917523, 22, 0, 983040, 22, 0, 983041, 22, 0, 983058, 22, 0, 983059, 22, 0, 1048576, 22, 0, 1048577, 22, 0, 1048594, 22, 0, 1048595, 22, 0, 1114112, 22, 0, 1114113, 22, 0, 1114130, 22, 0, 1114131, 22, 0 )
+
+[node name="Background2" type="TileMap" parent="."]
+tile_set = ExtResource( 4 )
+cell_size = Vector2( 8, 8 )
+format = 1
+tile_data = PoolIntArray( 131084, 40, 0, 131085, 41, 0, 196620, 42, 0, 196621, 43, 0, 786448, 32, 0, 786449, 33, 0, 851984, 34, 0, 851985, 35, 0, 917520, 36, 0, 917521, 37, 0, 983056, 38, 0, 983057, 39, 0, 1048577, 3, 0, 1114114, 3, 0, 1114115, 3, 0, 1114116, 3, 0, 1114117, 3, 0, 1114118, 3, 0, 1114119, 3, 0, 1114120, 3, 0, 1114121, 3, 0, 1114122, 3, 0, 1114123, 3, 0, 1114124, 3, 0, 1114125, 3, 0, 1114126, 3, 0, 1114127, 3, 0, 1114128, 3, 0, 1114129, 3, 0, 1114130, 3, 0 )
+
+[node name="Player" parent="." instance=ExtResource( 5 )]
+position = Vector2( 80, 72 )
+
+[node name="Foreground" type="TileMap" parent="."]
+tile_set = ExtResource( 4 )
+cell_size = Vector2( 8, 8 )
+format = 1
+tile_data = PoolIntArray( 786448, 32, 0, 786449, 33, 0, 851984, 34, 0, 851985, 35, 0, 1048577, 3, 0, 1114112, 22, 0, 1114113, 22, 0, 1114114, 22, 0, 1114115, 22, 0, 1114116, 22, 0, 1114117, 22, 0, 1114118, 22, 0, 1114119, 22, 0, 1114120, 22, 0, 1114121, 22, 0, 1114122, 22, 0, 1114123, 22, 0, 1114124, 22, 0, 1114125, 22, 0, 1114126, 22, 0, 1114127, 22, 0, 1114128, 22, 0, 1114129, 22, 0, 1114130, 22, 0, 1114131, 22, 0 )
 
 [node name="BombTimer" parent="." instance=ExtResource( 3 )]
+visible = false
 margin_left = 48.0
 margin_top = 128.0
 margin_right = 48.0
 margin_bottom = 128.0
+
+[node name="Bomb1" type="Node" parent="."]
+
+[node name="Bomb" parent="Bomb1" instance=ExtResource( 2 )]
+position = Vector2( 40, 48 )
+
+[node name="BombPuzzle" parent="Bomb1" instance=ExtResource( 1 )]
+visible = false
+
+[node name="Bomb2" type="Node" parent="."]
+
+[node name="Bomb" parent="Bomb2" instance=ExtResource( 2 )]
+position = Vector2( 40, 48 )
+script = ExtResource( 6 )
+
+[node name="BombPuzzle" parent="Bomb2" instance=ExtResource( 1 )]
+visible = false
