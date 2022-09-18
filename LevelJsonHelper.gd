@@ -14,3 +14,6 @@ func Load(levelName):
 		var data = parse_json(file.get_as_text())
 		file.close()
 		return data
+	else:
+		push_error("Load Error: file did not exist - filePath = " + filePath)
+		return null

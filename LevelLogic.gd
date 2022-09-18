@@ -150,6 +150,9 @@ func SerializeLevelData():
 	return levelData
 
 func UnserializeLevelData(levelData):
+	if !levelData:
+		return 
+		
 	for wireData in levelData.wires:
 		var newWireLayer = wireLayer.instance()
 		LevelData.add_child(newWireLayer)
@@ -161,6 +164,8 @@ func SaveOrLoadLevel(num):
 	if m_mode != Mode.SAVE_LEVEL and m_mode != Mode.LOAD_LEVEL:
 		return
 	
+	var success = true
+	
 	var slot = str(num)
 	if m_mode == Mode.SAVE_LEVEL:
 		var levelData = SerializeLevelData()
@@ -169,8 +174,13 @@ func SaveOrLoadLevel(num):
 		ResetLevel()
 		var levelData = LevelJsonHelper.Load(slot)
 		UnserializeLevelData(levelData)
+		success = levelData != null
 	SetMode(Mode.IDLE)
-	LevelSlotDisplay.text = slot
+	
+	if success:
+		LevelSlotDisplay.text = slot
+	else:
+		LevelSlotDisplay.text = "!!!"
 
 func StartGameplay():
 	m_mode = Mode.SAVE_LEVEL

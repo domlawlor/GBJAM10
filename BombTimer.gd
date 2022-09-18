@@ -17,7 +17,8 @@ func _process(delta):
 	timeDisplay.SetTimerText(timeLeftString)
 
 func InitTimeLeft(time):
-	assert(timer.is_stopped(), "Stop timer before setting new one")
+	if !timer.is_stopped():
+		timer.stop()
 	timer.set_wait_time(time)
 
 func StartTimer():
