@@ -3,6 +3,7 @@ extends Node2D
 var wireLayer = preload("res://WireLayer.tscn")
 
 onready var LevelData = $LevelData
+onready var GridHighlight = $GridHighlight
 onready var DebugOutput = $DebugOutput
 onready var LevelSlotDisplay = $LevelSlot
 
@@ -20,8 +21,15 @@ enum Mode {
 
 var m_mode = Mode.IDLE
 var m_wireLayers = []
+var m_highlightPos = Vector2.ZERO
+
+# editor
 var m_wireInProgress = null
 var m_wireComplete = false
+
+func _ready():
+	GridHighlight.visible = false
+	GridHighlight.play("default")
 
 func _input(event):
 	if event.is_action_pressed("debug_f1"):
@@ -133,6 +141,18 @@ func _input(event):
 		elif m_mode == Mode.WIRE_TYPE:
 			if pickedWire:
 				pickedWire.ChangeWireType()
+	elif event.is_action_pressed("moveLeft"):
+		if m_mode == Mode.GAMEPLAY:
+			MoveHighlightLeft()
+	elif event.is_action_pressed("moveRight"):
+		if m_mode == Mode.GAMEPLAY:
+			MoveHighlightRight()
+	elif event.is_action_pressed("moveUp"):
+		if m_mode == Mode.GAMEPLAY:
+			MoveHighlightUp()
+	elif event.is_action_pressed("moveDown"):
+		if m_mode == Mode.GAMEPLAY:
+			MoveHighlightDown()
 
 func ResetLevel():
 	m_wireLayers.clear()
@@ -188,14 +208,38 @@ func StartGameplay():
 	m_mode = Mode.GAMEPLAY
 	DebugOutput.visible = false
 	LevelSlotDisplay.visible = false
-	Events.emit_signal("bomb_timer_start", 10)
+	GridHighlight.visible = true
 
 func ReturnToEditMode():
 	Events.emit_signal("editmode_active")
 	DebugOutput.visible = true
 	LevelSlotDisplay.visible = true
+	GridHighlight.visible = false
 	m_mode = Mode.LOAD_LEVEL
 	SaveOrLoadLevel("temp")
+
+func MoveHighlightLeft():
+	if m_highlightPos.x > 0:
+		m_highlightPos.x -= 1
+		UpdateGridHighlightPos()
+
+func MoveHighlightRight():
+	if m_highlightPos.x < Global.LOGICGRID_WIDTH-1:
+		m_highlightPos.x += 1
+		UpdateGridHighlightPos()
+
+func MoveHighlightUp():
+	if m_highlightPos.y > 0:
+		m_highlightPos.y -= 1
+		UpdateGridHighlightPos()
+
+func MoveHighlightDown():
+	if m_highlightPos.y < Global.LOGICGRID_HEIGHT-1:
+		m_highlightPos.y += 1
+		UpdateGridHighlightPos()
+
+func UpdateGridHighlightPos():
+	GridHighlight.position = m_highlightPos * Global.GRIDSIZE
 
 func SetMode(mode):
 	if mode == m_mode:
