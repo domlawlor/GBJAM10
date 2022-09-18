@@ -23,6 +23,7 @@ shader_param/invert = null
 script = ExtResource( 2 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+visible = false
 position = Vector2( 23, 87 )
 
 [node name="Main2D" type="Node2D" parent="."]

@@ -15,6 +15,7 @@ enum Mode {
 	SAVE_LEVEL		#f5
 	LOAD_LEVEL		#f6
 	WIRE_TYPE		#f7
+	GAMEPLAY		#f12
 }
 
 var m_mode = Mode.IDLE
@@ -69,6 +70,12 @@ func _input(event):
 			SetMode(Mode.WIRE_TYPE)
 		elif m_mode == Mode.WIRE_TYPE:
 			SetMode(Mode.IDLE)
+
+	elif event.is_action_pressed("debug_f12"):
+		if m_mode == Mode.IDLE and m_wireLayers.size() > 0:
+			StartGameplay()
+		elif m_mode == Mode.GAMEPLAY:
+			ReturnToEditMode()
 	
 	elif event.is_action_pressed("debug_numpad1"):
 		SaveOrLoadLevel(1)
@@ -164,6 +171,21 @@ func SaveOrLoadLevel(num):
 		UnserializeLevelData(levelData)
 	SetMode(Mode.IDLE)
 	LevelSlotDisplay.text = slot
+
+func StartGameplay():
+	m_mode = Mode.SAVE_LEVEL
+	SaveOrLoadLevel("temp")
+	m_mode = Mode.GAMEPLAY
+	DebugOutput.visible = false
+	LevelSlotDisplay.visible = false
+	Events.emit_signal("bomb_timer_start", 10)
+
+func ReturnToEditMode():
+	Events.emit_signal("editmode_active")
+	DebugOutput.visible = true
+	LevelSlotDisplay.visible = true
+	m_mode = Mode.LOAD_LEVEL
+	SaveOrLoadLevel("temp")
 
 func SetMode(mode):
 	if mode == m_mode:
