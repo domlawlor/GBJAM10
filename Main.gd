@@ -1,17 +1,28 @@
 extends Node2D
 
+var bombPuzzleScene = preload("res://BombPuzzle.tscn")
+
 onready var levelList : VBoxContainer = $Menu/LevelList
+onready var puzzleList : VBoxContainer = $Menu/PuzzleList
 onready var main_2d : Node2D = $Main2D
+onready var puzzle_2d : Node2D = $Puzzle2D
 
 var level_instance : Node2D
+var puzzle_instance : Node2D
 
 func _ready():
 	SetResolution()
-
-	load_level("Level1")
+	puzzle_instance = bombPuzzleScene.instance()
+	#load_level("Level1")
 
 func _exit():
 	pass
+
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		unload_level()
+		unload_puzzle()
+		SetDebugMenuVisibility(true)
 
 func SetResolution():
 	var native_screen = OS.get_screen_size()
@@ -36,19 +47,30 @@ func load_level(level_name : String):
 	if (level_resource):
 		level_instance = level_resource.instance()
 		main_2d.call_deferred("add_child", level_instance)
-		levelList.visible = false
+		SetDebugMenuVisibility(false)
+
+func unload_puzzle():
+	if (is_instance_valid(puzzle_instance)):
+		puzzle_2d.call_deferred("remove_child", puzzle_instance)
+
+func load_puzzle(level_name : String):
+	unload_level()
+	puzzle_2d.add_child(puzzle_instance)
+	puzzle_instance.LoadRealPuzzle(level_name)
+	SetDebugMenuVisibility(false)
 	
-#	if level_name == "LevelTitle":
-#		$Menu/StartButton.MakeActive()
-#	else:
-#		$Menu/StartButton.MakeInactive()
+func SetDebugMenuVisibility(show : bool):
+	levelList.visible = show
+	puzzleList.visible = show
 
 func _on_LoadLevel1_pressed():
 	load_level("Level1")
 
-
 func _on_LoadLevel2_pressed():
 	load_level("Level2")
+
+func _on_LoadPuzzle11_pressed():
+	load_puzzle("1-1")
 
 # func _on_level_exited(num):
 # 	match num:
@@ -127,4 +149,3 @@ func _on_LoadLevel2_pressed():
 # 		$SFX/JanitorDeath01.play()
 # 	elif r == 1:
 # 		$SFX/JanitorDeath02.play()
-

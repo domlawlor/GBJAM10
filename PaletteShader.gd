@@ -35,7 +35,7 @@ var m_index = 0
 var m_invert : bool = false
 
 func _ready():
-	Events.connect("bomb_timer_finished", self, "_on_bomb_timer_finished")
+	Events.connect("bomb_explode", self, "_on_bomb_explode")
 
 	DEF_DARKEST = Color()
 	DEF_DARKEST.r8 = List[0].darkest.r
@@ -100,13 +100,13 @@ func _input(event):
 		SetInvert(!m_invert)
 	
 	elif event.is_action_pressed("testBombFlash"):
-		_on_bomb_timer_finished()
+		_on_bomb_explode()
 
 func SetInvert(isInvert):
 	m_invert = isInvert
 	material.set_shader_param("invert", m_invert)
 
-func _on_bomb_timer_finished():
+func _on_bomb_explode():
 	explodeTimer.start()
 
 func _on_ExplodeTimer_timeout():

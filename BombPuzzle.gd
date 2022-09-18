@@ -2,8 +2,8 @@ extends Node2D
 
 var wireLayer = preload("res://WireLayer.tscn")
 
-onready var LevelData = $LevelData
-onready var GridHighlight = $GridHighlight
+onready var LevelData = $Grid/LevelData
+onready var GridHighlight = $Grid/GridHighlight
 onready var DebugOutput = $DebugOutput
 onready var LevelSlotDisplay = $LevelSlot
 
@@ -16,12 +16,16 @@ enum Mode {
 	SAVE_LEVEL		#f5
 	LOAD_LEVEL		#f6
 	WIRE_TYPE		#f7
+	WIRE_CUTORDER	#f8
 	GAMEPLAY		#f12
 }
 
 var m_mode = Mode.IDLE
 var m_wireLayers = []
 var m_highlightPos = Vector2.ZERO
+var m_cutProgress = 0
+var m_cutList = []
+var m_currentCutIndex = 0
 
 # editor
 var m_wireInProgress = null
@@ -78,6 +82,16 @@ func _input(event):
 			SetMode(Mode.WIRE_TYPE)
 		elif m_mode == Mode.WIRE_TYPE:
 			SetMode(Mode.IDLE)
+	
+	elif event.is_action_pressed("debug_f8"):
+		if m_mode == Mode.IDLE and m_wireLayers.size() > 0:
+			SetMode(Mode.WIRE_CUTORDER)
+			m_currentCutIndex = 0
+			for child in LevelData.get_children():
+				child.SetCutIndex(-1)
+		elif m_mode == Mode.WIRE_CUTORDER:
+			SetMode(Mode.IDLE)
+			CreateCutList()
 
 	elif event.is_action_pressed("debug_f12"):
 		if m_mode == Mode.IDLE and m_wireLayers.size() > 0:
@@ -106,8 +120,8 @@ func _input(event):
 	
 	elif event.is_action_pressed("debug_leftclick"):
 		var localPos = to_local(event.position)
-		var gridX = floor(localPos.x / Global.GRIDSIZE)
-		var gridY = floor(localPos.y / Global.GRIDSIZE)
+		var gridX = floor(localPos.x / Global.GRIDSIZE) - 1
+		var gridY = floor(localPos.y / Global.GRIDSIZE) - 1
 		var gridPos = Vector2(gridX, gridY)
 		if not (gridX >= 0 and gridX < Global.LOGICGRID_WIDTH and gridY >= 0 and gridY < Global.LOGICGRID_HEIGHT):
 			return
@@ -141,6 +155,11 @@ func _input(event):
 		elif m_mode == Mode.WIRE_TYPE:
 			if pickedWire:
 				pickedWire.ChangeWireType()
+		elif m_mode == Mode.WIRE_CUTORDER:
+			if pickedWire and pickedWire.m_cutIndex == -1:
+				pickedWire.SetCutIndex(m_currentCutIndex)
+				m_currentCutIndex += 1
+
 	elif event.is_action_pressed("moveLeft"):
 		if m_mode == Mode.GAMEPLAY:
 			MoveHighlightLeft()
@@ -153,6 +172,9 @@ func _input(event):
 	elif event.is_action_pressed("moveDown"):
 		if m_mode == Mode.GAMEPLAY:
 			MoveHighlightDown()
+	elif event.is_action_pressed("gameboy_a"):
+		if m_mode == Mode.GAMEPLAY:
+			CutWires()
 
 func ResetLevel():
 	m_wireLayers.clear()
@@ -179,6 +201,7 @@ func UnserializeLevelData(levelData):
 		m_wireInProgress = newWireLayer
 		m_wireLayers.push_back(newWireLayer)
 		newWireLayer.SetWireData(wireData)
+	CreateCutList()
 
 func SaveOrLoadLevel(num):
 	if m_mode != Mode.SAVE_LEVEL and m_mode != Mode.LOAD_LEVEL:
@@ -189,10 +212,10 @@ func SaveOrLoadLevel(num):
 	var slot = str(num)
 	if m_mode == Mode.SAVE_LEVEL:
 		var levelData = SerializeLevelData()
-		LevelJsonHelper.Save(slot, levelData)
+		LevelJsonHelper.SaveDebug(slot, levelData)
 	elif m_mode == Mode.LOAD_LEVEL:
 		ResetLevel()
-		var levelData = LevelJsonHelper.Load(slot)
+		var levelData = LevelJsonHelper.LoadDebug(slot)
 		UnserializeLevelData(levelData)
 		success = levelData != null
 	SetMode(Mode.IDLE)
@@ -202,10 +225,35 @@ func SaveOrLoadLevel(num):
 	else:
 		LevelSlotDisplay.text = "!!!"
 
+func CreateCutList():
+	m_cutList = []
+	var currentIndex = 0
+	var lookForNext = true
+	while lookForNext:
+		lookForNext = false
+		var wiresToCut = []
+		for wire in m_wireLayers:
+			if wire.m_cutIndex == currentIndex:
+				wiresToCut.append(wire)
+				lookForNext = true
+		currentIndex += 1
+		if lookForNext:
+			m_cutList.append(wiresToCut)
+
+func LoadRealPuzzle(puzzleName):
+	m_mode = Mode.LOAD_LEVEL
+	ResetLevel()
+	var levelData = LevelJsonHelper.Load(puzzleName)
+	UnserializeLevelData(levelData)
+	StartGameplay()
+
 func StartGameplay():
 	m_mode = Mode.SAVE_LEVEL
 	SaveOrLoadLevel("temp")
 	m_mode = Mode.GAMEPLAY
+	m_cutProgress = 0
+	m_highlightPos = Vector2.ZERO
+	UpdateGridHighlightPos()
 	DebugOutput.visible = false
 	LevelSlotDisplay.visible = false
 	GridHighlight.visible = true
@@ -241,6 +289,35 @@ func MoveHighlightDown():
 func UpdateGridHighlightPos():
 	GridHighlight.position = m_highlightPos * Global.GRIDSIZE
 
+func CutWires():
+	var explode = false
+	var pickedWires = []
+	for i in range(m_wireLayers.size()):
+		var wire = m_wireLayers[i]
+		if wire.IsWireAtPos(m_highlightPos):
+			pickedWires.push_back(wire)
+	var pickedWiresCount = pickedWires.size()
+	if pickedWiresCount == 0:
+		return
+	
+	var targetCuts = m_cutList[m_cutProgress]
+	if pickedWiresCount != targetCuts.size():
+		explode = true
+
+	for j in range(pickedWiresCount):
+		pickedWires[j].CutWire(m_highlightPos)
+		if !explode and pickedWires[j] != m_cutList[m_cutProgress][j]:
+			explode = true
+	
+	if explode:
+		Events.emit_signal("bomb_explode")
+	else:
+		m_cutProgress += 1
+		if m_cutProgress == m_cutList.size():
+			print("puzzle complete!")
+			Events.emit_signal("bomb_puzzle_complete")
+			ReturnToEditMode()
+
 func SetMode(mode):
 	if mode == m_mode:
 		return
@@ -263,3 +340,5 @@ func SetMode(mode):
 			DebugOutput.text = "LOAD SLOT?"
 		Mode.WIRE_TYPE:
 			DebugOutput.text = "WIRE_TYPE"
+		Mode.WIRE_CUTORDER:
+			DebugOutput.text = "WIRE_CUTORDER"

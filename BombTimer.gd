@@ -37,7 +37,7 @@ func _on_bomb_timer_start(waitTime):
 	visible = true
 
 func _on_Timer_timeout():
-	Events.emit_signal("bomb_timer_finished")
+	Events.emit_signal("bomb_explode")
 
 func _on_editmode_active():
 	PauseTimer()
