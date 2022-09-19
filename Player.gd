@@ -26,15 +26,20 @@ var m_nearbyBomb : Node2D = null
 
 func _ready():
 	Events.connect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
+	Events.connect("set_overworld_paused", self, "_on_set_overworld_paused")
 
 	set_process_input(true)
 	animatedSprite.set_animation("down")
 
 func _exit():
 	Events.disconnect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
+	Events.disconnect("set_overworld_paused", self, "_on_set_overworld_paused")
 
 func _on_bomb_puzzle_complete():
 	m_frozen = false
+
+func _on_set_overworld_paused(isPaused):
+	m_frozen = isPaused
 
 func _physics_process(delta):
 	if m_frozen:
@@ -115,7 +120,5 @@ func FacingNearbyBomb(bomb: Node2D):
 
 func InteractPressed():
 	if m_nearbyBomb and FacingNearbyBomb(m_nearbyBomb):
-		print("VIEW BOMB! puzzle=", m_nearbyBomb.puzzleNameToOpen)
-		#m_frozen = true
 		Events.emit_signal("view_bomb_puzzle", m_nearbyBomb.puzzleNameToOpen)
 

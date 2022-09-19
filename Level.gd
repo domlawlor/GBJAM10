@@ -12,7 +12,6 @@ var m_activePuzzle : Node2D = null
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Events.connect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
-	
 	Events.connect("view_bomb_puzzle", self, "_on_view_bomb_puzzle")
 	
 	# parse puzzles from tree
@@ -21,10 +20,11 @@ func _ready():
 
 func _exit():
 	Events.disconnect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
-
+	Events.disconnect("view_bomb_puzzle", self, "_on_view_bomb_puzzle")
 
 func _on_bomb_puzzle_complete():
 	assert(m_puzzleNodes)
+	assert(m_activePuzzle)
 	
 	m_activePuzzle.visible = false
 	m_activePuzzle = null
@@ -33,16 +33,20 @@ func _on_bomb_puzzle_complete():
 	if m_puzzlesCompleted == m_puzzleNodes.size():
 		print("Level Complete!")
 		Events.emit_signal("level_complete")
-		
+	else:
+		Events.emit_signal("set_overworld_paused", false)
 
 
 func _on_view_bomb_puzzle(puzzleName):
 	#find existing or first unused puzzle slot
 	for puzzleNode in m_puzzleNodes:
 		if !puzzleNode.m_loadedPuzzleName or puzzleName == puzzleNode.m_loadedPuzzleName:
-			puzzleNode.LoadRealPuzzle(puzzleName)
-			puzzleNode.visible = true
-			m_activePuzzle = puzzleNode
+			if !puzzleNode.m_puzzleCompleted:
+				print("VIEW BOMB! puzzle=", puzzleName)
+				Events.emit_signal("set_overworld_paused", true)
+				puzzleNode.LoadRealPuzzle(puzzleName)
+				puzzleNode.visible = true
+				m_activePuzzle = puzzleNode
 			return
 	assert(false, "If we reach here, not enough puzzles for all the bombs!")
 

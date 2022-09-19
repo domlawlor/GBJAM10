@@ -28,6 +28,7 @@ var m_cutList = []
 var m_currentCutIndex = 0
 
 var m_loadedPuzzleName : String
+var m_puzzleCompleted : bool = false
 
 # editor
 var m_wireInProgress = null
@@ -318,6 +319,7 @@ func CutWires():
 	else:
 		m_cutProgress += 1
 		if m_cutProgress == m_cutList.size():
+			m_puzzleCompleted = true
 			print("puzzle complete!")
 			Events.emit_signal("bomb_puzzle_complete")
 			ReturnToEditMode()
