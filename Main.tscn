@@ -73,7 +73,14 @@ margin_right = 40.0
 margin_bottom = 20.0
 text = "1-1"
 
+[node name="LoadPuzzle1-2" type="Button" parent="Menu/PuzzleList"]
+margin_top = 24.0
+margin_right = 40.0
+margin_bottom = 44.0
+text = "1-2"
+
 [connection signal="timeout" from="PaletteShader/ExplodeTimer" to="PaletteShader" method="_on_ExplodeTimer_timeout"]
 [connection signal="pressed" from="Menu/LevelList/LoadLevel1" to="." method="_on_LoadLevel1_pressed"]
 [connection signal="pressed" from="Menu/LevelList/LoadLevel2" to="." method="_on_LoadLevel2_pressed"]
 [connection signal="pressed" from="Menu/PuzzleList/LoadPuzzle1-1" to="." method="_on_LoadPuzzle11_pressed"]
+[connection signal="pressed" from="Menu/PuzzleList/LoadPuzzle1-2" to="." method="_on_LoadPuzzle12_pressed"]

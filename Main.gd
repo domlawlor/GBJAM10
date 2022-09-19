@@ -72,6 +72,10 @@ func _on_LoadLevel2_pressed():
 func _on_LoadPuzzle11_pressed():
 	load_puzzle("1-1")
 
+func _on_LoadPuzzle12_pressed():
+	load_puzzle("1-2")
+
+
 # func _on_level_exited(num):
 # 	match num:
 # 		0:

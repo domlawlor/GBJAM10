@@ -85,7 +85,7 @@ func _input(event):
 		elif m_mode == Mode.WIRE_TYPE:
 			SetMode(Mode.IDLE)
 	
-	elif event.is_action_pressed("debug_f8"):
+	elif event.is_action_pressed("debug_f8") or event.is_action_pressed("debug_wireOrder"):
 		if m_mode == Mode.IDLE and m_wireLayers.size() > 0:
 			SetMode(Mode.WIRE_CUTORDER)
 			m_currentCutIndex = 0
