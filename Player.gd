@@ -4,6 +4,8 @@ signal update_position(pos)
 
 onready var animatedSprite : AnimatedSprite = $PixelLockedSprite
 
+onready var camera : Camera2D = $Camera2D
+
 const SpriteSizeX = 16
 const SpriteSizeY = 16
 
@@ -27,7 +29,10 @@ var m_nearbyBomb : Node2D = null
 func _ready():
 	Events.connect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
 	Events.connect("set_overworld_paused", self, "_on_set_overworld_paused")
-
+	
+	assert(camera, "a level camera must be a child of player")
+	camera.make_current()
+	
 	set_process_input(true)
 	animatedSprite.set_animation("down")
 
@@ -102,9 +107,8 @@ func FacingNearbyBomb(bomb: Node2D):
 	
 	var toBomb = bombPosition - playerPosition
 	var toBombAbs = toBomb.abs()
-
 	var facingBomb = false
-
+	
 	match m_faceDir:
 		FaceDir.UP:
 			facingBomb = toBomb.y < 0 and toBombAbs.y >= toBombAbs.x
@@ -116,9 +120,14 @@ func FacingNearbyBomb(bomb: Node2D):
 			facingBomb = toBomb.x > 0 and toBombAbs.x >= toBombAbs.y	
 	return facingBomb
 
-
-
+func GetCameraTopLeftPosition():
+	var cameraCenter = camera.get_camera_screen_center()
+	var cameraPos = cameraCenter - (Global.LOGICAL_RES / 2)
+	return cameraPos
+	
 func InteractPressed():
 	if m_nearbyBomb and FacingNearbyBomb(m_nearbyBomb):
-		Events.emit_signal("view_bomb_puzzle", m_nearbyBomb.puzzleNameToOpen)
+		var cameraTopLeft = GetCameraTopLeftPosition()
+		
+		Events.emit_signal("view_bomb_puzzle", m_nearbyBomb.puzzleName, cameraTopLeft)
 

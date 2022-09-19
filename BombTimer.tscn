@@ -161,20 +161,23 @@
 10/shapes = [  ]
 10/z_index = 0
 
-[node name="BombTimer" type="Control"]
+[node name="BombTimer" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 35.387
 
-[node name="TimerDisplay" type="TileMap" parent="."]
+[node name="Display" type="Node2D" parent="."]
+position = Vector2( 48, 128 )
+
+[node name="TimerDisplay" type="TileMap" parent="Display"]
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 format = 1
 tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0 )
 script = ExtResource( 4 )
 
-[node name="TimerColon" type="Sprite" parent="."]
+[node name="TimerColon" type="Sprite" parent="Display"]
 position = Vector2( 32, 8 )
 texture = ExtResource( 3 )
 

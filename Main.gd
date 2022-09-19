@@ -1,5 +1,8 @@
 extends Node2D
 
+export var start_level_num : int = 1
+onready var current_level_num = start_level_num
+
 var bombPuzzleScene = preload("res://BombPuzzle.tscn")
 
 onready var levelList : VBoxContainer = $Menu/LevelList
@@ -11,12 +14,15 @@ var level_instance : Node2D
 var puzzle_instance : Node2D
 
 func _ready():
+	Events.connect("exit_level_door", self, "_on_exit_level_door")
+	
 	SetResolution()
 	puzzle_instance = bombPuzzleScene.instance()
 	#load_level("Level1")
 
 func _exit():
-	pass
+	Events.disconnect("exit_level_door", self, "_on_exit_level_door")
+
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
@@ -64,10 +70,16 @@ func SetDebugMenuVisibility(show : bool):
 	puzzleList.visible = show
 
 func _on_LoadLevel1_pressed():
+	current_level_num = 1
 	load_level("Level1")
 
 func _on_LoadLevel2_pressed():
+	current_level_num = 2
 	load_level("Level2")
+
+func _on_LoadLevel3_pressed():
+	current_level_num = 3
+	load_level("Level3")
 
 func _on_LoadPuzzle11_pressed():
 	load_puzzle("1-1")
@@ -94,14 +106,15 @@ func _on_LoadPuzzle34_pressed():
 	load_puzzle("3-4")
 
 
-# func _on_level_exited(num):
-# 	match num:
-# 		0:
-# 			load_level("Level1")
-# 		1:
-# 			load_level("Level2")
-# 		2:
-# 			load_level("Level3")
+func _on_exit_level_door():
+	var levelExitedNum = current_level_num
+	current_level_num += 1
+	
+	match levelExitedNum:
+		1:
+			load_level("Level2")
+		2:
+			load_level("Level3")
 
 # func _on_restart_game():
 # 	timeLimit.stop()

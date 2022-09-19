@@ -30,8 +30,8 @@ var m_cutProgress = 0
 var m_cutList = []
 var m_currentCutIndex = 0
 
-var m_loadedPuzzleName : String
 var m_puzzleCompleted : bool = false
+var m_bombOrderNumber : int = -1
 
 # editor
 var m_wireInProgress = null
@@ -287,7 +287,6 @@ func LoadRealPuzzle(puzzleName):
 	var levelData = LevelJsonHelper.Load(puzzleName)
 	if levelData:
 		UnserializeLevelData(levelData)
-		m_loadedPuzzleName = puzzleName
 		StartGameplay()
 
 func StartGameplay():

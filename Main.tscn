@@ -27,8 +27,8 @@ script = ExtResource( 2 )
 
 [node name="PaletteShader" type="TextureRect" parent="."]
 material = SubResource( 1 )
-margin_right = 160.0
-margin_bottom = 144.0
+margin_right = 1280.0
+margin_bottom = 1152.0
 texture = SubResource( 2 )
 expand = true
 script = ExtResource( 4 )
@@ -61,6 +61,12 @@ margin_top = 24.0
 margin_right = 58.0
 margin_bottom = 44.0
 text = "Level 2"
+
+[node name="LoadLevel3" type="Button" parent="Menu/LevelList"]
+margin_top = 48.0
+margin_right = 58.0
+margin_bottom = 68.0
+text = "Level 3"
 
 [node name="PuzzleList" type="HBoxContainer" parent="Menu"]
 anchor_left = 1.0
@@ -127,6 +133,7 @@ text = "3-4"
 [connection signal="timeout" from="PaletteShader/ExplodeTimer" to="PaletteShader" method="_on_ExplodeTimer_timeout"]
 [connection signal="pressed" from="Menu/LevelList/LoadLevel1" to="." method="_on_LoadLevel1_pressed"]
 [connection signal="pressed" from="Menu/LevelList/LoadLevel2" to="." method="_on_LoadLevel2_pressed"]
+[connection signal="pressed" from="Menu/LevelList/LoadLevel3" to="." method="_on_LoadLevel3_pressed"]
 [connection signal="pressed" from="Menu/PuzzleList/VBoxContainer/LoadPuzzle1-1" to="." method="_on_LoadPuzzle11_pressed"]
 [connection signal="pressed" from="Menu/PuzzleList/VBoxContainer/LoadPuzzle2-1" to="." method="_on_LoadPuzzle21_pressed"]
 [connection signal="pressed" from="Menu/PuzzleList/VBoxContainer/LoadPuzzle2-2" to="." method="_on_LoadPuzzle22_pressed"]
