@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://BombPuzzle.gd" type="Script" id=1]
 [ext_resource path="res://Art/gridHighlight.png" type="Texture" id=2]
 [ext_resource path="res://Art/background.png" type="Texture" id=3]
+[ext_resource path="res://Art/foreground.png" type="Texture" id=4]
+[ext_resource path="res://SymbolSprite.tscn" type="PackedScene" id=5]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -27,25 +29,123 @@ script = ExtResource( 1 )
 texture = ExtResource( 3 )
 centered = false
 
-[node name="Grid" type="Node2D" parent="."]
-position = Vector2( 16, 16 )
+[node name="WireLayers" type="Node2D" parent="."]
 
-[node name="LevelData" type="Node2D" parent="Grid"]
-
-[node name="GridHighlight" type="AnimatedSprite" parent="Grid"]
+[node name="GridHighlight" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )
 centered = false
 
+[node name="Foreground" type="Sprite" parent="."]
+texture = ExtResource( 4 )
+centered = false
+
+[node name="Symbols" type="Node2D" parent="."]
+
+[node name="SymbolSprite" parent="Symbols" instance=ExtResource( 5 )]
+
+[node name="SymbolSprite2" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 16, 0 )
+
+[node name="SymbolSprite3" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 32, 0 )
+
+[node name="SymbolSprite4" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 48, 0 )
+
+[node name="SymbolSprite5" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 64, 0 )
+
+[node name="SymbolSprite6" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 80, 0 )
+
+[node name="SymbolSprite7" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 96, 0 )
+
+[node name="SymbolSprite8" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 112, 0 )
+
+[node name="SymbolSprite9" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 128, 0 )
+
+[node name="SymbolSprite10" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 144, 0 )
+
+[node name="SymbolSprite11" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 0, 16 )
+
+[node name="SymbolSprite12" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 144, 16 )
+
+[node name="SymbolSprite13" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 0, 32 )
+
+[node name="SymbolSprite14" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 144, 32 )
+
+[node name="SymbolSprite15" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 0, 48 )
+
+[node name="SymbolSprite16" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 144, 48 )
+
+[node name="SymbolSprite17" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 0, 64 )
+
+[node name="SymbolSprite18" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 144, 64 )
+
+[node name="SymbolSprite19" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 0, 80 )
+
+[node name="SymbolSprite20" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 144, 80 )
+
+[node name="SymbolSprite21" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 0, 96 )
+
+[node name="SymbolSprite22" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 144, 96 )
+
+[node name="SymbolSprite23" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 0, 112 )
+
+[node name="SymbolSprite24" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 16, 112 )
+
+[node name="SymbolSprite25" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 32, 112 )
+
+[node name="SymbolSprite26" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 48, 112 )
+
+[node name="SymbolSprite27" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 64, 112 )
+
+[node name="SymbolSprite28" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 80, 112 )
+
+[node name="SymbolSprite29" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 96, 112 )
+
+[node name="SymbolSprite30" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 112, 112 )
+
+[node name="SymbolSprite31" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 128, 112 )
+
+[node name="SymbolSprite32" parent="Symbols" instance=ExtResource( 5 )]
+position = Vector2( 144, 112 )
+
 [node name="DebugOutput" type="Label" parent="."]
-margin_left = 13.0
-margin_top = 2.0
-margin_right = 90.0
-margin_bottom = 16.0
+margin_left = 4.0
+margin_top = 131.0
+margin_right = 81.0
+margin_bottom = 145.0
 text = "IDLE"
 
 [node name="LevelSlot" type="Label" parent="."]
-margin_left = 25.0
-margin_top = 120.0
-margin_right = 65.0
-margin_bottom = 134.0
+margin_left = 144.0
+margin_top = 130.0
+margin_right = 184.0
+margin_bottom = 144.0
 text = "-"

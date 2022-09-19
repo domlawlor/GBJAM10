@@ -62,25 +62,76 @@ margin_right = 58.0
 margin_bottom = 44.0
 text = "Level 2"
 
-[node name="PuzzleList" type="VBoxContainer" parent="Menu"]
-margin_left = 115.0
-margin_top = 3.0
-margin_right = 155.0
-margin_bottom = 43.0
+[node name="PuzzleList" type="HBoxContainer" parent="Menu"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -73.0
+margin_right = -3.0
+margin_bottom = 164.0
 
-[node name="LoadPuzzle1-1" type="Button" parent="Menu/PuzzleList"]
-margin_right = 40.0
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/PuzzleList"]
+margin_right = 33.0
+margin_bottom = 164.0
+
+[node name="LoadPuzzle1-1" type="Button" parent="Menu/PuzzleList/VBoxContainer"]
+margin_right = 33.0
 margin_bottom = 20.0
 text = "1-1"
 
-[node name="LoadPuzzle1-2" type="Button" parent="Menu/PuzzleList"]
+[node name="LoadPuzzle2-1" type="Button" parent="Menu/PuzzleList/VBoxContainer"]
 margin_top = 24.0
-margin_right = 40.0
+margin_right = 33.0
 margin_bottom = 44.0
-text = "1-2"
+text = "2-1"
+
+[node name="LoadPuzzle2-2" type="Button" parent="Menu/PuzzleList/VBoxContainer"]
+margin_top = 48.0
+margin_right = 33.0
+margin_bottom = 68.0
+text = "2-2"
+
+[node name="LoadPuzzle2-3" type="Button" parent="Menu/PuzzleList/VBoxContainer"]
+margin_top = 72.0
+margin_right = 33.0
+margin_bottom = 92.0
+text = "2-3"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Menu/PuzzleList"]
+margin_left = 37.0
+margin_right = 70.0
+margin_bottom = 164.0
+
+[node name="LoadPuzzle3-1" type="Button" parent="Menu/PuzzleList/VBoxContainer2"]
+margin_right = 33.0
+margin_bottom = 20.0
+text = "3-1"
+
+[node name="LoadPuzzle3-2" type="Button" parent="Menu/PuzzleList/VBoxContainer2"]
+margin_top = 24.0
+margin_right = 33.0
+margin_bottom = 44.0
+text = "3-2"
+
+[node name="LoadPuzzle3-3" type="Button" parent="Menu/PuzzleList/VBoxContainer2"]
+margin_top = 48.0
+margin_right = 33.0
+margin_bottom = 68.0
+text = "3-3"
+
+[node name="LoadPuzzle3-4" type="Button" parent="Menu/PuzzleList/VBoxContainer2"]
+margin_top = 72.0
+margin_right = 33.0
+margin_bottom = 92.0
+text = "3-4"
 
 [connection signal="timeout" from="PaletteShader/ExplodeTimer" to="PaletteShader" method="_on_ExplodeTimer_timeout"]
 [connection signal="pressed" from="Menu/LevelList/LoadLevel1" to="." method="_on_LoadLevel1_pressed"]
 [connection signal="pressed" from="Menu/LevelList/LoadLevel2" to="." method="_on_LoadLevel2_pressed"]
-[connection signal="pressed" from="Menu/PuzzleList/LoadPuzzle1-1" to="." method="_on_LoadPuzzle11_pressed"]
-[connection signal="pressed" from="Menu/PuzzleList/LoadPuzzle1-2" to="." method="_on_LoadPuzzle12_pressed"]
+[connection signal="pressed" from="Menu/PuzzleList/VBoxContainer/LoadPuzzle1-1" to="." method="_on_LoadPuzzle11_pressed"]
+[connection signal="pressed" from="Menu/PuzzleList/VBoxContainer/LoadPuzzle2-1" to="." method="_on_LoadPuzzle21_pressed"]
+[connection signal="pressed" from="Menu/PuzzleList/VBoxContainer/LoadPuzzle2-2" to="." method="_on_LoadPuzzle22_pressed"]
+[connection signal="pressed" from="Menu/PuzzleList/VBoxContainer/LoadPuzzle2-3" to="." method="_on_LoadPuzzle23_pressed"]
+[connection signal="pressed" from="Menu/PuzzleList/VBoxContainer2/LoadPuzzle3-1" to="." method="_on_LoadPuzzle31_pressed"]
+[connection signal="pressed" from="Menu/PuzzleList/VBoxContainer2/LoadPuzzle3-2" to="." method="_on_LoadPuzzle32_pressed"]
+[connection signal="pressed" from="Menu/PuzzleList/VBoxContainer2/LoadPuzzle3-3" to="." method="_on_LoadPuzzle33_pressed"]
+[connection signal="pressed" from="Menu/PuzzleList/VBoxContainer2/LoadPuzzle3-4" to="." method="_on_LoadPuzzle33_pressed"]

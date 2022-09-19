@@ -3,7 +3,7 @@ extends Node2D
 var bombPuzzleScene = preload("res://BombPuzzle.tscn")
 
 onready var levelList : VBoxContainer = $Menu/LevelList
-onready var puzzleList : VBoxContainer = $Menu/PuzzleList
+onready var puzzleList : HBoxContainer = $Menu/PuzzleList
 onready var main_2d : Node2D = $Main2D
 onready var puzzle_2d : Node2D = $Puzzle2D
 
@@ -72,8 +72,26 @@ func _on_LoadLevel2_pressed():
 func _on_LoadPuzzle11_pressed():
 	load_puzzle("1-1")
 
-func _on_LoadPuzzle12_pressed():
-	load_puzzle("1-2")
+func _on_LoadPuzzle21_pressed():
+	load_puzzle("2-1")
+
+func _on_LoadPuzzle22_pressed():
+	load_puzzle("2-2")
+
+func _on_LoadPuzzle23_pressed():
+	load_puzzle("2-3")
+
+func _on_LoadPuzzle31_pressed():
+	load_puzzle("3-1")
+
+func _on_LoadPuzzle32_pressed():
+	load_puzzle("3-2")
+
+func _on_LoadPuzzle33_pressed():
+	load_puzzle("3-3")
+
+func _on_LoadPuzzle34_pressed():
+	load_puzzle("3-4")
 
 
 # func _on_level_exited(num):

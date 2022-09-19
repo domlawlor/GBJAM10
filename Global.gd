@@ -5,8 +5,11 @@ const LOGICAL_RES = Vector2(160, 144)
 var SCALE = 1
 
 var GRIDSIZE = 16
-var LOGICGRID_WIDTH = 8
-var LOGICGRID_HEIGHT = 6
+var LOGICGRID_WIDTH = 10
+var LOGICGRID_HEIGHT = 8
+
+var HIGHLIGHTGRID_WIDTH = 8
+var HIGHLIGHTGRID_HEIGHT = 6
 
 func USecToMSec(usec : float):
 	return usec / 1000.0

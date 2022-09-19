@@ -2,8 +2,10 @@ extends Node2D
 
 var wireLayer = preload("res://WireLayer.tscn")
 
-onready var LevelData = $Grid/LevelData
-onready var GridHighlight = $Grid/GridHighlight
+onready var WireLayers = $WireLayers
+onready var GridHighlight = $GridHighlight
+onready var Foreground = $Foreground
+onready var Symbols = $Symbols
 onready var DebugOutput = $DebugOutput
 onready var LevelSlotDisplay = $LevelSlot
 
@@ -16,7 +18,8 @@ enum Mode {
 	SAVE_LEVEL		#f5
 	LOAD_LEVEL		#f6
 	WIRE_TYPE		#f7
-	WIRE_CUTORDER	#f8
+	WIRE_CUTORDER	#f9
+	SYMBOL_EDIT		#f10
 	GAMEPLAY		#f12
 }
 
@@ -43,7 +46,7 @@ func _input(event):
 		if m_mode == Mode.IDLE:
 			SetMode(Mode.WIRE_NEW)
 			var newWireLayer = wireLayer.instance()
-			LevelData.add_child(newWireLayer)
+			WireLayers.add_child(newWireLayer)
 			m_wireInProgress = newWireLayer
 			m_wireLayers.push_back(newWireLayer)
 		elif m_mode == Mode.WIRE_NEW and m_wireComplete:
@@ -86,15 +89,21 @@ func _input(event):
 		elif m_mode == Mode.WIRE_TYPE:
 			SetMode(Mode.IDLE)
 	
-	elif event.is_action_pressed("debug_f8") or event.is_action_pressed("debug_wireOrder"):
+	elif event.is_action_pressed("debug_f9") or event.is_action_pressed("debug_wireOrder"):
 		if m_mode == Mode.IDLE and m_wireLayers.size() > 0:
 			SetMode(Mode.WIRE_CUTORDER)
 			m_currentCutIndex = 0
-			for child in LevelData.get_children():
+			for child in WireLayers.get_children():
 				child.SetCutIndex(-1)
 		elif m_mode == Mode.WIRE_CUTORDER:
 			SetMode(Mode.IDLE)
 			CreateCutList()
+	
+	elif event.is_action_pressed("debug_f10"):
+		if m_mode == Mode.IDLE:
+			SetMode(Mode.SYMBOL_EDIT)
+		elif m_mode == Mode.SYMBOL_EDIT:
+			SetMode(Mode.IDLE)
 
 	elif event.is_action_pressed("debug_f12"):
 		if m_mode == Mode.IDLE and m_wireLayers.size() > 0:
@@ -123,8 +132,8 @@ func _input(event):
 	
 	elif event.is_action_pressed("debug_leftclick"):
 		var localPos = to_local(event.position)
-		var gridX = floor(localPos.x / Global.GRIDSIZE) - 1
-		var gridY = floor(localPos.y / Global.GRIDSIZE) - 1
+		var gridX = floor(localPos.x / Global.GRIDSIZE)
+		var gridY = floor(localPos.y / Global.GRIDSIZE)
 		var gridPos = Vector2(gridX, gridY)
 		if not (gridX >= 0 and gridX < Global.LOGICGRID_WIDTH and gridY >= 0 and gridY < Global.LOGICGRID_HEIGHT):
 			return
@@ -141,7 +150,7 @@ func _input(event):
 			m_wireComplete = m_wireInProgress.PlaceWire(gridPos)
 		elif m_mode == Mode.WIRE_DELETE:
 			if pickedWire:
-				LevelData.remove_child(pickedWire)
+				WireLayers.remove_child(pickedWire)
 				pickedWire.queue_free()
 				SetMode(Mode.IDLE)
 				m_wireLayers.pop_at(pickedIndex)
@@ -149,12 +158,12 @@ func _input(event):
 			if pickedWire:
 				var orderIndex = pickedWire.get_index()
 				if orderIndex > 0:
-					LevelData.move_child(pickedWire, orderIndex - 1)
+					WireLayers.move_child(pickedWire, orderIndex - 1)
 		elif m_mode == Mode.WIRE_LAYERUP:
 			if pickedWire:
 				var orderIndex = pickedWire.get_index()
 				if orderIndex < m_wireLayers.size():
-					LevelData.move_child(pickedWire, orderIndex + 1)
+					WireLayers.move_child(pickedWire, orderIndex + 1)
 		elif m_mode == Mode.WIRE_TYPE:
 			if pickedWire:
 				pickedWire.ChangeWireType()
@@ -162,6 +171,19 @@ func _input(event):
 			if pickedWire and pickedWire.m_cutIndex == -1:
 				pickedWire.SetCutIndex(m_currentCutIndex)
 				m_currentCutIndex += 1
+		elif m_mode == Mode.SYMBOL_EDIT:
+			EditSymbol(gridPos, 1)
+	
+	elif event.is_action_pressed("debug_rightclick"):
+		var localPos = to_local(event.position)
+		var gridX = floor(localPos.x / Global.GRIDSIZE)
+		var gridY = floor(localPos.y / Global.GRIDSIZE)
+		var gridPos = Vector2(gridX, gridY)
+		if not (gridX >= 0 and gridX < Global.LOGICGRID_WIDTH and gridY >= 0 and gridY < Global.LOGICGRID_HEIGHT):
+			return
+
+		if m_mode == Mode.SYMBOL_EDIT:
+			EditSymbol(gridPos, -1)
 
 	elif event.is_action_pressed("moveLeft"):
 		if m_mode == Mode.GAMEPLAY:
@@ -181,17 +203,24 @@ func _input(event):
 
 func ResetLevel():
 	m_wireLayers.clear()
-	for child in LevelData.get_children():
-		LevelData.remove_child(child)
+	for child in WireLayers.get_children():
+		WireLayers.remove_child(child)
 		child.queue_free()
 
 func SerializeLevelData():
 	var levelData = {}
 	levelData.wires = []
-	for wire in LevelData.get_children():
+	for wire in WireLayers.get_children():
 		if wire.get_class() == "WireLayer":
 			var wireData = wire.GetWireData()
 			levelData.wires.push_back(wireData)
+	levelData.symbols = []
+	for symbol in Symbols.get_children():
+		var symbolData = {
+			realPos = var2str(symbol.position),
+			frame = symbol.frame,
+		}
+		levelData.symbols.push_back(symbolData)
 	return levelData
 
 func UnserializeLevelData(levelData):
@@ -200,11 +229,15 @@ func UnserializeLevelData(levelData):
 		
 	for wireData in levelData.wires:
 		var newWireLayer = wireLayer.instance()
-		LevelData.add_child(newWireLayer)
+		WireLayers.add_child(newWireLayer)
 		m_wireInProgress = newWireLayer
 		m_wireLayers.push_back(newWireLayer)
 		newWireLayer.SetWireData(wireData)
 	CreateCutList()
+	for symbolData in levelData.symbols:
+		for symbol in Symbols.get_children():
+			if str2var(symbolData.realPos) == symbol.position:
+				symbol.frame = symbolData.frame
 
 func SaveOrLoadLevel(num):
 	if m_mode != Mode.SAVE_LEVEL and m_mode != Mode.LOAD_LEVEL:
@@ -227,6 +260,11 @@ func SaveOrLoadLevel(num):
 		LevelSlotDisplay.text = slot
 	else:
 		LevelSlotDisplay.text = "!!!"
+
+func EditSymbol(gridPos, move):
+	for childSymbol in Symbols.get_children():
+		if childSymbol.position  / Global.GRIDSIZE == gridPos:
+			childSymbol.frame += move
 
 func CreateCutList():
 	m_cutList = []
@@ -257,14 +295,16 @@ func StartGameplay():
 	SaveOrLoadLevel("temp")
 	m_mode = Mode.GAMEPLAY
 	m_cutProgress = 0
-	m_highlightPos = Vector2.ZERO
+	m_highlightPos = Vector2(1, 1)
 	UpdateGridHighlightPos()
+	Foreground.set_modulate(Color(1, 1, 1, 1))
 	DebugOutput.visible = false
 	LevelSlotDisplay.visible = false
 	GridHighlight.visible = true
 
 func ReturnToEditMode():
 	Events.emit_signal("editmode_active")
+	Foreground.set_modulate(Color(1, 1, 1, 0.5))
 	DebugOutput.visible = true
 	LevelSlotDisplay.visible = true
 	GridHighlight.visible = false
@@ -272,22 +312,22 @@ func ReturnToEditMode():
 	SaveOrLoadLevel("temp")
 
 func MoveHighlightLeft():
-	if m_highlightPos.x > 0:
+	if m_highlightPos.x > 1:
 		m_highlightPos.x -= 1
 		UpdateGridHighlightPos()
 
 func MoveHighlightRight():
-	if m_highlightPos.x < Global.LOGICGRID_WIDTH-1:
+	if m_highlightPos.x < Global.HIGHLIGHTGRID_WIDTH:
 		m_highlightPos.x += 1
 		UpdateGridHighlightPos()
 
 func MoveHighlightUp():
-	if m_highlightPos.y > 0:
+	if m_highlightPos.y > 1:
 		m_highlightPos.y -= 1
 		UpdateGridHighlightPos()
 
 func MoveHighlightDown():
-	if m_highlightPos.y < Global.LOGICGRID_HEIGHT-1:
+	if m_highlightPos.y < Global.HIGHLIGHTGRID_HEIGHT:
 		m_highlightPos.y += 1
 		UpdateGridHighlightPos()
 
@@ -348,3 +388,5 @@ func SetMode(mode):
 			DebugOutput.text = "WIRE_TYPE"
 		Mode.WIRE_CUTORDER:
 			DebugOutput.text = "WIRE_CUTORDER"
+		Mode.SYMBOL_EDIT:
+			DebugOutput.text = "SYMBOL_EDIT"
