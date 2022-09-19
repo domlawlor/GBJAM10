@@ -1,10 +1,10 @@
 extends Node
 
 func SaveDebug(levelName, levelData):
-    var file = File.new()
-    file.open("user://level_" + levelName + ".json", File.WRITE)
-    file.store_line(to_json(levelData))
-    file.close()
+	var file = File.new()
+	file.open("user://level_" + levelName + ".json", File.WRITE)
+	file.store_line(to_json(levelData))
+	file.close()
 
 func LoadDebug(levelName):
 	var filePath = "user://level_" + levelName + ".json"

@@ -5,9 +5,10 @@
 [ext_resource path="res://BombTimer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Art/overworld_spritesheet.tres" type="TileSet" id=4]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Bomb.gd" type="Script" id=6]
+[ext_resource path="res://Level.gd" type="Script" id=6]
 
 [node name="Level1" type="Node2D"]
+script = ExtResource( 6 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 160.0
@@ -26,6 +27,13 @@ cell_size = Vector2( 8, 8 )
 format = 1
 tile_data = PoolIntArray( 131084, 40, 0, 131085, 41, 0, 196620, 42, 0, 196621, 43, 0, 786448, 32, 0, 786449, 33, 0, 851984, 34, 0, 851985, 35, 0, 917520, 36, 0, 917521, 37, 0, 983056, 38, 0, 983057, 39, 0, 1048577, 3, 0, 1114114, 3, 0, 1114115, 3, 0, 1114116, 3, 0, 1114117, 3, 0, 1114118, 3, 0, 1114119, 3, 0, 1114120, 3, 0, 1114121, 3, 0, 1114122, 3, 0, 1114123, 3, 0, 1114124, 3, 0, 1114125, 3, 0, 1114126, 3, 0, 1114127, 3, 0, 1114128, 3, 0, 1114129, 3, 0, 1114130, 3, 0 )
 
+[node name="Bomb1" parent="." instance=ExtResource( 2 )]
+position = Vector2( 40, 48 )
+
+[node name="Bomb2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 128, 48 )
+puzzleNameToOpen = "1-2"
+
 [node name="Player" parent="." instance=ExtResource( 5 )]
 position = Vector2( 80, 72 )
 
@@ -42,19 +50,10 @@ margin_top = 128.0
 margin_right = 48.0
 margin_bottom = 128.0
 
-[node name="Bomb1" type="Node" parent="."]
+[node name="BombPuzzles" type="Node" parent="."]
 
-[node name="Bomb" parent="Bomb1" instance=ExtResource( 2 )]
-position = Vector2( 40, 48 )
-
-[node name="BombPuzzle" parent="Bomb1" instance=ExtResource( 1 )]
+[node name="puzzleA" parent="BombPuzzles" instance=ExtResource( 1 )]
 visible = false
 
-[node name="Bomb2" type="Node" parent="."]
-
-[node name="Bomb" parent="Bomb2" instance=ExtResource( 2 )]
-position = Vector2( 40, 48 )
-script = ExtResource( 6 )
-
-[node name="BombPuzzle" parent="Bomb2" instance=ExtResource( 1 )]
+[node name="puzzleB" parent="BombPuzzles" instance=ExtResource( 1 )]
 visible = false

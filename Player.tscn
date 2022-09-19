@@ -74,11 +74,12 @@ extents = Vector2( 7, 2 )
 script = ExtResource( 2 )
 
 [node name="PixelLockedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( -8, -8 )
 frames = SubResource( 2 )
 animation = "down"
 centered = false
 script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 8, 14 )
+position = Vector2( 0, 6 )
 shape = SubResource( 1 )

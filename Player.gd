@@ -21,8 +21,7 @@ var m_frozen : bool = false
 var m_vel : Vector2 = Vector2.ZERO
 var m_faceDir = FaceDir.DOWN
 
-var m_canInteractWithBomb : bool= false
-
+var m_nearbyBomb : Node2D = null
 
 
 func _ready():
@@ -43,7 +42,7 @@ func _physics_process(delta):
 
 	m_vel = Vector2.ZERO
 
-	if Input.is_action_pressed("gameboy_a"):
+	if Input.is_action_just_pressed("gameboy_a"):
 		InteractPressed()
 
 	if Input.is_action_pressed("moveLeft"):
@@ -79,16 +78,44 @@ func _physics_process(delta):
 
 	emit_signal("update_position", position)
 
-func EnterBombInteractArea():
-	print("EnterBombInteractArea")
-	m_canInteractWithBomb = true
+func SetNearbyBomb(bomb: Node2D):
+	print("SetNearbyBomb - ", bomb)
+	m_nearbyBomb = bomb
 
-func ExitBombInteractArea():
-	print("ExitBombInteractArea")
-	m_canInteractWithBomb = false
+func ClearNearbyBomb(bomb: Node2D):
+	print("ClearNearbyBomb - ", bomb)
+
+	if bomb != m_nearbyBomb:
+		print("ClearNearbyBomb called with non active nearbyBomb - active=", m_nearbyBomb, ", tryingToClear=", bomb)
+		return
+
+	m_nearbyBomb = null
+
+func FacingNearbyBomb(bomb: Node2D):
+	var playerPosition = self.position
+	var bombPosition = bomb.position
+	
+	var toBomb = bombPosition - playerPosition
+	var toBombAbs = toBomb.abs()
+
+	var facingBomb = false
+
+	match m_faceDir:
+		FaceDir.UP:
+			facingBomb = toBomb.y < 0 and toBombAbs.y >= toBombAbs.x
+		FaceDir.DOWN:
+			facingBomb = toBomb.y > 0 and toBombAbs.y >= toBombAbs.x
+		FaceDir.LEFT:
+			facingBomb = toBomb.x < 0 and toBombAbs.x >= toBombAbs.y
+		FaceDir.RIGHT:
+			facingBomb = toBomb.x > 0 and toBombAbs.x >= toBombAbs.y	
+	return facingBomb
+
+
 
 func InteractPressed():
-	if m_canInteractWithBomb:
-		m_frozen = true
-		Events.emit_signal("view_bomb")
+	if m_nearbyBomb and FacingNearbyBomb(m_nearbyBomb):
+		print("VIEW BOMB! puzzle=", m_nearbyBomb.puzzleNameToOpen)
+		#m_frozen = true
+		Events.emit_signal("view_bomb_puzzle", m_nearbyBomb.puzzleNameToOpen)
 

@@ -27,6 +27,8 @@ var m_cutProgress = 0
 var m_cutList = []
 var m_currentCutIndex = 0
 
+var m_loadedPuzzleName : String
+
 # editor
 var m_wireInProgress = null
 var m_wireComplete = false
@@ -244,8 +246,10 @@ func LoadRealPuzzle(puzzleName):
 	m_mode = Mode.LOAD_LEVEL
 	ResetLevel()
 	var levelData = LevelJsonHelper.Load(puzzleName)
-	UnserializeLevelData(levelData)
-	StartGameplay()
+	if levelData:
+		UnserializeLevelData(levelData)
+		m_loadedPuzzleName = puzzleName
+		StartGameplay()
 
 func StartGameplay():
 	m_mode = Mode.SAVE_LEVEL

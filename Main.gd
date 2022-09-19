@@ -11,22 +11,12 @@ var level_instance : Node2D
 var puzzle_instance : Node2D
 
 func _ready():
-	Events.connect("view_bomb", self, "_on_view_bomb")
-	Events.connect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
-	
-
 	SetResolution()
 	puzzle_instance = bombPuzzleScene.instance()
 	#load_level("Level1")
 
 func _exit():
 	pass
-
-func _on_view_bomb():
-	Global.activeBombPuzzle.visible = true
-
-func _on_bomb_puzzle_complete():
-	Global.activeBombPuzzle.visible = false
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
