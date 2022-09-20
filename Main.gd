@@ -81,6 +81,10 @@ func _on_LoadLevel3_pressed():
 	current_level_num = 3
 	load_level("Level3")
 
+func _on_LoadLevel4_pressed():
+	current_level_num = 4
+	load_level("Level4")
+
 func _on_LoadPuzzle11_pressed():
 	load_puzzle("1-1")
 func _on_LoadPuzzle21_pressed():
@@ -125,6 +129,8 @@ func _on_exit_level_door():
 			load_level("Level2")
 		2:
 			load_level("Level3")
+		3:
+			load_level("Level4")
 
 # func _on_restart_game():
 # 	timeLimit.stop()

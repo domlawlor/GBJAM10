@@ -24,7 +24,7 @@ var m_vel : Vector2 = Vector2.ZERO
 var m_faceDir = FaceDir.DOWN
 
 var m_nearbyBomb : Node2D = null
-
+var m_nearbyPage : Node2D = null
 
 func _ready():
 	Events.connect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
@@ -89,36 +89,54 @@ func _physics_process(delta):
 	emit_signal("update_position", position)
 
 func SetNearbyBomb(bomb: Node2D):
-	print("SetNearbyBomb - ", bomb)
+	if m_nearbyPage:
+		print("SetNearbyBomb - clearing set nearby page, this is probably an issue that they're too close")
+		m_nearbyPage = null
+	
+	#print("SetNearbyBomb - ", bomb)
 	m_nearbyBomb = bomb
 
 func ClearNearbyBomb(bomb: Node2D):
-	print("ClearNearbyBomb - ", bomb)
-
+	#print("ClearNearbyBomb - ", bomb)
+	
 	if bomb != m_nearbyBomb:
 		print("ClearNearbyBomb called with non active nearbyBomb - active=", m_nearbyBomb, ", tryingToClear=", bomb)
 		return
-
+	
 	m_nearbyBomb = null
 
-func FacingNearbyBomb(bomb: Node2D):
-	var playerPosition = self.position
-	var bombPosition = bomb.position
+func SetNearbyBookPage(bookPage : Node2D):
+	if m_nearbyBomb:
+		print("SetNearbyBookPage - clearing set nearby bomb, this is probably an issue that they're too close")
+		m_nearbyBomb = null
 	
-	var toBomb = bombPosition - playerPosition
-	var toBombAbs = toBomb.abs()
-	var facingBomb = false
+	m_nearbyPage = bookPage
+
+func ClearNearbyBookPage(bookPage : Node2D):
+	if bookPage != m_nearbyPage:
+		print("ClearNearbyBookPage called with non active nearbyPage - active=", m_nearbyPage, ", tryingToClear=", bookPage)
+		return
+	
+	m_nearbyPage = null
+
+func FacingNearbyNode(nearbyNode: Node2D):
+	var playerPosition = self.position
+	var nodePosition = nearbyNode.position
+	
+	var toNode = nodePosition - playerPosition
+	var toNodeAbs = toNode.abs()
+	var facingNode = false
 	
 	match m_faceDir:
 		FaceDir.UP:
-			facingBomb = toBomb.y < 0 and toBombAbs.y >= toBombAbs.x
+			facingNode = toNode.y < 0 and toNodeAbs.y >= toNodeAbs.x
 		FaceDir.DOWN:
-			facingBomb = toBomb.y > 0 and toBombAbs.y >= toBombAbs.x
+			facingNode = toNode.y > 0 and toNodeAbs.y >= toNodeAbs.x
 		FaceDir.LEFT:
-			facingBomb = toBomb.x < 0 and toBombAbs.x >= toBombAbs.y
+			facingNode = toNode.x < 0 and toNodeAbs.x >= toNodeAbs.y
 		FaceDir.RIGHT:
-			facingBomb = toBomb.x > 0 and toBombAbs.x >= toBombAbs.y	
-	return facingBomb
+			facingNode = toNode.x > 0 and toNodeAbs.x >= toNodeAbs.y	
+	return facingNode
 
 func GetCameraTopLeftPosition():
 	var cameraCenter = camera.get_camera_screen_center()
@@ -126,8 +144,9 @@ func GetCameraTopLeftPosition():
 	return cameraPos
 	
 func InteractPressed():
-	if m_nearbyBomb and FacingNearbyBomb(m_nearbyBomb):
-		var cameraTopLeft = GetCameraTopLeftPosition()
-		
+	var cameraTopLeft = GetCameraTopLeftPosition()
+	
+	if m_nearbyBomb and FacingNearbyNode(m_nearbyBomb):
 		Events.emit_signal("view_bomb_puzzle", m_nearbyBomb.puzzleName, cameraTopLeft)
-
+	elif m_nearbyPage and FacingNearbyNode(m_nearbyPage):
+		Events.emit_signal("view_manual_page", m_nearbyPage.pageNum, cameraTopLeft)

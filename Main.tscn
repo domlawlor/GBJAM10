@@ -68,6 +68,12 @@ margin_right = 27.0
 margin_bottom = 68.0
 text = "L3"
 
+[node name="LoadLevel4" type="Button" parent="Menu/LevelList"]
+margin_top = 72.0
+margin_right = 27.0
+margin_bottom = 92.0
+text = "L4"
+
 [node name="PuzzleList" type="HBoxContainer" parent="Menu"]
 anchor_left = 1.0
 anchor_right = 1.0
@@ -192,6 +198,7 @@ text = "4-8"
 [connection signal="pressed" from="Menu/LevelList/LoadLevel1" to="." method="_on_LoadLevel1_pressed"]
 [connection signal="pressed" from="Menu/LevelList/LoadLevel2" to="." method="_on_LoadLevel2_pressed"]
 [connection signal="pressed" from="Menu/LevelList/LoadLevel3" to="." method="_on_LoadLevel3_pressed"]
+[connection signal="pressed" from="Menu/LevelList/LoadLevel4" to="." method="_on_LoadLevel4_pressed"]
 [connection signal="pressed" from="Menu/PuzzleList/VBoxContainer/LoadPuzzle1-1" to="." method="_on_LoadPuzzle11_pressed"]
 [connection signal="pressed" from="Menu/PuzzleList/VBoxContainer/LoadPuzzle2-1" to="." method="_on_LoadPuzzle21_pressed"]
 [connection signal="pressed" from="Menu/PuzzleList/VBoxContainer/LoadPuzzle2-2" to="." method="_on_LoadPuzzle22_pressed"]

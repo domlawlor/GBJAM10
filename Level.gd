@@ -6,6 +6,8 @@ onready var m_bombsNode : Node2D = $Bombs
 onready var m_bombPuzzlesNode : Node2D = $BombPuzzles 
 onready var m_bombTimer : Node2D = $BombTimer
 onready var m_door : Sprite = $Door
+onready var m_pageOverlay : Node2D = $PageOverlay
+
 
 export var m_levelBombTimeSecond : float = 120.0 
 
@@ -19,6 +21,7 @@ var m_activePuzzle : Node2D = null
 func _ready():
 	Events.connect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
 	Events.connect("view_bomb_puzzle", self, "_on_view_bomb_puzzle")
+	Events.connect("view_manual_page", self, "_on_view_manual_page")
 	
 	Events.emit_signal("bomb_timer_start", m_levelBombTimeSecond)
 	
@@ -37,6 +40,7 @@ func _ready():
 func _exit():
 	Events.disconnect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
 	Events.disconnect("view_bomb_puzzle", self, "_on_view_bomb_puzzle")
+	Events.disconnect("view_manual_page", self, "_on_view_manual_page")
 
 func _on_bomb_puzzle_complete():
 	assert(m_activePuzzle)
@@ -78,4 +82,6 @@ func _on_view_bomb_puzzle(puzzleName, position):
 		m_bombTimer.position = position
 		m_bombTimer.visible = true
 		
-		
+func _on_view_manual_page(pageNum, position):
+	m_pageOverlay.position = position
+	m_pageOverlay.ShowPage(pageNum)

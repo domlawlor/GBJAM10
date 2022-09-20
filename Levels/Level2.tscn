@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Door.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Bomb.tscn" type="PackedScene" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://Art/overworld_spritesheet.tres" type="TileSet" id=4]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Level.gd" type="Script" id=6]
+[ext_resource path="res://PageOverlay.tscn" type="PackedScene" id=7]
+[ext_resource path="res://BookPage.tscn" type="PackedScene" id=8]
 
 [node name="Level3" type="Node2D"]
 script = ExtResource( 6 )
@@ -21,6 +23,10 @@ tile_set = ExtResource( 4 )
 cell_size = Vector2( 8, 8 )
 format = 1
 tile_data = PoolIntArray( 131078, 89, 0, 131079, 90, 0, 131080, 91, 0, 131083, 89, 0, 131084, 90, 0, 131085, 91, 0, 131089, 84, 0, 131090, 85, 0, 131101, 32, 0, 131102, 33, 0, 131105, 32, 0, 131106, 33, 0, 196614, 92, 0, 196615, 94, 0, 196616, 95, 0, 196619, 92, 0, 196620, 94, 0, 196621, 95, 0, 196625, 86, 0, 196626, 87, 0, 196637, 34, 0, 196638, 35, 0, 196641, 34, 0, 196642, 35, 0, 262173, 36, 0, 262174, 37, 0, 262177, 36, 0, 262178, 37, 0, 327709, 38, 0, 327710, 39, 0, 327713, 38, 0, 327714, 39, 0 )
+
+[node name="BookPage" parent="." instance=ExtResource( 8 )]
+position = Vector2( 184, 40 )
+pageNum = 2
 
 [node name="Door" parent="." instance=ExtResource( 1 )]
 
@@ -62,4 +68,7 @@ format = 1
 [node name="BombPuzzles" type="Node2D" parent="."]
 
 [node name="BombTimer" parent="." instance=ExtResource( 3 )]
+visible = false
+
+[node name="PageOverlay" parent="." instance=ExtResource( 7 )]
 visible = false

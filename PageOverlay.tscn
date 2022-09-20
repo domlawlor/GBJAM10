@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Art/page_background.png" type="Texture" id=1]
+[ext_resource path="res://PageOverlay.gd" type="Script" id=2]
+[ext_resource path="res://Art/page_theme.tres" type="Theme" id=3]
+
+[node name="PageOverlay" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Background" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+
+[node name="Control" type="Control" parent="."]
+margin_right = 160.0
+margin_bottom = 144.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control"]
+margin_right = 160.0
+margin_bottom = 144.0
+theme = ExtResource( 3 )
+tab_size = 0
+text = "When the path is unclear, salvation is found moving backwards through time
+As the suns holy light covered the entire land, Gods divine judgement blinded the demonic eye\\n
+When the devil saw two, he bore his wroth upon the almighty Hand of God
+And then when the devil saw four, the forces of madness compelled him to sever his own weapon in twain"
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Control"]
+margin_right = 160.0
+margin_bottom = 144.0
+theme = ExtResource( 3 )
+tab_size = 0
+text = "When the path is unclear, salvation is found moving backwards through time
+As the suns holy light covered the entire land, Gods divine judgement blinded the demonic eye\\n
+When the devil saw two, he bore his wroth upon the almighty Hand of God
+And then when the devil saw four, the forces of madness compelled him to sever his own weapon in twain"
