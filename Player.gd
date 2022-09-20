@@ -59,15 +59,11 @@ func _physics_process(delta):
 		m_vel.x = -VELOCITY_X
 		m_faceDir = FaceDir.LEFT
 		animatedSprite.set_animation("left")
-
 	elif Input.is_action_pressed("moveRight"):
 		m_vel.x = VELOCITY_X
 		m_faceDir = FaceDir.RIGHT
 		animatedSprite.set_animation("right")
-	elif !Input.is_action_pressed("moveLeft") and !Input.is_action_pressed("moveRight"):
-		m_vel.x = 0
-	
-	if Input.is_action_pressed("moveUp"):
+	elif Input.is_action_pressed("moveUp"):
 		m_vel.y = -VELOCITY_Y
 		m_faceDir = FaceDir.UP
 		animatedSprite.set_animation("up")
@@ -75,7 +71,8 @@ func _physics_process(delta):
 		m_vel.y = VELOCITY_Y
 		animatedSprite.set_animation("down")
 		m_faceDir = FaceDir.DOWN
-	elif !Input.is_action_pressed("moveUp") and !Input.is_action_pressed("moveDown"):
+	else:
+		m_vel.x = 0
 		m_vel.y = 0
 
 	if m_vel.length() > 0:
