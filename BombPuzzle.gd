@@ -169,7 +169,12 @@ func _input(event):
 				pickedWire.ChangeWireType()
 		elif m_mode == Mode.WIRE_CUTORDER:
 			if pickedWire and pickedWire.m_cutIndex == -1:
-				pickedWire.SetCutIndex(m_currentCutIndex)
+				var timing = -1
+				if Input.is_action_pressed("debug_numpad2"):
+					timing = 2
+				elif Input.is_action_pressed("debug_numpad4"):
+					timing = 4
+				pickedWire.SetCutIndex(m_currentCutIndex, timing)
 				m_currentCutIndex += 1
 		elif m_mode == Mode.SYMBOL_EDIT:
 			EditSymbol(gridPos, 1)

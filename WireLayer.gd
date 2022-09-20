@@ -35,6 +35,7 @@ var m_firstWirePlaced = false
 var m_wirePath = []
 var m_wireType = WireType.NORMAL
 var m_cutIndex = -1 # -1 means don't cut
+var m_cutTiming = -1 # -1 means timing is irrelevant
 
 func _ready():
 	for x in range(Global.LOGICGRID_WIDTH):
@@ -204,8 +205,9 @@ func ChangeWireType(forceType=null):
 			m_gridSprites[x][y].texture = tex
 	UpdateGraphics()
 
-func SetCutIndex(i):
+func SetCutIndex(i, t=-1):
 	m_cutIndex = i
+	m_cutTiming = t
 
 func IsWireAtPos(pos):
 	return m_grid[pos.x][pos.y] != WireState.NONE		
@@ -219,12 +221,14 @@ func GetWireData():
 		"wireType" : var2str(m_wireType),
 		"wirePath" : wireStrArray,
 		"cutIndex" : var2str(m_cutIndex),
+		"cutTiming" : var2str(m_cutTiming),
 	}
 
 func SetWireData(wireData):
 	m_wireType = str2var(wireData.wireType)
 	ChangeWireType(m_wireType)
 	m_cutIndex = str2var(wireData.cutIndex)
+	m_cutTiming = str2var(wireData.cutTiming)
 	for wirePosStr in wireData.wirePath:
 		var wirePos = str2var(wirePosStr)
 		PlaceWire(wirePos)
