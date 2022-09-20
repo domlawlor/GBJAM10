@@ -83,29 +83,39 @@ func _on_LoadLevel3_pressed():
 
 func _on_LoadPuzzle11_pressed():
 	load_puzzle("1-1")
-
 func _on_LoadPuzzle21_pressed():
 	load_puzzle("2-1")
-
 func _on_LoadPuzzle22_pressed():
 	load_puzzle("2-2")
-
 func _on_LoadPuzzle23_pressed():
 	load_puzzle("2-3")
-
 func _on_LoadPuzzle31_pressed():
 	load_puzzle("3-1")
-
 func _on_LoadPuzzle32_pressed():
 	load_puzzle("3-2")
-
 func _on_LoadPuzzle33_pressed():
 	load_puzzle("3-3")
-
 func _on_LoadPuzzle34_pressed():
 	load_puzzle("3-4")
-
-
+func _on_LoadPuzzle35_pressed():
+	load_puzzle("3-5")
+func _on_LoadPuzzle41_pressed():
+	load_puzzle("4-1")
+func _on_LoadPuzzle42_pressed():
+	load_puzzle("4-2")
+func _on_LoadPuzzle43_pressed():
+	load_puzzle("4-3")
+func _on_LoadPuzzle44_pressed():
+	load_puzzle("4-4")
+func _on_LoadPuzzle45_pressed():
+	load_puzzle("4-5")	
+func _on_LoadPuzzle46_pressed():
+	load_puzzle("4-6")	
+func _on_LoadPuzzle47_pressed():
+	load_puzzle("4-7")	
+func _on_LoadPuzzle48_pressed():
+	load_puzzle("4-8")	
+	
 func _on_exit_level_door():
 	var levelExitedNum = current_level_num
 	current_level_num += 1
