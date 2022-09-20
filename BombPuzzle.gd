@@ -32,14 +32,23 @@ var m_currentCutIndex = 0
 
 var m_puzzleCompleted : bool = false
 var m_bombOrderNumber : int = -1
+var m_timingVisibleTwo : bool = false
+var m_timingVisibleFour : bool = false
 
 # editor
 var m_wireInProgress = null
 var m_wireComplete = false
 
 func _ready():
+	Events.connect("timing_two_visibility_changed", self, "_on_timing_two_visibility_changed")
+	Events.connect("timing_four_visibility_changed", self, "_on_timing_four_visibility_changed")
+
 	GridHighlight.visible = false
 	GridHighlight.play("default")
+
+func _exit():
+	Events.disconnect("timing_two_visibility_changed", self, "_on_timing_two_visibility_changed")
+	Events.disconnect("timing_four_visibility_changed", self, "_on_timing_four_visibility_changed")
 
 func _input(event):
 	if event.is_action_pressed("debug_f1"):
@@ -355,6 +364,11 @@ func CutWires():
 
 	for j in range(pickedWiresCount):
 		pickedWires[j].CutWire(m_highlightPos)
+		var timing = pickedWires[j].GetCutTiming()
+		if timing == 2 and !m_timingVisibleTwo:
+			explode = true
+		elif timing == 4 and !m_timingVisibleFour:
+			explode = true
 		if !explode and pickedWires[j] != m_cutList[m_cutProgress][j]:
 			explode = true
 	
@@ -394,3 +408,11 @@ func SetMode(mode):
 			DebugOutput.text = "WIRE_CUTORDER"
 		Mode.SYMBOL_EDIT:
 			DebugOutput.text = "SYMBOL_EDIT"
+
+func _on_timing_two_visibility_changed(showing : bool):
+	m_timingVisibleTwo = showing
+	print("TWO: " + str(showing))
+
+func _on_timing_four_visibility_changed(showing : bool):
+	m_timingVisibleFour = showing
+	print("FOUR: " + str(showing))

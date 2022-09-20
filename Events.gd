@@ -4,6 +4,9 @@ signal bomb_timer_start(waitTime)
 signal bomb_explode()
 signal bomb_puzzle_complete()
 
+signal timing_two_visibility_changed(showing)
+signal timing_four_visibility_changed(showing)
+
 signal view_bomb_puzzle(puzzleName, position)
 
 signal exit_level_door()

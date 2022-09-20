@@ -209,6 +209,9 @@ func SetCutIndex(i, t=-1):
 	m_cutIndex = i
 	m_cutTiming = t
 
+func GetCutTiming():
+	return m_cutTiming
+
 func IsWireAtPos(pos):
 	return m_grid[pos.x][pos.y] != WireState.NONE		
 
