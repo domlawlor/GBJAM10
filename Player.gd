@@ -120,18 +120,18 @@ func FacingNearbyNode(nearbyNode: Node2D):
 	var nodePosition = nearbyNode.position
 	
 	var toNode = nodePosition - playerPosition
-	var toNodeAbs = toNode.abs()
+	#var toNodeAbs = toNode.abs()
 	var facingNode = false
 	
 	match m_faceDir:
 		FaceDir.UP:
-			facingNode = toNode.y < 0 and toNodeAbs.y >= toNodeAbs.x
+			facingNode = toNode.y < 0# and toNodeAbs.y >= toNodeAbs.x
 		FaceDir.DOWN:
-			facingNode = toNode.y > 0 and toNodeAbs.y >= toNodeAbs.x
+			facingNode = toNode.y > 0# and toNodeAbs.y >= toNodeAbs.x
 		FaceDir.LEFT:
-			facingNode = toNode.x < 0 and toNodeAbs.x >= toNodeAbs.y
+			facingNode = toNode.x < 0#and toNodeAbs.x >= toNodeAbs.y
 		FaceDir.RIGHT:
-			facingNode = toNode.x > 0 and toNodeAbs.x >= toNodeAbs.y	
+			facingNode = toNode.x > 0#and toNodeAbs.x >= toNodeAbs.y	
 	return facingNode
 
 func InteractPressed():
