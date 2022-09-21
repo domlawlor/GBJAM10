@@ -33,7 +33,7 @@ func _process(delta):
 	if !visible:
 		return
 	
-	if Input.is_action_just_pressed("gameboy_b"):
+	if Input.is_action_just_pressed("gameboy_a") or Input.is_action_just_pressed("gameboy_b"):
 		if m_currentPageNum == m_textPagesToShowTotal:
 			visible = false
 			Events.emit_signal("set_overworld_paused", false)
