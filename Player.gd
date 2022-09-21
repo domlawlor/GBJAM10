@@ -24,8 +24,14 @@ var m_justUnfrozen = false # quick 1 frame delay fix for stopping input hitting 
 var m_vel : Vector2 = Vector2.ZERO
 var m_faceDir = FaceDir.DOWN
 
-var m_nearbyBomb : Node2D = null
-var m_nearbyPage : Node2D = null
+enum InteractNodeType {
+	NONE,
+	BOMB,
+	PAGE
+}
+
+var m_nearbyInteractNode : Node2D = null
+var m_nearbyInteractType = InteractNodeType.NONE
 
 func _ready():
 	Events.connect("set_overworld_paused", self, "_on_set_overworld_paused")
@@ -91,37 +97,32 @@ func _physics_process(delta):
 
 	emit_signal("update_position", position)
 
-func SetNearbyBomb(bomb: Node2D):
-	if m_nearbyPage:
-		print("SetNearbyBomb - clearing set nearby page, this is probably an issue that they're too close")
-		m_nearbyPage = null
-	
-	#print("SetNearbyBomb - ", bomb)
-	m_nearbyBomb = bomb
+func SetInteractNode(node, nodeType):
+	if m_nearbyInteractNode:
+		print("SetInteractNode - clearing a set m_nearbyInteractNode, shoud been cleared first. Or Node too close to another?")
+		m_nearbyInteractNode = null
 
-func ClearNearbyBomb(bomb: Node2D):
-	#print("ClearNearbyBomb - ", bomb)
-	
-	if bomb != m_nearbyBomb:
-		print("ClearNearbyBomb called with non active nearbyBomb - active=", m_nearbyBomb, ", tryingToClear=", bomb)
+	m_nearbyInteractNode = node
+	m_nearbyInteractType = nodeType
+
+func ClearInteractNode(node):
+	if node != m_nearbyInteractNode:
+		print("ClearInteractNode - passed wrong active m_nearbyInteractNode to clear - active=", m_nearbyInteractNode, ", tryingToClear=", node)
 		return
-	
-	m_nearbyBomb = null
+	m_nearbyInteractNode = null
+
+func SetNearbyBomb(bomb: Node2D):
+	SetInteractNode(bomb, InteractNodeType.BOMB)
 
 func SetNearbyBookPage(bookPage : Node2D):
-	if m_nearbyBomb:
-		print("SetNearbyBookPage - clearing set nearby bomb, this is probably an issue that they're too close")
-		m_nearbyBomb = null
-	
-	m_nearbyPage = bookPage
+	SetInteractNode(bookPage, InteractNodeType.PAGE)
+
+func ClearNearbyBomb(bomb: Node2D):
+	ClearInteractNode(bomb)
 
 func ClearNearbyBookPage(bookPage : Node2D):
-	if bookPage != m_nearbyPage:
-		print("ClearNearbyBookPage called with non active nearbyPage - active=", m_nearbyPage, ", tryingToClear=", bookPage)
-		return
+	ClearInteractNode(bookPage)
 	
-	m_nearbyPage = null
-
 func FacingNearbyNode(nearbyNode: Node2D):
 	var playerPosition = self.position
 	var nodePosition = nearbyNode.position
@@ -147,9 +148,15 @@ func GetCameraTopLeftPosition():
 	return cameraPos
 	
 func InteractPressed():
-	var cameraTopLeft = GetCameraTopLeftPosition()
+	if m_nearbyInteractType == InteractNodeType.NONE:
+		return
+	assert(m_nearbyInteractNode, "InteractNode must be set if interact type is not NONE")
 	
-	if m_nearbyBomb and FacingNearbyNode(m_nearbyBomb):
-		Events.emit_signal("view_bomb_puzzle", m_nearbyBomb.puzzleName, cameraTopLeft)
-	elif m_nearbyPage and FacingNearbyNode(m_nearbyPage):
-		Events.emit_signal("view_manual_page", m_nearbyPage.pageNum, cameraTopLeft)
+	var facingNode = FacingNearbyNode(m_nearbyInteractNode)
+	if facingNode:
+		var cameraTopLeft = GetCameraTopLeftPosition()	
+		match m_nearbyInteractType:
+			InteractNodeType.BOMB:
+				Events.emit_signal("view_bomb_puzzle", m_nearbyInteractNode.puzzleName, cameraTopLeft)
+			InteractNodeType.PAGE:
+				Events.emit_signal("view_manual_page", m_nearbyInteractNode.pageNum, cameraTopLeft)
