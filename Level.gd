@@ -45,6 +45,9 @@ func _on_select_bomb(bombNum, puzzleName):
 		
 
 func _on_bomb_puzzle_complete():
+	var bombNumSolved = m_nextBombNum
+	Events.emit_signal("bomb_number_solved", bombNumSolved)
+	
 	m_nextBombNum += 1
 	if m_nextBombNum == m_bombTotalCount:
 		print("Level Complete!")

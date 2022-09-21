@@ -6,6 +6,8 @@ signal bomb_timer_stop()
 signal bomb_explode()
 signal bomb_puzzle_complete()
 
+signal bomb_number_solved(bombNum)
+
 signal timing_two_visibility_changed(showing)
 signal timing_four_visibility_changed(showing)
 
