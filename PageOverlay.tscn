@@ -19,18 +19,12 @@ margin_bottom = 144.0
 margin_right = 160.0
 margin_bottom = 144.0
 theme = ExtResource( 3 )
+bbcode_enabled = true
 tab_size = 0
-text = "When the path is unclear, salvation is found moving backwards through time
-As the suns holy light covered the entire land, Gods divine judgement blinded the demonic eye\\n
-When the devil saw two, he bore his wroth upon the almighty Hand of God
-And then when the devil saw four, the forces of madness compelled him to sever his own weapon in twain"
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="Control"]
 margin_right = 160.0
 margin_bottom = 144.0
 theme = ExtResource( 3 )
+bbcode_enabled = true
 tab_size = 0
-text = "When the path is unclear, salvation is found moving backwards through time
-As the suns holy light covered the entire land, Gods divine judgement blinded the demonic eye\\n
-When the devil saw two, he bore his wroth upon the almighty Hand of God
-And then when the devil saw four, the forces of madness compelled him to sever his own weapon in twain"

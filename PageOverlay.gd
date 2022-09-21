@@ -44,6 +44,7 @@ func _process(delta):
 
 func ShowPage(pageNum):
 	assert(pageNum < pagesText.size())
+	var BBCODE_CENTER = "[center]"
 	var pageTextArray = pagesText[pageNum]
 	
 	Events.emit_signal("set_overworld_paused", true)
@@ -55,10 +56,12 @@ func ShowPage(pageNum):
 	
 	visible = true
 	
-	textNode.text = pageTextArray[0]
+	textNode.text = ""
+	textNode.bbcode_text = BBCODE_CENTER + pageTextArray[0]
 	textNode.visible = true
 	
 	if m_textPagesToShowTotal > 1:
-		textNode2.text = pageTextArray[1]
+		textNode2.text = ""
+		textNode2.bbcode_text = BBCODE_CENTER + pageTextArray[1]
 		textNode2.visible = false
 
