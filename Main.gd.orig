@@ -7,11 +7,17 @@ onready var current_level_num = start_level_num
 
 var bombPuzzleScene = preload("res://BombPuzzle.tscn")
 
-onready var debugMenu = $DebugLayer/Menu
+<<<<<<< HEAD
+onready var levelList : VBoxContainer = $DebugLayer/Menu/LevelList
+onready var puzzleList : HBoxContainer = $DebugLayer/Menu/PuzzleList
 onready var main_2d : Node2D = $Main2D
 onready var puzzle_2d : Node2D = $UILayer/Puzzle2D
-onready var bombTimer : Node2D = $UILayer/BombTimer
-onready var paletteShader = $TopLayer/PaletteShader
+=======
+onready var debugMenu = $Menu
+onready var main_2d : Node2D = $Main2D
+onready var puzzle_2d : Node2D = $Puzzle2D
+onready var paletteShader = $PaletteShader
+>>>>>>> ceb680b (wip)
 
 var level_instance : Node2D
 var puzzle_instance : Node2D
@@ -39,7 +45,7 @@ func _input(event):
 		if event.is_action_pressed("gameboy_start") or event.is_action_pressed("gameboy_a"):
 			Global.state = STATE.CHANGING_LEVEL
 			current_level_num = 0 # this will increase to 1 at end of transition
-			Events.emit_signal("fade_to_dark_request")
+			Events.emit_signal("fade_to_dark_request", position)
 	
 	if event.is_action_pressed("ui_cancel"):
 		unload_level()
@@ -137,7 +143,6 @@ func _on_LoadPuzzle48_pressed():
 
 func _on_fade_to_dark_complete():
 	if Global.state == STATE.CHANGING_LEVEL:
-		bombTimer.visible = true # needed for coming from titles
 		var levelExitedNum = current_level_num
 		current_level_num += 1
 	
@@ -150,7 +155,7 @@ func _on_fade_to_dark_complete():
 				load_level("Level3")
 			3:
 				load_level("Level4")
-		Events.emit_signal("fade_from_dark_request")
+		Events.emit_signal("fade_from_dark_request", position)
 
 func _on_bomb_explode():
 	Global.state = STATE.EXPLOSION

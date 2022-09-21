@@ -17,12 +17,17 @@ func _ready():
 	Events.connect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
 	assert(textNode)
 
+func _exit():
+	Events.disconnect("view_manual_page", self, "_on_view_manual_page")
+	Events.disconnect("hide_manual_page", self, "_on_hide_manual_page")
+	Events.disconnect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
+
 func _process(delta):
 	if Global.state != Global.State.MANUAL or !Global.InputActive:
 		return
 	
 	if Input.is_action_just_pressed("gameboy_a") or Input.is_action_just_pressed("gameboy_b"):
-		Events.emit_signal("fade_to_dark_request")
+		Events.emit_signal("hide_manual_page")
 
 func SelectPage(pageNum):
 	assert(pageNum < pagesText.size())

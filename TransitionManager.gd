@@ -14,9 +14,9 @@ func _exit():
 func fade_to_dark_complete():
 	Events.emit_signal("fade_to_dark_complete")
 
-func dark_to_fade_complete():
+func fade_from_dark_complete():
 	Global.InputActive = true
-	Events.emit_signal("dark_to_fade_complete")
+	Events.emit_signal("fade_from_dark_complete")
 
 func _on_fade_to_dark_request():
 	Global.InputActive = false

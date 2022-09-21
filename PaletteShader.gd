@@ -1,5 +1,7 @@
 extends TextureRect
 
+var STATE = Global.State
+
 onready var explodeTimer : Timer = $ExplodeTimer
 
 export var DefaultColorPaletteIndex : int = 1 
@@ -45,6 +47,7 @@ var m_invert : bool = false
 
 func _ready():
 	Events.connect("bomb_explode", self, "_on_bomb_explode")
+	Events.connect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
 
 	DEF_DARKEST = Color()
 	DEF_DARKEST.r8 = List[0].darkest.r
@@ -72,11 +75,15 @@ func _ready():
 
 func _process(_delta):
 	if !explodeTimer.is_stopped():
-		var FLASH_INTERVAL = 0.15
+		var FLASH_INTERVAL = 0.12
 		var steps : int = floor(explodeTimer.time_left / FLASH_INTERVAL)
 		SetInvert(steps % 2 == 0)
 
 func _input(event):
+	if Global.state == STATE.DEAD:
+		if event.is_action_pressed("gameboy_a"):
+			Events.emit_signal("restart_game")
+	
 	if event.is_action_pressed("gameboy_select"):
 		var i = wrapi(m_index+1, 0, List.size())
 		SetColoursByPaletteIndex(i)
@@ -123,4 +130,9 @@ func _on_bomb_explode():
 	explodeTimer.start()
 
 func _on_ExplodeTimer_timeout():
-	SetInvert(false)
+	SetInvert(true)
+	Events.emit_signal("fade_to_dark_request")
+
+func _on_fade_to_dark_complete():
+	if Global.state == STATE.EXPLOSION:
+		Global.state = STATE.DEAD

@@ -408,13 +408,16 @@ func CutWires():
 		m_cutProgress += 1
 		if m_cutProgress == m_cutList.size():
 			print("puzzle complete!")
+<<<<<<< HEAD
+			Events.emit_signal("bomb_puzzle_complete")
+			Events.emit_signal("hide_bomb_puzzle")
+=======
 			Events.emit_signal("play_audio", "defuse")
+>>>>>>> ceb680b (wip)
 			ExitTimer.start()
 
 func _on_ExitTimer_timeout():
-	Events.emit_signal("bomb_puzzle_complete")
-	Events.emit_signal("hide_bomb_puzzle")
-	Events.emit_signal("fade_to_dark_request")
+	Events.emit_signal("fade_to_dark_request", position)
 
 func SetMode(mode):
 	if mode == m_mode:

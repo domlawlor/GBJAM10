@@ -17,12 +17,15 @@ signal hide_bomb_puzzle()
 signal fade_to_dark_request()
 signal fade_from_dark_request()
 signal fade_to_dark_complete()
-signal dark_to_fade_complete()
+signal fade_from_dark_complete()
 
 signal view_manual_page(pageNum)
 signal hide_manual_page()
 
 signal exit_level_door()
+signal restart_game()
+
+signal play_audio(name)
 
 signal update_position(position)
 signal editmode_active()

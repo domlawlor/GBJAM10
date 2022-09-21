@@ -3,13 +3,17 @@ extends Node
 const LOGICAL_RES = Vector2(160, 144)
 
 enum State {
+	TITLE,
+	CHANGING_LEVEL,
 	OVERWORLD,
 	ENTERING_PUZZLE,
 	PUZZLE,
 	ENTERING_MANUAL,
 	MANUAL,
+	EXPLOSION,
+	DEAD,
 }
-var state = State.OVERWORLD
+var state = State.TITLE
 
 var SCALE = 1
 

@@ -43,7 +43,7 @@ func _ready():
 func _exit():
 	Events.disconnect("fade_to_dark_request", self, "_on_fade_to_dark_request")
 
-func _on_fade_to_dark_request(pos):
+func _on_fade_to_dark_request():
 	StopAnimation()
 
 func _physics_process(delta):

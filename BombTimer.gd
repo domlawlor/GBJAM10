@@ -8,8 +8,10 @@ var m_fourShowing = false
 
 func _ready():
 	Events.connect("bomb_timer_start", self, "_on_bomb_timer_start")
+	Events.connect("bomb_timer_pause", self, "_on_bomb_timer_pause")
 	Events.connect("bomb_timer_stop", self, "_on_bomb_timer_stop")
 	Events.connect("editmode_active", self, "_on_editmode_active")
+	Events.connect("bomb_explode", self, "_on_bomb_explode")
 	timer.set_one_shot(true)
 
 func _exit():
@@ -17,6 +19,7 @@ func _exit():
 	Events.discconnect("bomb_timer_pause", self, "_on_bomb_timer_pause")
 	Events.discconnect("bomb_timer_stop", self, "_on_bomb_timer_stop")
 	Events.disconnect("editmode_active", self, "_on_editmode_active")
+	Events.disconnect("bomb_explode", self, "_on_bomb_explode")
 
 func _process(_delta):
 	var timeLeft = timer.get_time_left()
@@ -80,6 +83,9 @@ func _on_bomb_timer_pause(setPaused):
 func _on_bomb_timer_stop():
 	timer.stop()
 
+func _on_bomb_explode():
+	Events.emit_signal("bomb_timer_pause", true)
+	
 func _on_Timer_timeout():
 	Events.emit_signal("bomb_explode")
 

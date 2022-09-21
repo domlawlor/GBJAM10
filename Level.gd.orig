@@ -19,7 +19,7 @@ func _ready():
 	Events.connect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
 	
 	Events.connect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
-	Events.connect("fade_from_dark_complete", self, "_on_fade_from_dark_complete")
+	Events.connect("dark_to_fade_complete", self, "_on_dark_to_fade_complete")
 	
 	Events.emit_signal("bomb_timer_start", m_levelBombTimeSecond)
 	
@@ -31,7 +31,7 @@ func _exit():
 	Events.disconnect("view_bomb_puzzle", self, "_on_view_bomb_puzzle")
 	
 	Events.disconnect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
-	Events.disconnect("fade_from_dark_complete", self, "_on_fade_from_dark_complete")
+	Events.disconnect("dark_to_fade_complete", self, "_on_dark_to_fade_complete")
 
 func _on_select_bomb(bombNum, puzzleName):
 	if bombNum < m_nextBombNum:
@@ -44,14 +44,50 @@ func _on_select_bomb(bombNum, puzzleName):
 		Events.emit_signal("view_bomb_puzzle", puzzleName)
 		
 
+<<<<<<< HEAD
 func _on_bomb_puzzle_complete():
 	m_nextBombNum += 1
 	if m_nextBombNum == m_bombTotalCount:
 		print("Level Complete!")
 		#Events.emit_signal("level_complete")
 		m_door.OpenDoor()
+=======
+func _on_fade_to_dark_complete():
+	match (Global.state):
+		STATE.ENTERING_PUZZLE:
+			Global.state = STATE.PUZZLE
+			m_activePuzzle.visible = true
+			m_activePuzzle.m_active = true
+			m_bombTimer.visible = true
+			Events.emit_signal("fade_from_dark_request", m_activePuzzle.position)
+		STATE.PUZZLE:
+			Global.state = STATE.OVERWORLD
+			assert(m_activePuzzle)
+			m_activePuzzle.visible = false
+			Events.emit_signal("fade_from_dark_request", m_activePuzzle.position)
+			m_activePuzzle = null
+			m_bombTimer.visible = false
+			m_bombsDefused += 1
+			if m_bombsDefused == m_bombPuzzlesNode.get_child_count():
+				print("Level Complete!")
+				Events.emit_signal("level_complete")
+				m_door.OpenDoor()
+		STATE.ENTERING_MANUAL:
+			Global.state = STATE.MANUAL
+			m_pageOverlay.ShowPage(m_activePageNum)
+			Events.emit_signal("fade_from_dark_request", m_pageOverlay.position)
+		STATE.MANUAL:
+			Global.state = STATE.OVERWORLD
+			m_pageOverlay.visible = false
+			Events.emit_signal("fade_from_dark_request", m_pageOverlay.position)
 
-func _on_fade_from_dark_complete():
+func _on_dark_to_fade_complete():
 	if Global.state == STATE.CHANGING_LEVEL:
 		Global.state = STATE.OVERWORLD
 
+func _on_view_manual_page(pageNum, pos):
+	Global.state = STATE.ENTERING_MANUAL
+	m_activePageNum = pageNum
+	m_pageOverlay.position = pos
+	Events.emit_signal("fade_to_dark_request", pos)
+>>>>>>> ceb680b (wip)
