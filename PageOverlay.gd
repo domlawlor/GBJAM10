@@ -9,16 +9,16 @@ var m_currentPageNum : int = 1
 var pagesText = {
 	0 : ["""Test page text"""],
 	1 : ["""Those who have but one path to choose shall fear not the reaper\n\n
-	And have faith that the vigilant servants of heaven will always 
-	take action before the slothful prisoners of hell"""],
+	And remember, the vigilant servants of heaven will always 
+	take action before the sinful prisoners of hell"""],
 	2 : ["""On the first day, god created the light and destroyed the sun\n\n
 	On the second day, god created the sky and destroyed the moon\n\n
 	On the third day, god created the plants and destroyed the stars"""],
 	3: ["""The path to righteousness begins in the light and ends in darkness\n\n
 	Those touched by the book of god shall remain unsullied\n\n
-	But all shall remain vigilant. Be there no sacrifices offered the lord shall stop the heart of life"""],
+	But the lord can be petulant. Be there no sacrifices offered, He shall crush the heart of life"""],
 	4: ["""When the path is unclear, salvation is found moving backwards through time\n
-	As the suns holy light covered the entire land, Gods divine judgement blinded the demonic eye\n""",
+	As the suns holy light covered the entire land, Gods divine rays blinded those that see\n""",
 	"""When the devil saw two, he bore his wroth upon the almighty Hand of God\n
 	And then when the devil saw four, the forces of madness compelled him to sever his own weapon in twain"""],
 }
