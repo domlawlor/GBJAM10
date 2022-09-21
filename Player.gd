@@ -110,6 +110,7 @@ func ClearInteractNode(node):
 		print("ClearInteractNode - passed wrong active m_nearbyInteractNode to clear - active=", m_nearbyInteractNode, ", tryingToClear=", node)
 		return
 	m_nearbyInteractNode = null
+	m_nearbyInteractType = InteractNodeType.NONE
 
 func SetNearbyBomb(bomb: Node2D):
 	SetInteractNode(bomb, InteractNodeType.BOMB)
