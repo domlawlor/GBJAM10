@@ -20,6 +20,7 @@ enum FaceDir {
 }
 
 var m_frozen : bool = false
+var m_justUnfrozen = false # quick 1 frame delay fix for stopping input hitting page/bomb and overworld
 var m_vel : Vector2 = Vector2.ZERO
 var m_faceDir = FaceDir.DOWN
 
@@ -27,7 +28,6 @@ var m_nearbyBomb : Node2D = null
 var m_nearbyPage : Node2D = null
 
 func _ready():
-	Events.connect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
 	Events.connect("set_overworld_paused", self, "_on_set_overworld_paused")
 	
 	assert(camera, "a level camera must be a child of player")
@@ -37,17 +37,18 @@ func _ready():
 	animatedSprite.set_animation("down")
 
 func _exit():
-	Events.disconnect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
 	Events.disconnect("set_overworld_paused", self, "_on_set_overworld_paused")
-
-func _on_bomb_puzzle_complete():
-	m_frozen = false
 
 func _on_set_overworld_paused(isPaused):
 	m_frozen = isPaused
+	m_justUnfrozen = !isPaused
 
 func _physics_process(delta):
 	if m_frozen:
+		return
+
+	if m_justUnfrozen:
+		m_justUnfrozen = false
 		return
 
 	m_vel = Vector2.ZERO
