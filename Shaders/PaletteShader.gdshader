@@ -20,7 +20,7 @@ uniform vec4 color_lightest;
 // options
 uniform bool invert;
 
-const float precision = 0.1;
+const float precision = 0.01;
 
 vec4 get_darkest(bool isInverted)
 {
