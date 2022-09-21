@@ -2,6 +2,8 @@ extends TextureRect
 
 onready var explodeTimer : Timer = $ExplodeTimer
 
+export var DefaultColorPaletteIndex : int = 1 
+
 var List = [
 	{
 		"name" : "default",
@@ -9,6 +11,13 @@ var List = [
 		"dark" : { "r" : 48, "g" : 98, "b" : 48 },
 		"light" : { "r" : 139, "g" : 172, "b" : 15 },
 		"lightest" : { "r" : 155, "g" : 188, "b" : 15 },
+	},
+	{
+		"name" : "green_with_more_contrast",
+		"darkest" : { "r" : 0, "g" : 19, "b" : 26 },
+		"dark" : { "r" : 61, "g" : 128, "b" : 38 },
+		"light" : { "r" : 171, "g" : 204, "b" : 71 },
+		"lightest" : { "r" : 250, "g" : 255, "b" : 179 },
 	},
 	{
 		"name" : "ice_cream",
@@ -58,11 +67,8 @@ func _ready():
 	material.set_shader_param("default_dark", DEF_DARK)
 	material.set_shader_param("default_light", DEF_LIGHT)
 	material.set_shader_param("default_lightest", DEF_LIGHTEST)
-
-	material.set_shader_param("color_darkest", DEF_DARKEST)
-	material.set_shader_param("color_dark", DEF_DARK)
-	material.set_shader_param("color_light", DEF_LIGHT)
-	material.set_shader_param("color_lightest", DEF_LIGHTEST)
+	
+	SetColoursByPaletteIndex(DefaultColorPaletteIndex)
 
 func _process(delta):
 	if !explodeTimer.is_stopped():
@@ -73,34 +79,41 @@ func _process(delta):
 func _input(event):
 	if event.is_action_pressed("gameboy_select"):
 		var i = wrapi(m_index+1, 0, List.size())
-		m_index = i
-		var new_darkest = Color()
-		new_darkest.r8 = List[i].darkest.r
-		new_darkest.g8 = List[i].darkest.g
-		new_darkest.b8 = List[i].darkest.b
-		var new_dark = Color()
-		new_dark.r8 = List[i].dark.r
-		new_dark.g8 = List[i].dark.g
-		new_dark.b8 = List[i].dark.b
-		var new_light = Color()
-		new_light.r8 = List[i].light.r
-		new_light.g8 = List[i].light.g
-		new_light.b8 = List[i].light.b
-		var new_lightest = Color()
-		new_lightest.r8 = List[i].lightest.r
-		new_lightest.g8 = List[i].lightest.g
-		new_lightest.b8 = List[i].lightest.b
-		
-		material.set_shader_param("color_darkest", new_darkest)
-		material.set_shader_param("color_dark", new_dark)
-		material.set_shader_param("color_light", new_light)
-		material.set_shader_param("color_lightest", new_lightest)
+		SetColoursByPaletteIndex(i)
 	
 	elif event.is_action_pressed("invertPalette"):
 		SetInvert(!m_invert)
 	
 	elif event.is_action_pressed("testBombFlash"):
 		_on_bomb_explode()
+
+func SetColoursByPaletteIndex(index):
+	if index < 0 or index > List.size():
+		push_error("Palette Index outside range of colours")
+		return
+	
+	m_index = index
+	var new_darkest = Color()
+	new_darkest.r8 = List[index].darkest.r
+	new_darkest.g8 = List[index].darkest.g
+	new_darkest.b8 = List[index].darkest.b
+	var new_dark = Color()
+	new_dark.r8 = List[index].dark.r
+	new_dark.g8 = List[index].dark.g
+	new_dark.b8 = List[index].dark.b
+	var new_light = Color()
+	new_light.r8 = List[index].light.r
+	new_light.g8 = List[index].light.g
+	new_light.b8 = List[index].light.b
+	var new_lightest = Color()
+	new_lightest.r8 = List[index].lightest.r
+	new_lightest.g8 = List[index].lightest.g
+	new_lightest.b8 = List[index].lightest.b
+	
+	material.set_shader_param("color_darkest", new_darkest)
+	material.set_shader_param("color_dark", new_dark)
+	material.set_shader_param("color_light", new_light)
+	material.set_shader_param("color_lightest", new_lightest)
 
 func SetInvert(isInvert):
 	m_invert = isInvert
