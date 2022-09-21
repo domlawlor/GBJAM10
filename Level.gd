@@ -51,7 +51,7 @@ func _on_bomb_puzzle_complete():
 	m_nextBombNum += 1
 	if m_nextBombNum == m_bombTotalCount:
 		print("Level Complete!")
-		#Events.emit_signal("level_complete")
+		Events.emit_signal("bomb_timer_pause", true)
 		m_door.OpenDoor()
 
 func _on_fade_from_dark_complete():
