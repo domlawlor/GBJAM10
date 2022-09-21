@@ -364,8 +364,9 @@ $RECYCLE.BIN/
 *.msp
 *.lnk
 
-#####################
-### Working files ###
-#####################
+###############
+### Folders ###
+###############
 
 WorkingFiles/
+Export/
