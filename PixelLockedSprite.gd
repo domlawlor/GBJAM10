@@ -1,7 +1,7 @@
 extends AnimatedSprite
 
 func _ready():
-	get_parent().connect("update_position", self, "_on_update_position")
+	Events.connect("update_position", self, "_on_update_position")
 
 func _on_update_position(pos):
 	var offsetX: float = round(pos.x) - pos.x

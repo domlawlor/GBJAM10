@@ -5,10 +5,10 @@ onready var current_level_num = start_level_num
 
 var bombPuzzleScene = preload("res://BombPuzzle.tscn")
 
-onready var levelList : VBoxContainer = $Menu/LevelList
-onready var puzzleList : HBoxContainer = $Menu/PuzzleList
+onready var levelList : VBoxContainer = $DebugLayer/Menu/LevelList
+onready var puzzleList : HBoxContainer = $DebugLayer/Menu/PuzzleList
 onready var main_2d : Node2D = $Main2D
-onready var puzzle_2d : Node2D = $Puzzle2D
+onready var puzzle_2d : Node2D = $UILayer/Puzzle2D
 
 var level_instance : Node2D
 var puzzle_instance : Node2D

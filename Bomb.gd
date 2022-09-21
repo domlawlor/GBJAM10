@@ -1,20 +1,18 @@
 extends Node2D
 
-const INVALID_BOMB_ORDER = -1
-
 export var puzzleName : String = "1-1"
-export var bombOrderNumber : int = INVALID_BOMB_ORDER
+export var bombOrderNumber : int = -1
 
 export var bombIsInTheDark : bool = false
 
 onready var litBomb : Sprite = $LitBomb
 
 func _ready():
-	assert(bombOrderNumber != INVALID_BOMB_ORDER, "Each bomb needs to be in a sequence order")
+	assert(bombOrderNumber != -1, "Each bomb needs to be in a sequence order")
 	
 	if bombIsInTheDark:
 		litBomb.visible = false
-		
+	
 func _on_InteractDetect_body_entered(body: Node):
 	if body.name == "Player":
 		body.SetNearbyBomb(self)

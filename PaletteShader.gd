@@ -70,7 +70,7 @@ func _ready():
 	
 	SetColoursByPaletteIndex(DefaultColorPaletteIndex)
 
-func _process(delta):
+func _process(_delta):
 	if !explodeTimer.is_stopped():
 		var FLASH_INTERVAL = 0.15
 		var steps : int = floor(explodeTimer.time_left / FLASH_INTERVAL)

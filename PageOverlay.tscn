@@ -11,18 +11,7 @@ script = ExtResource( 2 )
 texture = ExtResource( 1 )
 centered = false
 
-[node name="Control" type="Control" parent="."]
-margin_right = 160.0
-margin_bottom = 144.0
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Control"]
-margin_right = 160.0
-margin_bottom = 144.0
-theme = ExtResource( 3 )
-bbcode_enabled = true
-tab_size = 0
-
-[node name="RichTextLabel2" type="RichTextLabel" parent="Control"]
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
 margin_right = 160.0
 margin_bottom = 144.0
 theme = ExtResource( 3 )

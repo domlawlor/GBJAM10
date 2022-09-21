@@ -26,15 +26,12 @@ enum Mode {
 }
 
 var m_mode = Mode.IDLE
-var m_active = false
 var m_wireLayers = []
 var m_highlightPos = Vector2.ZERO
 var m_cutProgress = 0
 var m_cutList = []
 var m_currentCutIndex = 0
 
-var m_puzzleCompleted : bool = false
-var m_bombOrderNumber : int = -1
 var m_timingVisibleTwo : bool = false
 var m_timingVisibleFour : bool = false
 
@@ -43,6 +40,10 @@ var m_wireInProgress = null
 var m_wireComplete = false
 
 func _ready():
+	Events.connect("view_bomb_puzzle", self, "_on_view_bomb_puzzle")
+	Events.connect("hide_bomb_puzzle", self, "_on_hide_bomb_puzzle")
+	Events.connect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
+	
 	Events.connect("timing_two_visibility_changed", self, "_on_timing_two_visibility_changed")
 	Events.connect("timing_four_visibility_changed", self, "_on_timing_four_visibility_changed")
 
@@ -50,11 +51,34 @@ func _ready():
 	GridHighlight.play("default")
 
 func _exit():
+	Events.disconnect("view_bomb_puzzle", self, "_on_view_bomb_puzzle")
+	Events.disconnect("hide_bomb_puzzle", self, "_on_hide_bomb_puzzle")
+	Events.disconnect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
+	
 	Events.disconnect("timing_two_visibility_changed", self, "_on_timing_two_visibility_changed")
 	Events.disconnect("timing_four_visibility_changed", self, "_on_timing_four_visibility_changed")
 
+func _on_view_bomb_puzzle(puzzleName):
+	Global.state = Global.State.ENTERING_PUZZLE
+	LoadRealPuzzle(puzzleName)
+	Events.emit_signal("fade_to_dark_request")
+
+func _on_hide_bomb_puzzle():
+	Events.emit_signal("fade_to_dark_request")
+
+func _on_fade_to_dark_complete():
+	match (Global.state):
+		Global.State.ENTERING_PUZZLE:
+			Global.state = Global.State.PUZZLE
+			visible = true
+			Events.emit_signal("fade_from_dark_request")
+		Global.State.PUZZLE:
+			Global.state = Global.State.OVERWORLD
+			visible = false
+			Events.emit_signal("fade_from_dark_request")
+
 func _input(event):
-	if !m_active or !Global.InputActive:
+	if Global.state != Global.State.PUZZLE or !Global.InputActive:
 		return
 	
 	if event.is_action_pressed("debug_f1"):
@@ -383,9 +407,9 @@ func CutWires():
 	else:
 		m_cutProgress += 1
 		if m_cutProgress == m_cutList.size():
-			m_active = false
-			m_puzzleCompleted = true
 			print("puzzle complete!")
+			Events.emit_signal("bomb_puzzle_complete")
+			Events.emit_signal("hide_bomb_puzzle")
 			ExitTimer.start()
 
 func _on_ExitTimer_timeout():

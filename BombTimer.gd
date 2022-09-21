@@ -11,14 +11,14 @@ func _ready():
 	Events.connect("bomb_timer_stop", self, "_on_bomb_timer_stop")
 	Events.connect("editmode_active", self, "_on_editmode_active")
 	timer.set_one_shot(true)
-	visible = false
 
 func _exit():
 	Events.disconnect("bomb_timer_start", self, "_on_bomb_timer_start")
-	Events.disconnect("bomb_timer_stop", self, "_on_bomb_timer_stop")
+	Events.discconnect("bomb_timer_pause", self, "_on_bomb_timer_pause")
+	Events.discconnect("bomb_timer_stop", self, "_on_bomb_timer_stop")
 	Events.disconnect("editmode_active", self, "_on_editmode_active")
 
-func _process(delta):
+func _process(_delta):
 	var timeLeft = timer.get_time_left()
 	var timeLeftMsec = timeLeft * 1000
 	
@@ -71,7 +71,13 @@ func _on_bomb_timer_start(waitTime):
 	InitTimeLeft(waitTime)
 	StartTimer()
 	
-func _on_bomb_timer_stop(waitTime):
+func _on_bomb_timer_pause(setPaused):
+	if setPaused:
+		PauseTimer()
+	else:
+		UnpauseTimer()
+	
+func _on_bomb_timer_stop():
 	timer.stop()
 
 func _on_Timer_timeout():
@@ -79,4 +85,5 @@ func _on_Timer_timeout():
 
 func _on_editmode_active():
 	#PauseTimer()
-	visible = false
+	#visible = false
+	pass

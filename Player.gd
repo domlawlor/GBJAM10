@@ -2,8 +2,6 @@ extends KinematicBody2D
 
 var STATE = Global.State
 
-signal update_position(pos)
-
 onready var animatedSprite : AnimatedSprite = $PixelLockedSprite
 
 onready var camera : Camera2D = $Camera2D
@@ -83,8 +81,8 @@ func _physics_process(delta):
 		StopAnimation()
 
 	move_and_collide(m_vel * delta)
-
-	emit_signal("update_position", position)
+	
+	Events.emit_signal("update_position", position)
 
 func StopAnimation():
 	animatedSprite.stop()
@@ -136,11 +134,6 @@ func FacingNearbyNode(nearbyNode: Node2D):
 			facingNode = toNode.x > 0 and toNodeAbs.x >= toNodeAbs.y	
 	return facingNode
 
-func GetCameraTopLeftPosition():
-	var cameraCenter = camera.get_camera_screen_center()
-	var cameraPos = cameraCenter - (Global.LOGICAL_RES / 2)
-	return cameraPos
-	
 func InteractPressed():
 	if m_nearbyInteractType == InteractNodeType.NONE:
 		return
@@ -148,9 +141,8 @@ func InteractPressed():
 	
 	var facingNode = FacingNearbyNode(m_nearbyInteractNode)
 	if facingNode:
-		var cameraTopLeft = GetCameraTopLeftPosition()	
 		match m_nearbyInteractType:
 			InteractNodeType.BOMB:
-				Events.emit_signal("view_bomb_puzzle", m_nearbyInteractNode.puzzleName, cameraTopLeft)
+				Events.emit_signal("select_bomb", m_nearbyInteractNode.bombOrderNumber, m_nearbyInteractNode.puzzleName)
 			InteractNodeType.PAGE:
-				Events.emit_signal("view_manual_page", m_nearbyInteractNode.pageNum, cameraTopLeft)
+				Events.emit_signal("view_manual_page", m_nearbyInteractNode.pageNum)
