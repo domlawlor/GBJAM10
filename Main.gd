@@ -160,7 +160,8 @@ func _on_bomb_explode():
 
 func _on_restart_game():
 	paletteShader.SetInvert(false)
-	current_level_num = 0
+	#current_level_num = 0
+	current_level_num -= 1 # for playtest, just stay on the same level
 	Global.state = STATE.CHANGING_LEVEL
 	_on_fade_to_dark_complete()
 
