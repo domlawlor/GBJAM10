@@ -24,6 +24,8 @@ enum Mode {
 }
 
 var m_mode = Mode.IDLE
+var m_active = true
+var m_inputActive = false
 var m_wireLayers = []
 var m_highlightPos = Vector2.ZERO
 var m_cutProgress = 0
@@ -42,6 +44,7 @@ var m_wireComplete = false
 func _ready():
 	Events.connect("timing_two_visibility_changed", self, "_on_timing_two_visibility_changed")
 	Events.connect("timing_four_visibility_changed", self, "_on_timing_four_visibility_changed")
+	Events.connect("dark_to_fade_complete", self, "_on_dark_to_fade_complete")
 
 	GridHighlight.visible = false
 	GridHighlight.play("default")
@@ -49,8 +52,12 @@ func _ready():
 func _exit():
 	Events.disconnect("timing_two_visibility_changed", self, "_on_timing_two_visibility_changed")
 	Events.disconnect("timing_four_visibility_changed", self, "_on_timing_four_visibility_changed")
+	Events.disconnect("dark_to_fade_complete", self, "_on_dark_to_fade_complete")
 
 func _input(event):
+	if !m_inputActive:
+		return
+	
 	if event.is_action_pressed("debug_f1"):
 		if m_mode == Mode.IDLE:
 			SetMode(Mode.WIRE_NEW)
@@ -416,3 +423,7 @@ func _on_timing_two_visibility_changed(showing : bool):
 func _on_timing_four_visibility_changed(showing : bool):
 	m_timingVisibleFour = showing
 	print("FOUR: " + str(showing))
+
+func _on_dark_to_fade_complete():
+	if m_active:
+		m_inputActive = true

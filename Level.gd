@@ -22,6 +22,7 @@ func _ready():
 	Events.connect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
 	Events.connect("view_bomb_puzzle", self, "_on_view_bomb_puzzle")
 	Events.connect("view_manual_page", self, "_on_view_manual_page")
+	Events.connect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
 	
 	Events.emit_signal("bomb_timer_start", m_levelBombTimeSecond)
 	
@@ -35,12 +36,14 @@ func _ready():
 		bombPuzzleInstance.name = puzzleName
 		bombPuzzleInstance.m_bombOrderNumber = bomb.bombOrderNumber
 		bombPuzzleInstance.visible = false
+		bombPuzzleInstance.m_active = false
 		m_bombPuzzlesNode.add_child(bombPuzzleInstance)
 
 func _exit():
 	Events.disconnect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
 	Events.disconnect("view_bomb_puzzle", self, "_on_view_bomb_puzzle")
 	Events.disconnect("view_manual_page", self, "_on_view_manual_page")
+	Events.disconnect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
 
 func _on_bomb_puzzle_complete():
 	assert(m_activePuzzle)
@@ -59,7 +62,7 @@ func _on_bomb_puzzle_complete():
 		Events.emit_signal("set_overworld_paused", false)
 
 
-func _on_view_bomb_puzzle(puzzleName, position):
+func _on_view_bomb_puzzle(puzzleName, pos):
 	var puzzleNode = m_bombPuzzlesNode.get_node(puzzleName)
 	assert(puzzleNode, "Puzzle does not exist")
 	
@@ -73,15 +76,20 @@ func _on_view_bomb_puzzle(puzzleName, position):
 	else:
 		print("VIEW BOMB! puzzle=", puzzleName)
 		Events.emit_signal("set_overworld_paused", true)
-		puzzleNode.position = position
+		Events.emit_signal("fade_to_dark_request", pos)
+		puzzleNode.position = pos
 		puzzleNode.LoadRealPuzzle(puzzleName)
-		puzzleNode.visible = true
 		
 		m_activePuzzle = puzzleNode
-		
-		m_bombTimer.position = position
-		m_bombTimer.visible = true
-		
-func _on_view_manual_page(pageNum, position):
-	m_pageOverlay.position = position
+		m_bombTimer.position = pos
+
+func _on_fade_to_dark_complete():
+	m_activePuzzle.visible = true
+	m_activePuzzle.m_active = true
+	m_bombTimer.visible = true
+	var pos = m_activePuzzle.position
+	Events.emit_signal("fade_from_dark_request", pos)
+
+func _on_view_manual_page(pageNum, pos):
+	m_pageOverlay.position = pos
 	m_pageOverlay.ShowPage(pageNum)

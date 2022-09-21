@@ -29,6 +29,7 @@ var m_nearbyPage : Node2D = null
 
 func _ready():
 	Events.connect("set_overworld_paused", self, "_on_set_overworld_paused")
+	Events.connect("fade_to_dark_request", self, "_on_fade_to_dark_request")
 	
 	assert(camera, "a level camera must be a child of player")
 	camera.make_current()
@@ -38,10 +39,14 @@ func _ready():
 
 func _exit():
 	Events.disconnect("set_overworld_paused", self, "_on_set_overworld_paused")
+	Events.disconnect("fade_to_dark_request", self, "_on_fade_to_dark_request")
 
 func _on_set_overworld_paused(isPaused):
 	m_frozen = isPaused
 	m_justUnfrozen = !isPaused
+
+func _on_fade_to_dark_request():
+	m_frozen = true
 
 func _physics_process(delta):
 	if m_frozen:

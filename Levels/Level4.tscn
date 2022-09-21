@@ -9,7 +9,7 @@
 [ext_resource path="res://PageOverlay.tscn" type="PackedScene" id=7]
 [ext_resource path="res://BookPage.tscn" type="PackedScene" id=8]
 
-[node name="Level3" type="Node2D"]
+[node name="Level4" type="Node2D"]
 script = ExtResource( 6 )
 
 [node name="Background" type="TileMap" parent="."]
