@@ -71,7 +71,7 @@ func _process(delta):
 		SetInvert(steps % 2 == 0)
 
 func _input(event):
-	if event.is_action_pressed("switchPalette"):
+	if event.is_action_pressed("gameboy_select"):
 		var i = wrapi(m_index+1, 0, List.size())
 		m_index = i
 		var new_darkest = Color()
