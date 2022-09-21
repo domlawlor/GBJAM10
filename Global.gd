@@ -2,6 +2,15 @@ extends Node
 
 const LOGICAL_RES = Vector2(160, 144)
 
+enum State {
+	OVERWORLD,
+	ENTERING_PUZZLE,
+	PUZZLE,
+	ENTERING_MANUAL,
+	MANUAL,
+}
+var state = State.OVERWORLD
+
 var SCALE = 1
 
 var GRIDSIZE = 16
@@ -10,6 +19,8 @@ var LOGICGRID_HEIGHT = 8
 
 var HIGHLIGHTGRID_WIDTH = 8
 var HIGHLIGHTGRID_HEIGHT = 6
+
+var InputActive = true
 
 func USecToMSec(usec : float):
 	return usec / 1000.0

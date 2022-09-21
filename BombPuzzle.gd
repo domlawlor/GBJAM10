@@ -9,6 +9,8 @@ onready var Symbols = $Symbols
 onready var DebugOutput = $DebugOutput
 onready var LevelSlotDisplay = $LevelSlot
 
+onready var ExitTimer = $ExitTimer
+
 enum Mode {
 	IDLE
 	WIRE_NEW 		#f1
@@ -24,8 +26,7 @@ enum Mode {
 }
 
 var m_mode = Mode.IDLE
-var m_active = true
-var m_inputActive = false
+var m_active = false
 var m_wireLayers = []
 var m_highlightPos = Vector2.ZERO
 var m_cutProgress = 0
@@ -44,7 +45,6 @@ var m_wireComplete = false
 func _ready():
 	Events.connect("timing_two_visibility_changed", self, "_on_timing_two_visibility_changed")
 	Events.connect("timing_four_visibility_changed", self, "_on_timing_four_visibility_changed")
-	Events.connect("dark_to_fade_complete", self, "_on_dark_to_fade_complete")
 
 	GridHighlight.visible = false
 	GridHighlight.play("default")
@@ -52,10 +52,9 @@ func _ready():
 func _exit():
 	Events.disconnect("timing_two_visibility_changed", self, "_on_timing_two_visibility_changed")
 	Events.disconnect("timing_four_visibility_changed", self, "_on_timing_four_visibility_changed")
-	Events.disconnect("dark_to_fade_complete", self, "_on_dark_to_fade_complete")
 
 func _input(event):
-	if !m_inputActive:
+	if !m_active or !Global.InputActive:
 		return
 	
 	if event.is_action_pressed("debug_f1"):
@@ -384,10 +383,13 @@ func CutWires():
 	else:
 		m_cutProgress += 1
 		if m_cutProgress == m_cutList.size():
+			m_active = false
 			m_puzzleCompleted = true
 			print("puzzle complete!")
-			Events.emit_signal("bomb_puzzle_complete")
-			ReturnToEditMode()
+			ExitTimer.start()
+
+func _on_ExitTimer_timeout():
+	Events.emit_signal("fade_to_dark_request", position)
 
 func SetMode(mode):
 	if mode == m_mode:
@@ -423,7 +425,3 @@ func _on_timing_two_visibility_changed(showing : bool):
 func _on_timing_four_visibility_changed(showing : bool):
 	m_timingVisibleFour = showing
 	print("FOUR: " + str(showing))
-
-func _on_dark_to_fade_complete():
-	if m_active:
-		m_inputActive = true

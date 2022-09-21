@@ -15,9 +15,11 @@ func fade_to_dark_complete():
 	Events.emit_signal("fade_to_dark_complete")
 
 func dark_to_fade_complete():
+	Global.InputActive = true
 	Events.emit_signal("dark_to_fade_complete")
 
 func _on_fade_to_dark_request(pos):
+	Global.InputActive = false
 	position = pos
 	animationPlayer.play("NormToDark")
 

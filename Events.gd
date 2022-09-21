@@ -19,6 +19,4 @@ signal exit_manual_page()
 
 signal exit_level_door()
 
-signal set_overworld_paused(isPaused)
-
 signal editmode_active()

@@ -21,14 +21,12 @@ func _ready():
 	textNode2.visible = false
 
 func _process(delta):
-	# Early exit if not visible
-	if !visible:
+	if !visible or !Global.InputActive:
 		return
 	
 	if Input.is_action_just_pressed("gameboy_a") or Input.is_action_just_pressed("gameboy_b"):
 		if m_currentPageNum == m_textPagesToShowTotal:
-			visible = false
-			Events.emit_signal("set_overworld_paused", false)
+			Events.emit_signal("fade_to_dark_request", position)
 		else:
 			textNode.visible = false
 			textNode2.visible = true
@@ -38,8 +36,6 @@ func ShowPage(pageNum):
 	assert(pageNum < pagesText.size())
 	var BBCODE_CENTER = "[center]"
 	var pageTextArray = pagesText[pageNum]
-	
-	Events.emit_signal("set_overworld_paused", true)
 
 	m_textPagesToShowTotal = pageTextArray.size()
 	m_currentPageNum = 1

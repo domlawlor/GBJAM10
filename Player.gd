@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+var STATE = Global.State
+
 signal update_position(pos)
 
 onready var animatedSprite : AnimatedSprite = $PixelLockedSprite
@@ -19,8 +21,6 @@ enum FaceDir {
 	RIGHT
 }
 
-var m_frozen : bool = false
-var m_justUnfrozen = false # quick 1 frame delay fix for stopping input hitting page/bomb and overworld
 var m_vel : Vector2 = Vector2.ZERO
 var m_faceDir = FaceDir.DOWN
 
@@ -34,7 +34,6 @@ var m_nearbyInteractNode : Node2D = null
 var m_nearbyInteractType = InteractNodeType.NONE
 
 func _ready():
-	Events.connect("set_overworld_paused", self, "_on_set_overworld_paused")
 	Events.connect("fade_to_dark_request", self, "_on_fade_to_dark_request")
 	
 	assert(camera, "a level camera must be a child of player")
@@ -44,22 +43,13 @@ func _ready():
 	animatedSprite.set_animation("down")
 
 func _exit():
-	Events.disconnect("set_overworld_paused", self, "_on_set_overworld_paused")
 	Events.disconnect("fade_to_dark_request", self, "_on_fade_to_dark_request")
 
-func _on_set_overworld_paused(isPaused):
-	m_frozen = isPaused
-	m_justUnfrozen = !isPaused
-
-func _on_fade_to_dark_request():
-	m_frozen = true
+func _on_fade_to_dark_request(pos):
+	StopAnimation()
 
 func _physics_process(delta):
-	if m_frozen:
-		return
-
-	if m_justUnfrozen:
-		m_justUnfrozen = false
+	if Global.state != STATE.OVERWORLD or !Global.InputActive:
 		return
 
 	m_vel = Vector2.ZERO
@@ -90,12 +80,15 @@ func _physics_process(delta):
 	if m_vel.length() > 0:
 		animatedSprite.play()
 	else:
-		animatedSprite.stop()
-		animatedSprite.set_frame(0) # set to default idle frame for facing direction
+		StopAnimation()
 
 	move_and_collide(m_vel * delta)
 
 	emit_signal("update_position", position)
+
+func StopAnimation():
+	animatedSprite.stop()
+	animatedSprite.set_frame(0) # set to default idle frame for facing direction
 
 func SetInteractNode(node, nodeType):
 	if m_nearbyInteractNode:

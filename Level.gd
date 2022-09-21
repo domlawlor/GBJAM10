@@ -2,20 +2,20 @@ extends Node2D
 
 # To be shared by all levels. Don't put anything level specific in here
 
+var STATE = Global.State
+
 onready var m_bombsNode : Node2D = $Bombs
 onready var m_bombPuzzlesNode : Node2D = $BombPuzzles 
 onready var m_bombTimer : Node2D = $BombTimer
 onready var m_door : Sprite = $Door
 onready var m_pageOverlay : Node2D = $PageOverlay
 
-
 export var m_levelBombTimeSecond : float = 120.0 
-
 var bombPuzzleScene = preload("res://BombPuzzle.tscn")
 
 var m_bombsDefused : int = 0
-
 var m_activePuzzle : Node2D = null
+var m_activePageNum : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -23,6 +23,7 @@ func _ready():
 	Events.connect("view_bomb_puzzle", self, "_on_view_bomb_puzzle")
 	Events.connect("view_manual_page", self, "_on_view_manual_page")
 	Events.connect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
+	Events.connect("dark_to_fade_complete", self, "_on_dark_to_fade_complete")
 	
 	Events.emit_signal("bomb_timer_start", m_levelBombTimeSecond)
 	
@@ -44,23 +45,7 @@ func _exit():
 	Events.disconnect("view_bomb_puzzle", self, "_on_view_bomb_puzzle")
 	Events.disconnect("view_manual_page", self, "_on_view_manual_page")
 	Events.disconnect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
-
-func _on_bomb_puzzle_complete():
-	assert(m_activePuzzle)
-	
-	m_activePuzzle.visible = false
-	m_activePuzzle = null
-	
-	m_bombTimer.visible = false
-	
-	m_bombsDefused += 1
-	if m_bombsDefused == m_bombPuzzlesNode.get_child_count():
-		print("Level Complete!")
-		Events.emit_signal("level_complete")
-		m_door.OpenDoor()
-	else:
-		Events.emit_signal("set_overworld_paused", false)
-
+	Events.disconnect("dark_to_fade_complete", self, "_on_dark_to_fade_complete")
 
 func _on_view_bomb_puzzle(puzzleName, pos):
 	var puzzleNode = m_bombPuzzlesNode.get_node(puzzleName)
@@ -75,21 +60,44 @@ func _on_view_bomb_puzzle(puzzleName, pos):
 		Events.emit_signal("bomb_explode")
 	else:
 		print("VIEW BOMB! puzzle=", puzzleName)
-		Events.emit_signal("set_overworld_paused", true)
-		Events.emit_signal("fade_to_dark_request", pos)
+		Global.state = STATE.ENTERING_PUZZLE
 		puzzleNode.position = pos
 		puzzleNode.LoadRealPuzzle(puzzleName)
-		
 		m_activePuzzle = puzzleNode
 		m_bombTimer.position = pos
+		Events.emit_signal("fade_to_dark_request", pos)
 
 func _on_fade_to_dark_complete():
-	m_activePuzzle.visible = true
-	m_activePuzzle.m_active = true
-	m_bombTimer.visible = true
-	var pos = m_activePuzzle.position
-	Events.emit_signal("fade_from_dark_request", pos)
+	match (Global.state):
+		STATE.ENTERING_PUZZLE:
+			Global.state = STATE.PUZZLE
+			m_activePuzzle.visible = true
+			m_activePuzzle.m_active = true
+			m_bombTimer.visible = true
+			Events.emit_signal("fade_from_dark_request", m_activePuzzle.position)
+		STATE.PUZZLE:
+			Global.state = STATE.OVERWORLD
+			assert(m_activePuzzle)
+			m_activePuzzle.visible = false
+			Events.emit_signal("fade_from_dark_request", m_activePuzzle.position)
+			m_activePuzzle = null
+			m_bombTimer.visible = false
+			m_bombsDefused += 1
+			if m_bombsDefused == m_bombPuzzlesNode.get_child_count():
+				print("Level Complete!")
+				Events.emit_signal("level_complete")
+				m_door.OpenDoor()
+		STATE.ENTERING_MANUAL:
+			Global.state = STATE.MANUAL
+			m_pageOverlay.ShowPage(m_activePageNum)
+			Events.emit_signal("fade_from_dark_request", m_pageOverlay.position)
+		STATE.MANUAL:
+			Global.state = STATE.OVERWORLD
+			m_pageOverlay.visible = false
+			Events.emit_signal("fade_from_dark_request", m_pageOverlay.position)
 
 func _on_view_manual_page(pageNum, pos):
+	Global.state = STATE.ENTERING_MANUAL
+	m_activePageNum = pageNum
 	m_pageOverlay.position = pos
-	m_pageOverlay.ShowPage(pageNum)
+	Events.emit_signal("fade_to_dark_request", pos)
