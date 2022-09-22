@@ -11,6 +11,7 @@ onready var debugMenu = $DebugLayer/Menu
 onready var main_2d : Node2D = $Main2D
 onready var puzzle_2d : Node2D = $UILayer/Puzzle2D
 onready var BombPuzzle : Node2D = $UILayer/BombPuzzle
+onready var PageOverlay : Node2D = $UILayer/PageOverlay
 onready var bombTimer : Node2D = $UILayer/BombTimer
 onready var paletteShader = $TopLayer/PaletteShader
 
@@ -140,6 +141,7 @@ func _on_fade_to_dark_complete():
 	if Global.state == STATE.CHANGING_LEVEL:
 		bombTimer.visible = true # needed for coming from titles
 		BombPuzzle.visible = false
+		PageOverlay.visible = false
 		var levelExitedNum = current_level_num
 		current_level_num += 1
 	
