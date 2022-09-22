@@ -3,7 +3,7 @@ extends Node2D
 onready var timeDisplay : TileMap = get_node("Display/TimerDisplay")
 onready var timer : Timer = $Timer
 
-var m_twoShowing = false
+var m_fiveShowing = false
 var m_fourShowing = false
 
 func _ready():
@@ -25,10 +25,10 @@ func _process(_delta):
 	var timeLeft = timer.get_time_left()
 	var timeLeftMsec = timeLeft * 1000
 	
-	var twoShowing = GetDigitShowing(timeLeftMsec, 2)
-	if twoShowing != m_twoShowing:
-		Events.emit_signal("timing_two_visibility_changed", twoShowing)
-		m_twoShowing = twoShowing
+	var fiveShowing = GetDigitShowing(timeLeftMsec, 5)
+	if fiveShowing != m_fiveShowing:
+		Events.emit_signal("timing_five_visibility_changed", fiveShowing)
+		m_fiveShowing = fiveShowing
 	var fourShowing = GetDigitShowing(timeLeftMsec, 4)
 	if fourShowing != m_fourShowing:
 		Events.emit_signal("timing_four_visibility_changed", fourShowing)

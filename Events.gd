@@ -8,7 +8,7 @@ signal bomb_puzzle_complete()
 
 signal bomb_number_solved(bombNum)
 
-signal timing_two_visibility_changed(showing)
+signal timing_five_visibility_changed(showing)
 signal timing_four_visibility_changed(showing)
 
 signal select_bomb(bombNum, puzzleName)
@@ -29,5 +29,5 @@ signal restart_game()
 
 signal play_audio(name)
 
-signal update_position(position)
+signal update_position(pos)
 signal editmode_active()

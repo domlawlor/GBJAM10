@@ -12,6 +12,7 @@ enum State {
 	MANUAL,
 	EXPLOSION,
 	DEAD,
+	PUZZLE_EDIT,
 }
 var state = State.TITLE
 

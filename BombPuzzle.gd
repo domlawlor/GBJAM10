@@ -1,5 +1,7 @@
 extends Node2D
 
+var STATE = Global.State
+
 var wireLayer = preload("res://WireLayer.tscn")
 
 onready var WireLayers = $WireLayers
@@ -32,7 +34,7 @@ var m_cutProgress = 0
 var m_cutList = []
 var m_currentCutIndex = 0
 
-var m_timingVisibleTwo : bool = false
+var m_timingVisibleFive : bool = false
 var m_timingVisibleFour : bool = false
 
 # editor
@@ -44,7 +46,7 @@ func _ready():
 	Events.connect("hide_bomb_puzzle", self, "_on_hide_bomb_puzzle")
 	Events.connect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
 	
-	Events.connect("timing_two_visibility_changed", self, "_on_timing_two_visibility_changed")
+	Events.connect("timing_five_visibility_changed", self, "_on_timing_five_visibility_changed")
 	Events.connect("timing_four_visibility_changed", self, "_on_timing_four_visibility_changed")
 
 	GridHighlight.visible = false
@@ -55,11 +57,11 @@ func _exit():
 	Events.disconnect("hide_bomb_puzzle", self, "_on_hide_bomb_puzzle")
 	Events.disconnect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
 	
-	Events.disconnect("timing_two_visibility_changed", self, "_on_timing_two_visibility_changed")
+	Events.disconnect("timing_five_visibility_changed", self, "_on_timing_five_visibility_changed")
 	Events.disconnect("timing_four_visibility_changed", self, "_on_timing_four_visibility_changed")
 
 func _on_view_bomb_puzzle(puzzleName):
-	Global.state = Global.State.ENTERING_PUZZLE
+	Global.state = STATE.ENTERING_PUZZLE
 	LoadRealPuzzle(puzzleName)
 	Events.emit_signal("fade_to_dark_request")
 
@@ -68,17 +70,23 @@ func _on_hide_bomb_puzzle():
 
 func _on_fade_to_dark_complete():
 	match (Global.state):
-		Global.State.ENTERING_PUZZLE:
-			Global.state = Global.State.PUZZLE
+		STATE.ENTERING_PUZZLE:
+			Global.state = STATE.PUZZLE
 			visible = true
 			Events.emit_signal("fade_from_dark_request")
-		Global.State.PUZZLE:
-			Global.state = Global.State.OVERWORLD
+		STATE.PUZZLE:
+			Global.state = STATE.OVERWORLD
 			visible = false
 			Events.emit_signal("fade_from_dark_request")
 
 func _input(event):
-	if Global.state != Global.State.PUZZLE or !Global.InputActive:
+	if event.is_action_pressed("debug_f12"):
+		if m_mode == Mode.IDLE and m_wireLayers.size() > 0:
+			StartGameplay()
+		elif m_mode == Mode.GAMEPLAY:
+			ReturnToEditMode()
+	
+	if !(Global.state == STATE.PUZZLE or Global.state == STATE.PUZZLE_EDIT) or !Global.InputActive:
 		return
 	
 	if event.is_action_pressed("debug_f1"):
@@ -143,12 +151,6 @@ func _input(event):
 			SetMode(Mode.SYMBOL_EDIT)
 		elif m_mode == Mode.SYMBOL_EDIT:
 			SetMode(Mode.IDLE)
-
-	elif event.is_action_pressed("debug_f12"):
-		if m_mode == Mode.IDLE and m_wireLayers.size() > 0:
-			StartGameplay()
-		elif m_mode == Mode.GAMEPLAY:
-			ReturnToEditMode()
 	
 	elif event.is_action_pressed("debug_numpad1"):
 		SaveOrLoadLevel(1)
@@ -209,8 +211,8 @@ func _input(event):
 		elif m_mode == Mode.WIRE_CUTORDER:
 			if pickedWire and pickedWire.m_cutIndex == -1:
 				var timing = -1
-				if Input.is_action_pressed("debug_numpad2"):
-					timing = 2
+				if Input.is_action_pressed("debug_numpad5"):
+					timing = 5
 				elif Input.is_action_pressed("debug_numpad4"):
 					timing = 4
 				pickedWire.SetCutIndex(m_currentCutIndex, timing)
@@ -346,6 +348,7 @@ func StartGameplay():
 	GridHighlight.visible = true
 
 func ReturnToEditMode():
+	Global.state = STATE.PUZZLE_EDIT
 	Events.emit_signal("editmode_active")
 	Foreground.set_modulate(Color(1, 1, 1, 0.5))
 	DebugOutput.visible = true
@@ -395,7 +398,7 @@ func CutWires():
 	for j in range(pickedWiresCount):
 		pickedWires[j].CutWire(m_highlightPos)
 		var timing = pickedWires[j].GetCutTiming()
-		if timing == 2 and !m_timingVisibleTwo:
+		if timing == 5 and !m_timingVisibleFive:
 			explode = true
 		elif timing == 4 and !m_timingVisibleFour:
 			explode = true
@@ -443,10 +446,8 @@ func SetMode(mode):
 		Mode.SYMBOL_EDIT:
 			DebugOutput.text = "SYMBOL_EDIT"
 
-func _on_timing_two_visibility_changed(showing : bool):
-	m_timingVisibleTwo = showing
-	print("TWO: " + str(showing))
+func _on_timing_five_visibility_changed(showing : bool):
+	m_timingVisibleFive = showing
 
 func _on_timing_four_visibility_changed(showing : bool):
 	m_timingVisibleFour = showing
-	print("FOUR: " + str(showing))
