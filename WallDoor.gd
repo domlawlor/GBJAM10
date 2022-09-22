@@ -7,5 +7,6 @@ func _ready():
 
 func OpenDoor():
 	play("open")
-	doorCollision.set_collision_layer_bit(0, false)
-	doorCollision.set_collision_mask_bit(0, false)
+	if doorCollision:
+		doorCollision.set_collision_layer_bit(0, false)
+		doorCollision.set_collision_mask_bit(0, false)
