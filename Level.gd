@@ -5,13 +5,17 @@ extends Node2D
 var STATE = Global.State
 
 onready var m_bombsNode : Node2D = $Bombs
-onready var m_door : Sprite = $Door
+onready var m_exitDoor : Sprite = $ExitDoor
+onready var m_wallDoor : AnimatedSprite = $WallDoor
+onready var m_wallDoorForeground : AnimatedSprite = $WallDoorForeground
+
 
 export var m_levelBombTimeSecond : float = 120.0 
 
 var m_nextBombNum : int = 0
 var m_bombTotalCount : int = 0
 
+export var m_wallDoorBombOpenNum : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -48,11 +52,15 @@ func _on_bomb_puzzle_complete():
 	var bombNumSolved = m_nextBombNum
 	Events.emit_signal("bomb_number_solved", bombNumSolved)
 	
+	if bombNumSolved == m_wallDoorBombOpenNum:
+		m_wallDoor.OpenDoor()
+		m_wallDoorForeground.OpenDoor()
+	
 	m_nextBombNum += 1
 	if m_nextBombNum == m_bombTotalCount:
 		print("Level Complete!")
 		Events.emit_signal("bomb_timer_pause", true)
-		m_door.OpenDoor()
+		m_exitDoor.OpenDoor()
 
 func _on_fade_from_dark_complete():
 	if Global.state == STATE.CHANGING_LEVEL:
