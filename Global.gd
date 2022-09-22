@@ -49,6 +49,9 @@ func MSecToTimeString(msec : int, includeMsec):
 	else:
 		if msComp > 0: # if msExist then round up the seconds
 			secComp += 1
+			if secComp == 60:
+				secComp = 0
+				minComp += 1
 		
 		var formatString = "%s:%s"
 		resultString = formatString % [str(minComp).pad_zeros(2), str(secComp).pad_zeros(2)]
