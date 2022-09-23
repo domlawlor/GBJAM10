@@ -1,13 +1,16 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Art/bombs_sheet.png" type="Texture" id=1]
 [ext_resource path="res://Bomb.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 12, 11.5 )
+extents = Vector2( 16, 8 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 8, 16 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 7, 6.5 )
+extents = Vector2( 8, 8 )
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 1 )
@@ -54,13 +57,16 @@ script = ExtResource( 3 )
 [node name="InteractDetect" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractDetect"]
-position = Vector2( 0, 1.5 )
 shape = SubResource( 1 )
+
+[node name="InteractDetect2" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractDetect2"]
+shape = SubResource( 8 )
 
 [node name="Collision" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision"]
-position = Vector2( 0, 0.5 )
 shape = SubResource( 2 )
 
 [node name="Bomb" type="AnimatedSprite" parent="."]
@@ -69,3 +75,5 @@ animation = "unlit_solved"
 
 [connection signal="body_entered" from="InteractDetect" to="." method="_on_InteractDetect_body_entered"]
 [connection signal="body_exited" from="InteractDetect" to="." method="_on_InteractDetect_body_exited"]
+[connection signal="body_entered" from="InteractDetect2" to="." method="_on_InteractDetect_body_entered"]
+[connection signal="body_exited" from="InteractDetect2" to="." method="_on_InteractDetect_body_exited"]

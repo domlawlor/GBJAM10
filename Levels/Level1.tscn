@@ -47,7 +47,7 @@ puzzleName = "1-2"
 bombOrderNumber = 1
 
 [node name="Player" parent="." instance=ExtResource( 5 )]
-position = Vector2( 96, 53 )
+position = Vector2( 80, 40 )
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 limit_left = 0

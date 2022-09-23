@@ -9,8 +9,10 @@ onready var camera : Camera2D = $Camera2D
 const SpriteSizeX = 16
 const SpriteSizeY = 16
 
-var VELOCITY_X : float = 65.0
-var VELOCITY_Y : float = 65.0
+const xPixelsPerMove = 8
+const yPixelsPerMove = 8
+
+var VELOCITY : float = 65.0
 
 enum FaceDir {
 	UP,
@@ -19,8 +21,13 @@ enum FaceDir {
 	RIGHT
 }
 
-var m_vel : Vector2 = Vector2.ZERO
 var m_faceDir = FaceDir.DOWN
+
+export var MoveBetweenGridTime : float = 0.175
+var m_isLerpMoving : bool = false
+var m_lerpTime : float = 0.0
+var m_lerpStartVec : Vector2 = Vector2.ZERO
+var m_lerpEndVec : Vector2 = Vector2.ZERO
 
 enum InteractNodeType {
 	NONE,
@@ -46,43 +53,82 @@ func _exit():
 func _on_fade_to_dark_request():
 	StopAnimation()
 
+#var m_lerpTime : float = 0.0
+#var m_lerpStartVec : Vector2 = Vector2.ZERO
+#var m_lerpEndVec : Vector2 = Vector2.ZERO
+
+func LerpMove(delta):
+	assert(m_isLerpMoving)
+	
+	m_lerpTime += delta
+	m_lerpTime = min(m_lerpTime, MoveBetweenGridTime)
+	
+	var lerpAmount = m_lerpTime / MoveBetweenGridTime
+	
+	var lerpVec = lerp(m_lerpStartVec, m_lerpEndVec, lerpAmount)
+	
+	var moveVec = lerpVec - position
+	
+	move_and_collide(moveVec)
+	
+	#Events.emit_signal("update_position", position)
+	
+	if m_lerpTime == MoveBetweenGridTime:
+		m_isLerpMoving = false
+		m_lerpTime = 0.0
+
 func _physics_process(delta):
 	if Global.state != STATE.OVERWORLD or !Global.InputActive:
 		return
-
-	m_vel = Vector2.ZERO
+	
+	if m_isLerpMoving:
+		LerpMove(delta)
+		return
+	
+	var targetPos = position
 
 	if Input.is_action_just_pressed("gameboy_a"):
 		InteractPressed()
 
 	if Input.is_action_pressed("moveLeft"):
-		m_vel.x = -VELOCITY_X
+		targetPos.x -= xPixelsPerMove
 		m_faceDir = FaceDir.LEFT
 		animatedSprite.set_animation("left")
 	elif Input.is_action_pressed("moveRight"):
-		m_vel.x = VELOCITY_X
+		targetPos.x += xPixelsPerMove
 		m_faceDir = FaceDir.RIGHT
 		animatedSprite.set_animation("right")
 	elif Input.is_action_pressed("moveUp"):
-		m_vel.y = -VELOCITY_Y
+		targetPos.y -= yPixelsPerMove
 		m_faceDir = FaceDir.UP
 		animatedSprite.set_animation("up")
 	elif Input.is_action_pressed("moveDown"):
-		m_vel.y = VELOCITY_Y
-		animatedSprite.set_animation("down")
+		targetPos.y += yPixelsPerMove
 		m_faceDir = FaceDir.DOWN
-	else:
-		m_vel.x = 0
-		m_vel.y = 0
-
-	if m_vel.length() > 0:
-		animatedSprite.play()
+		animatedSprite.set_animation("down")
+	
+	# check collision
+	var canMove = false
+	
+	var moveVec : Vector2 = targetPos - position
+	
+	if targetPos != position:
+		var isTestOnly : bool = true
+		canMove = move_and_collide(moveVec, true, true, isTestOnly) == null
+	
+	if canMove:
+		m_lerpStartVec = position
+		m_lerpEndVec = targetPos
+		m_lerpTime = 0.0
+		m_isLerpMoving = true
+		LerpMove(delta)
+		
+		if !animatedSprite.playing: # only set to playing if not active from holding down movement
+			animatedSprite.set_frame(1) # set to a steping frame
+			animatedSprite.play()
 	else:
 		StopAnimation()
 
-	move_and_collide(m_vel * delta)
-	
-	Events.emit_signal("update_position", position)
 
 func StopAnimation():
 	animatedSprite.stop()
