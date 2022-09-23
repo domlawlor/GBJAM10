@@ -13,6 +13,7 @@ signal timing_five_visibility_changed(showing)
 signal timing_four_visibility_changed(showing)
 
 signal select_bomb(bombNum, puzzleName)
+signal reset_bombs(bombNumberToResetFrom)
 
 signal view_bomb_puzzle(puzzleName)
 signal hide_bomb_puzzle()

@@ -75,6 +75,8 @@ func _on_restart_from_death():
 		#m_wallDoorForeground.OpenDoor()
 		m_player.position = m_wallDoorForeground.position
 		m_player.position.y += 16
+		m_nextBombNum = m_wallDoorBombOpenNum + 1
+		Events.emit_signal("reset_bombs", m_wallDoorBombOpenNum)
 	else:
 		m_player.position = m_exitDoor.position
 		m_player.position.y += 16

@@ -9,6 +9,7 @@ onready var bomb : AnimatedSprite = $Bomb
 
 func _ready():
 	Events.connect("bomb_number_solved", self, "_on_bomb_number_solved")
+	Events.connect("reset_bombs", self, "_on_reset_bombs")
 	
 	assert(bombOrderNumber != -1, "Each bomb needs to be in a sequence order")
 	
@@ -19,6 +20,7 @@ func _ready():
 	
 func _exit():
 	Events.disconnect("bomb_number_solved", self, "_on_bomb_number_solved")
+	Events.disconnect("reset_bombs", self, "_on_reset_bombs")
 	
 func _on_InteractDetect_body_entered(body: Node):
 	if body.name == "Player":
@@ -27,6 +29,13 @@ func _on_InteractDetect_body_entered(body: Node):
 func _on_InteractDetect_body_exited(body: Node):
 	if body.name == "Player":
 		body.ClearNearbyBomb(self)
+
+func _on_reset_bombs(bombNumberToResetFrom):
+	if bombOrderNumber > bombNumberToResetFrom:
+		if bombIsInTheDark:
+			bomb.play("unlit")
+		else:
+			bomb.play("lit")
 
 func _on_bomb_number_solved(bombNum):
 	if bombNum == bombOrderNumber:
