@@ -23,7 +23,7 @@ enum FaceDir {
 
 var m_faceDir = FaceDir.DOWN
 
-export var MoveBetweenGridTime : float = 0.175
+export var MoveBetweenGridTime : float = 0.15
 var m_isLerpMoving : bool = false
 var m_lerpTime : float = 0.0
 var m_lerpStartVec : Vector2 = Vector2.ZERO
