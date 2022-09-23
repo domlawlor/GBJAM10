@@ -213,7 +213,7 @@ func GetCutTiming():
 	return m_cutTiming
 
 func IsWireAtPos(pos):
-	return m_grid[pos.x][pos.y] != WireState.NONE		
+	return m_grid[pos.x][pos.y] == WireState.WIRE
 
 func GetWireData():
 	var wireStrArray = []
