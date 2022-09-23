@@ -22,6 +22,8 @@ signal fade_from_dark_request()
 signal fade_to_dark_complete()
 signal fade_from_dark_complete()
 
+signal restart_from_death()
+
 signal view_manual_page(pageNum)
 signal hide_manual_page()
 

@@ -33,7 +33,7 @@ pageNum = 1
 position = Vector2( 80, 24 )
 
 [node name="WallDoor" parent="." instance=ExtResource( 3 )]
-position = Vector2( 112, 80 )
+position = Vector2( 120, 84 )
 
 [node name="Bombs" type="Node2D" parent="."]
 
@@ -66,4 +66,4 @@ format = 1
 tile_data = PoolIntArray( 589826, 3, 0, 589827, 3, 0, 589828, 3, 0, 589829, 3, 0, 589830, 3, 0, 589831, 3, 0, 589832, 3, 0, 589833, 3, 0, 589834, 127, 0, 589835, 127, 0, 589836, 127, 0, 589837, 128, 0, 589840, 126, 0, 589841, 127, 0 )
 
 [node name="WallDoorForeground" parent="." instance=ExtResource( 8 )]
-position = Vector2( 112, 72 )
+position = Vector2( 120, 76 )

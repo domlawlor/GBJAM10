@@ -43,3 +43,5 @@ func _on_fade_from_dark_complete():
 	print("gggg-" + str(Global.state))
 	if Global.state == STATE.CHANGING_LEVEL:
 		PlayGameplayNormal()
+	elif Global.state == STATE.RESTARTING_FROM_DEATH:
+		PlayGameplayNormal()

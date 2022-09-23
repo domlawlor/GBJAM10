@@ -8,12 +8,14 @@ onready var m_bombsNode : Node2D = $Bombs
 onready var m_exitDoor : Sprite = $ExitDoor
 onready var m_wallDoor : AnimatedSprite = $WallDoor
 onready var m_wallDoorForeground : AnimatedSprite = $WallDoorForeground
-
+onready var m_player : KinematicBody2D = $Player
 
 export var m_levelBombTimeSecond : float = 120.0 
 
 var m_nextBombNum : int = 0
 var m_bombTotalCount : int = 0
+
+var m_hitCheckpoint : bool = false
 
 export var m_wallDoorBombOpenNum : int = 0
 
@@ -21,6 +23,7 @@ export var m_wallDoorBombOpenNum : int = 0
 func _ready():
 	Events.connect("select_bomb", self, "_on_select_bomb")
 	Events.connect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
+	Events.connect("restart_from_death", self, "_on_restart_from_death")
 	
 	Events.connect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
 	Events.connect("fade_from_dark_complete", self, "_on_fade_from_dark_complete")
@@ -32,7 +35,7 @@ func _ready():
 func _exit():
 	Events.disconnect("bomb_puzzle_complete", self, "_on_bomb_puzzle_complete")
 	Events.disconnect("select_bomb", self, "_on_select_bomb")
-	Events.disconnect("view_bomb_puzzle", self, "_on_view_bomb_puzzle")
+	Events.discconnect("restart_from_death", self, "_on_restart_from_death")
 	
 	Events.disconnect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
 	Events.disconnect("fade_from_dark_complete", self, "_on_fade_from_dark_complete")
@@ -53,6 +56,7 @@ func _on_bomb_puzzle_complete():
 	Events.emit_signal("bomb_number_solved", bombNumSolved)
 	
 	if bombNumSolved == m_wallDoorBombOpenNum:
+		m_hitCheckpoint = true
 		m_wallDoor.OpenDoor()
 		m_wallDoorForeground.OpenDoor()
 	
@@ -62,7 +66,24 @@ func _on_bomb_puzzle_complete():
 		Events.emit_signal("bomb_timer_pause", true)
 		m_exitDoor.OpenDoor()
 
+func _on_restart_from_death():
+	var restartBombTimer = m_levelBombTimeSecond
+	
+	if m_hitCheckpoint:
+		restartBombTimer = restartBombTimer / 2
+		m_wallDoor.OpenDoor()
+		m_wallDoorForeground.OpenDoor()
+		m_player.position = m_wallDoorForeground.position
+		m_player.position.y += 16
+	else:
+		m_player.position = m_exitDoor.position
+		m_player.position.y += 16
+		
+	Events.emit_signal("bomb_timer_start", restartBombTimer)
+
 func _on_fade_from_dark_complete():
+	if Global.state == STATE.RESTARTING_FROM_DEATH:
+		Global.state = STATE.OVERWORLD
 	if Global.state == STATE.CHANGING_LEVEL:
 		Global.state = STATE.OVERWORLD
 

@@ -27,5 +27,4 @@ animations = [ {
 [node name="WallDoorForeground" type="AnimatedSprite"]
 frames = SubResource( 3 )
 animation = "closed"
-centered = false
 script = ExtResource( 2 )

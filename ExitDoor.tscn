@@ -10,7 +10,6 @@ extents = Vector2( 6, 3.5 )
 extents = Vector2( 8, 8 )
 
 [node name="ExitDoor" type="Sprite"]
-position = Vector2( 144, 24 )
 texture = ExtResource( 1 )
 script = ExtResource( 2 )
 

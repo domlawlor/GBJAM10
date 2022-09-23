@@ -138,6 +138,14 @@ func _on_LoadPuzzle48_pressed():
 	load_puzzle("4-8")	
 
 func _on_fade_to_dark_complete():
+	if Global.state == STATE.RESTARTING_FROM_DEATH:
+		bombTimer.visible = true # needed for coming from titles
+		BombPuzzle.visible = false
+		PageOverlay.visible = false
+		
+		Events.emit_signal("restart_from_death")
+		Events.emit_signal("fade_from_dark_request")
+		
 	if Global.state == STATE.CHANGING_LEVEL:
 		bombTimer.visible = true # needed for coming from titles
 		BombPuzzle.visible = false
@@ -162,9 +170,7 @@ func _on_bomb_explode():
 
 func _on_restart_game():
 	paletteShader.SetInvert(false)
-	#current_level_num = 0
-	current_level_num -= 1 # for playtest, just stay on the same level
-	Global.state = STATE.CHANGING_LEVEL
+	Global.state = STATE.RESTARTING_FROM_DEATH
 	_on_fade_to_dark_complete()
 
 # func _on_restart_game():

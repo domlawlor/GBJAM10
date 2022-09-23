@@ -30,11 +30,9 @@ extents = Vector2( 8, 4 )
 [node name="WallDoor" type="AnimatedSprite"]
 frames = SubResource( 3 )
 animation = "closed"
-centered = false
 script = ExtResource( 2 )
 
 [node name="DoorCollision" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DoorCollision"]
-position = Vector2( 8, 4 )
 shape = SubResource( 2 )

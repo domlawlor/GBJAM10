@@ -40,6 +40,7 @@ var m_nearbyInteractType = InteractNodeType.NONE
 
 func _ready():
 	Events.connect("fade_to_dark_request", self, "_on_fade_to_dark_request")
+	Events.connect("restart_from_death", self, "_on_restart_from_death")
 	
 	assert(camera, "a level camera must be a child of player")
 	camera.make_current()
@@ -49,6 +50,7 @@ func _ready():
 
 func _exit():
 	Events.disconnect("fade_to_dark_request", self, "_on_fade_to_dark_request")
+	Events.disconnect("restart_from_death", self, "_on_restart_from_death")
 
 func _on_fade_to_dark_request():
 	StopAnimation()
@@ -192,3 +194,7 @@ func InteractPressed():
 				Events.emit_signal("select_bomb", m_nearbyInteractNode.bombOrderNumber, m_nearbyInteractNode.puzzleName)
 			InteractNodeType.PAGE:
 				Events.emit_signal("view_manual_page", m_nearbyInteractNode.pageNum)
+
+func _on_restart_from_death():
+	animatedSprite.set_animation("down")
+	animatedSprite.set_frame(0)
