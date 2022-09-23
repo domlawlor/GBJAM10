@@ -405,16 +405,18 @@ func CutWires():
 		if !explode and pickedWires[j] != m_cutList[m_cutProgress][j]:
 			explode = true
 	
+	Events.emit_signal("wire_cut")
 	if explode:
 		Events.emit_signal("bomb_explode")
 	else:
 		m_cutProgress += 1
 		if m_cutProgress == m_cutList.size():
 			print("puzzle complete!")
-			Events.emit_signal("play_audio", "defuse")
+			Global.InputActive = false
 			ExitTimer.start()
 
 func _on_ExitTimer_timeout():
+	Events.emit_signal("play_audio", "defuse")
 	Events.emit_signal("bomb_puzzle_complete")
 	Events.emit_signal("hide_bomb_puzzle")
 	Events.emit_signal("fade_to_dark_request")

@@ -3,6 +3,7 @@ extends Node
 signal bomb_timer_start(waitTime)
 signal bomb_timer_pause(setPaused)
 signal bomb_timer_stop()
+signal wire_cut()
 signal bomb_explode()
 signal bomb_puzzle_complete()
 
