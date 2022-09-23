@@ -4,6 +4,7 @@ var STATE = Global.State
 
 onready var Explosion = $Explosion
 onready var Defuse = $Defuse
+onready var OpenDoor = $OpenDoor
 onready var Cut = $Cut
 onready var GameplayNormal = $GameplayNormal
 
@@ -29,8 +30,12 @@ func _on_play_audio(name):
 			Explosion.play()
 		"defuse":
 			Defuse.play()
+		"opendoor":
+			OpenDoor.play()
 		"cut":
 			Cut.play()
+		"_":
+			assert(false, "audio event does not exist")
 
 func _on_wire_cut():
 	Cut.play()
@@ -40,7 +45,6 @@ func _on_bomb_explode():
 	Explosion.play()
 
 func _on_fade_from_dark_complete():
-	print("gggg-" + str(Global.state))
 	if Global.state == STATE.CHANGING_LEVEL:
 		PlayGameplayNormal()
 	elif Global.state == STATE.RESTARTING_FROM_DEATH:

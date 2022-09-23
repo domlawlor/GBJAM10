@@ -36,3 +36,13 @@ script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DoorCollision"]
 shape = SubResource( 2 )
+
+[node name="DelayTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
+[node name="AudioTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="DelayTimer" to="." method="_on_DelayTimer_timeout"]
+[connection signal="timeout" from="AudioTimer" to="." method="_on_AudioTimer_timeout"]

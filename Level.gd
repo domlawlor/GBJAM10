@@ -71,8 +71,8 @@ func _on_restart_from_death():
 	
 	if m_hitCheckpoint:
 		restartBombTimer = restartBombTimer / 2
-		m_wallDoor.OpenDoor()
-		m_wallDoorForeground.OpenDoor()
+		#m_wallDoor.OpenDoor()
+		#m_wallDoorForeground.OpenDoor()
 		m_player.position = m_wallDoorForeground.position
 		m_player.position.y += 16
 	else:

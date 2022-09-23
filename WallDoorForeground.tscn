@@ -28,3 +28,9 @@ animations = [ {
 frames = SubResource( 3 )
 animation = "closed"
 script = ExtResource( 2 )
+
+[node name="DelayTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
+[connection signal="timeout" from="DelayTimer" to="." method="_on_DelayTimer_timeout"]
