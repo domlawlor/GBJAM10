@@ -6,7 +6,7 @@
 [ext_resource path="res://Art/foreground.png" type="Texture" id=4]
 [ext_resource path="res://SymbolSprite.tscn" type="PackedScene" id=5]
 
-[sub_resource type="AtlasTexture" id=1]
+[sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 2 )
 region = Rect2( 0, 0, 16, 16 )
 
@@ -16,7 +16,12 @@ region = Rect2( 16, 0, 16, 16 )
 
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"frames": [ SubResource( 4 ) ],
+"loop": true,
+"name": "cut",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 2 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
@@ -33,7 +38,12 @@ centered = false
 
 [node name="GridHighlight" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )
+animation = "cut"
 centered = false
+
+[node name="CutTimer" type="Timer" parent="GridHighlight"]
+wait_time = 0.2
+one_shot = true
 
 [node name="Foreground" type="Sprite" parent="."]
 texture = ExtResource( 4 )
@@ -182,4 +192,5 @@ text = "-"
 wait_time = 0.3
 one_shot = true
 
+[connection signal="timeout" from="GridHighlight/CutTimer" to="." method="_on_CutTimer_timeout"]
 [connection signal="timeout" from="ExitTimer" to="." method="_on_ExitTimer_timeout"]

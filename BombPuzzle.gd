@@ -6,6 +6,7 @@ var wireLayer = preload("res://WireLayer.tscn")
 
 onready var WireLayers = $WireLayers
 onready var GridHighlight = $GridHighlight
+onready var CutTimer = $GridHighlight/CutTimer
 onready var Foreground = $Foreground
 onready var Symbols = $Symbols
 onready var DebugOutput = $DebugOutput
@@ -30,6 +31,7 @@ enum Mode {
 var m_mode = Mode.IDLE
 var m_wireLayers = []
 var m_highlightPos = Vector2.ZERO
+var m_hideHighlight = false
 var m_cutProgress = 0
 var m_cutList = []
 var m_currentCutIndex = 0
@@ -63,6 +65,7 @@ func _exit():
 func _on_view_bomb_puzzle(puzzleName):
 	Global.state = STATE.ENTERING_PUZZLE
 	LoadRealPuzzle(puzzleName)
+	GridHighlight.play("default")
 	Events.emit_signal("fade_to_dark_request")
 
 func _on_hide_bomb_puzzle():
@@ -339,6 +342,8 @@ func StartGameplay():
 	m_mode = Mode.SAVE_LEVEL
 	SaveOrLoadLevel("temp")
 	m_mode = Mode.GAMEPLAY
+	GridHighlight.play("default")
+	m_hideHighlight = false
 	m_cutProgress = 0
 	m_highlightPos = Vector2(1, 1)
 	UpdateGridHighlightPos(false)
@@ -383,6 +388,8 @@ func UpdateGridHighlightPos(fromInput : bool):
 		Events.emit_signal("play_audio", "navigate")
 
 func CutWires():
+	GridHighlight.play("cut")
+	CutTimer.start()
 	var explode = false
 	var pickedWires = []
 	for i in range(m_wireLayers.size()):
@@ -409,10 +416,12 @@ func CutWires():
 	
 	Events.emit_signal("wire_cut")
 	if explode:
+		m_hideHighlight = true
 		Events.emit_signal("bomb_explode")
 	else:
 		m_cutProgress += 1
 		if m_cutProgress == m_cutList.size():
+			m_hideHighlight = true
 			print("puzzle complete!")
 			Global.InputActive = false
 			ExitTimer.start()
@@ -455,3 +464,9 @@ func _on_timing_five_visibility_changed(showing : bool):
 
 func _on_timing_four_visibility_changed(showing : bool):
 	m_timingVisibleFour = showing
+
+func _on_CutTimer_timeout():
+	if m_hideHighlight:
+		GridHighlight.visible = false
+	else:
+		GridHighlight.play("default")
