@@ -6,6 +6,7 @@ onready var Explosion = $Explosion
 onready var Defuse = $Defuse
 onready var OpenDoor = $OpenDoor
 onready var Cut = $Cut
+onready var Navigate = $Navigate
 onready var GameplayNormal = $GameplayNormal
 
 func _ready():
@@ -34,6 +35,8 @@ func _on_play_audio(name):
 			OpenDoor.play()
 		"cut":
 			Cut.play()
+		"navigate":
+			Navigate.play()
 		"_":
 			assert(false, "audio event does not exist")
 

@@ -341,7 +341,7 @@ func StartGameplay():
 	m_mode = Mode.GAMEPLAY
 	m_cutProgress = 0
 	m_highlightPos = Vector2(1, 1)
-	UpdateGridHighlightPos()
+	UpdateGridHighlightPos(false)
 	Foreground.set_modulate(Color(1, 1, 1, 1))
 	DebugOutput.visible = false
 	LevelSlotDisplay.visible = false
@@ -360,25 +360,27 @@ func ReturnToEditMode():
 func MoveHighlightLeft():
 	if m_highlightPos.x > 1:
 		m_highlightPos.x -= 1
-		UpdateGridHighlightPos()
+		UpdateGridHighlightPos(true)
 
 func MoveHighlightRight():
 	if m_highlightPos.x < Global.HIGHLIGHTGRID_WIDTH:
 		m_highlightPos.x += 1
-		UpdateGridHighlightPos()
+		UpdateGridHighlightPos(true)
 
 func MoveHighlightUp():
 	if m_highlightPos.y > 1:
 		m_highlightPos.y -= 1
-		UpdateGridHighlightPos()
+		UpdateGridHighlightPos(true)
 
 func MoveHighlightDown():
 	if m_highlightPos.y < Global.HIGHLIGHTGRID_HEIGHT:
 		m_highlightPos.y += 1
-		UpdateGridHighlightPos()
+		UpdateGridHighlightPos(true)
 
-func UpdateGridHighlightPos():
+func UpdateGridHighlightPos(fromInput : bool):
 	GridHighlight.position = m_highlightPos * Global.GRIDSIZE
+	if fromInput:
+		Events.emit_signal("play_audio", "navigate")
 
 func CutWires():
 	var explode = false

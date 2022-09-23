@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://AudioManager.gd" type="Script" id=1]
 [ext_resource path="res://Audio/explosion.wav" type="AudioStream" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Audio/cut.wav" type="AudioStream" id=4]
 [ext_resource path="res://Audio/gameplay_normal.ogg" type="AudioStream" id=5]
 [ext_resource path="res://Audio/opendoor.wav" type="AudioStream" id=6]
+[ext_resource path="res://Audio/navigate.wav" type="AudioStream" id=7]
 
 [node name="AudioManager" type="Node2D"]
 script = ExtResource( 1 )
@@ -21,6 +22,9 @@ stream = ExtResource( 6 )
 
 [node name="Cut" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
+
+[node name="Navigate" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
 
 [node name="GameplayNormal" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
