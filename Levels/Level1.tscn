@@ -27,7 +27,6 @@ tile_data = PoolIntArray( 131081, 84, 0, 131082, 85, 0, 196617, 86, 0, 196618, 8
 
 [node name="BookPage" parent="." instance=ExtResource( 7 )]
 position = Vector2( 96, 40 )
-pageNum = 1
 
 [node name="ExitDoor" parent="." instance=ExtResource( 1 )]
 position = Vector2( 80, 24 )

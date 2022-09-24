@@ -41,6 +41,10 @@ func _input(event):
 	if !Global.InputActive:
 		return
 	
+	if Global.state == STATE.OVERWORLD:
+		if event.is_action_pressed("gameboy_start"):
+			Events.emit_signal("show_pause_manual")
+	
 	if Global.state == STATE.TITLE:
 		if event.is_action_pressed("gameboy_start") or event.is_action_pressed("gameboy_a"):
 			Global.state = STATE.STORYSCREEN
@@ -90,6 +94,7 @@ func SetDebugMenuVisibility(show : bool):
 	debugMenu.visible = show
 
 func Reset():
+	Events.emit_signal("clear_unlocked_pages")
 	Events.emit_signal("trigger_title_music")
 	storyScreen.Reset()
 	winScreen.Reset()
@@ -97,18 +102,22 @@ func Reset():
 
 func _on_LoadLevel1_pressed():
 	current_level_num = 1
+	Events.emit_signal("unlock_pages_for_level_num", current_level_num)
 	load_level("Level1")
 
 func _on_LoadLevel2_pressed():
 	current_level_num = 2
+	Events.emit_signal("unlock_pages_for_level_num", current_level_num)
 	load_level("Level2")
 
 func _on_LoadLevel3_pressed():
 	current_level_num = 3
+	Events.emit_signal("unlock_pages_for_level_num", current_level_num)
 	load_level("Level3")
 
 func _on_LoadLevel4_pressed():
 	current_level_num = 4
+	Events.emit_signal("unlock_pages_for_level_num", current_level_num)
 	load_level("Level4")
 
 func _on_LoadPuzzle11_pressed():
@@ -138,13 +147,13 @@ func _on_LoadPuzzle43_pressed():
 func _on_LoadPuzzle44_pressed():
 	load_puzzle("4-4")
 func _on_LoadPuzzle45_pressed():
-	load_puzzle("4-5")	
+	load_puzzle("4-5")
 func _on_LoadPuzzle46_pressed():
-	load_puzzle("4-6")	
+	load_puzzle("4-6")
 func _on_LoadPuzzle47_pressed():
-	load_puzzle("4-7")	
+	load_puzzle("4-7")
 func _on_LoadPuzzle48_pressed():
-	load_puzzle("4-8")	
+	load_puzzle("4-8")
 
 func _on_fade_to_dark_complete():
 	if Global.state == STATE.TITLE:
@@ -169,7 +178,9 @@ func _on_fade_to_dark_complete():
 		PageOverlay.visible = false
 		var levelExitedNum = current_level_num
 		current_level_num += 1
-	
+		
+		Events.emit_signal("unlock_pages_for_level_num", current_level_num)
+		
 		match levelExitedNum:
 			0:
 				load_level("Level1")

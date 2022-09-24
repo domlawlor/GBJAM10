@@ -33,6 +33,10 @@ signal restart_from_death()
 signal view_manual_page(pageNum)
 signal hide_manual_page()
 
+signal show_pause_manual()
+signal clear_unlocked_pages()
+signal unlock_pages_for_level_num(levelNum)
+
 signal exit_level_door()
 signal restart_game()
 

@@ -17,3 +17,10 @@ margin_bottom = 144.0
 theme = ExtResource( 3 )
 bbcode_enabled = true
 tab_size = 0
+
+[node name="PageNumLabel" type="RichTextLabel" parent="."]
+margin_left = 128.0
+margin_top = 136.0
+margin_right = 160.0
+margin_bottom = 144.0
+theme = ExtResource( 3 )

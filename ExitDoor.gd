@@ -8,12 +8,6 @@ onready var audioTimer : Timer = $AudioTimer
 
 var m_finalDoor = false
 
-func _ready():
-	Events.connect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
-
-func _exit():
-	Events.disconnect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
-
 func OpenDoor():
 	delayTimer.start()
 	audioTimer.start()

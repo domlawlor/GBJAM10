@@ -3,7 +3,6 @@ extends KinematicBody2D
 var STATE = Global.State
 
 onready var animatedSprite : AnimatedSprite = $PixelLockedSprite
-
 onready var camera : Camera2D = $Camera2D
 
 const SpriteSizeX = 16
@@ -11,8 +10,6 @@ const SpriteSizeY = 16
 
 const xPixelsPerMove = 8
 const yPixelsPerMove = 8
-
-var VELOCITY : float = 65.0
 
 enum FaceDir {
 	UP,
@@ -55,10 +52,6 @@ func _exit():
 func _on_fade_to_dark_request():
 	StopAnimation()
 
-#var m_lerpTime : float = 0.0
-#var m_lerpStartVec : Vector2 = Vector2.ZERO
-#var m_lerpEndVec : Vector2 = Vector2.ZERO
-
 func LerpMove(delta):
 	assert(m_isLerpMoving)
 	
@@ -69,8 +62,7 @@ func LerpMove(delta):
 	
 	var lerpVec = lerp(m_lerpStartVec, m_lerpEndVec, lerpAmount)
 	
-	var moveVec = lerpVec - position
-	
+	var moveVec = lerpVec - position	
 	move_and_collide(moveVec)
 	
 	#Events.emit_signal("update_position", position)
@@ -111,7 +103,6 @@ func _physics_process(delta):
 	
 	# check collision
 	var canMove = false
-	
 	var moveVec : Vector2 = targetPos - position
 	
 	if targetPos != position:

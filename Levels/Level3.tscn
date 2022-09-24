@@ -29,7 +29,7 @@ tile_data = PoolIntArray( 131094, 84, 0, 131095, 85, 0, 196630, 86, 0, 196631, 8
 
 [node name="BookPage" parent="." instance=ExtResource( 8 )]
 position = Vector2( 192, 40 )
-pageNum = 3
+pageNum = 2
 
 [node name="ExitDoor" parent="." instance=ExtResource( 1 )]
 position = Vector2( 184, 24 )
