@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Art/StoryScreen01.png" type="Texture" id=1]
+[ext_resource path="res://Art/StoryScreen01Text01.png" type="Texture" id=2]
+[ext_resource path="res://Art/StoryScreen01Text02.png" type="Texture" id=3]
+[ext_resource path="res://Art/StoryScreen01Text03.png" type="Texture" id=4]
+[ext_resource path="res://StoryScreen.gd" type="Script" id=5]
+
+[node name="StoryScreen" type="Sprite"]
+texture = ExtResource( 1 )
+centered = false
+script = ExtResource( 5 )
+
+[node name="Text01" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Text02" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 3 )
+centered = false
+
+[node name="Text03" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 4 )
+centered = false

@@ -16,7 +16,8 @@ onready var BombPuzzle : Node2D = $UILayer/BombPuzzle
 onready var PageOverlay : Node2D = $UILayer/PageOverlay
 onready var bombTimer : Node2D = $UILayer/BombTimer
 onready var paletteShader = $TopLayer/PaletteShader
-onready var pressStartText = $TitleScreen/PressStartText
+onready var pressStartText = $FullPageScreens/TitleScreen/PressStartText
+onready var storyScreen = $FullPageScreens/StoryScreen
 
 var level_instance : Node2D
 var puzzle_instance : Node2D
@@ -143,6 +144,10 @@ func _on_LoadPuzzle48_pressed():
 	load_puzzle("4-8")	
 
 func _on_fade_to_dark_complete():
+	if Global.state == STATE.STORYSCREEN:
+		storyScreen.visible = true
+		Events.emit_signal("fade_from_dark_request")
+		
 	if Global.state == STATE.RESTARTING_FROM_DEATH:
 		bombTimer.visible = true # needed for coming from titles
 		BombPuzzle.visible = false
@@ -179,7 +184,7 @@ func _on_restart_game():
 	_on_fade_to_dark_complete()
 
 func _on_TitleTimer_timeout(): #start game
-	Global.state = STATE.CHANGING_LEVEL
+	Global.state = STATE.STORYSCREEN
 	current_level_num = 0 # this will increase to 1 at end of transition
 	Events.emit_signal("fade_to_dark_request")
 

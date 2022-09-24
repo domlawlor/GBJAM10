@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://TransitionManager.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Art/TitleScreen.png" type="Texture" id=8]
 [ext_resource path="res://AudioManager.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Art/TitleScreenPressStart.png" type="Texture" id=10]
+[ext_resource path="res://StoryScreen.tscn" type="PackedScene" id=11]
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 10 )
@@ -46,16 +47,20 @@ one_shot = true
 
 [node name="AudioManager" parent="." instance=ExtResource( 9 )]
 
-[node name="TitleScreen" type="Sprite" parent="."]
+[node name="FullPageScreens" type="Node2D" parent="."]
+
+[node name="TitleScreen" type="Sprite" parent="FullPageScreens"]
 texture = ExtResource( 8 )
 centered = false
 
-[node name="PressStartText" type="AnimatedSprite" parent="TitleScreen"]
+[node name="PressStartText" type="AnimatedSprite" parent="FullPageScreens/TitleScreen"]
 frames = SubResource( 4 )
-frame = 2
 speed_scale = 0.4
 playing = true
 centered = false
+
+[node name="StoryScreen" parent="FullPageScreens" instance=ExtResource( 11 )]
+visible = false
 
 [node name="Main2D" type="Node2D" parent="."]
 
