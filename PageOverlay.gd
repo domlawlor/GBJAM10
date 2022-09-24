@@ -26,7 +26,7 @@ func _process(delta):
 	if Global.state != Global.State.MANUAL or !Global.InputActive:
 		return
 	
-	if Input.is_action_just_pressed("gameboy_a") or Input.is_action_just_pressed("gameboy_b"):
+	if Input.is_action_just_pressed("gameboy_a"):
 		Events.emit_signal("hide_manual_page")
 
 func SelectPage(pageNum):

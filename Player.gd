@@ -92,19 +92,19 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("gameboy_a"):
 		InteractPressed()
 
-	if Input.is_action_pressed("moveLeft"):
+	if Input.is_action_pressed("moveLeft") or Input.is_action_pressed("moveLeft_pad"):
 		targetPos.x -= xPixelsPerMove
 		m_faceDir = FaceDir.LEFT
 		animatedSprite.set_animation("left")
-	elif Input.is_action_pressed("moveRight"):
+	elif Input.is_action_pressed("moveRight") or Input.is_action_pressed("moveRight_pad"):
 		targetPos.x += xPixelsPerMove
 		m_faceDir = FaceDir.RIGHT
 		animatedSprite.set_animation("right")
-	elif Input.is_action_pressed("moveUp"):
+	elif Input.is_action_pressed("moveUp") or Input.is_action_pressed("moveUp_pad"):
 		targetPos.y -= yPixelsPerMove
 		m_faceDir = FaceDir.UP
 		animatedSprite.set_animation("up")
-	elif Input.is_action_pressed("moveDown"):
+	elif Input.is_action_pressed("moveDown") or Input.is_action_pressed("moveDown_pad"):
 		targetPos.y += yPixelsPerMove
 		m_faceDir = FaceDir.DOWN
 		animatedSprite.set_animation("down")
