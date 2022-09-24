@@ -3,6 +3,7 @@ extends TextureRect
 var STATE = Global.State
 
 onready var explodeTimer : Timer = $ExplodeTimer
+onready var titleExplodeTimer : Timer = $TitleExplodeTimer
 
 export var DefaultColorPaletteIndex : int = 1 
 
@@ -78,6 +79,10 @@ func _process(_delta):
 		var FLASH_INTERVAL = 0.12
 		var steps : int = floor(explodeTimer.time_left / FLASH_INTERVAL)
 		SetInvert(steps % 2 == 0)
+	elif !titleExplodeTimer.is_stopped():
+		var FLASH_INTERVAL = 0.12
+		var steps : int = floor(titleExplodeTimer.time_left / FLASH_INTERVAL)
+		SetInvert(steps % 2 == 0)
 
 func _input(event):
 	if Global.state == STATE.DEAD:
@@ -136,3 +141,7 @@ func _on_ExplodeTimer_timeout():
 func _on_fade_to_dark_complete():
 	if Global.state == STATE.EXPLOSION:
 		Global.state = STATE.DEAD
+
+func _on_TitleExplodeTimer_timeout():
+	SetInvert(false)
+	

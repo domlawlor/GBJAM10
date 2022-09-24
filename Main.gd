@@ -3,7 +3,9 @@ extends Node2D
 var STATE = Global.State
 
 export var start_level_num : int = 1
+
 onready var current_level_num = start_level_num
+onready var titleTimer : Timer = $TitleTimer
 
 var bombPuzzleScene = preload("res://BombPuzzle.tscn")
 
@@ -14,6 +16,7 @@ onready var BombPuzzle : Node2D = $UILayer/BombPuzzle
 onready var PageOverlay : Node2D = $UILayer/PageOverlay
 onready var bombTimer : Node2D = $UILayer/BombTimer
 onready var paletteShader = $TopLayer/PaletteShader
+onready var pressStartText = $TitleScreen/PressStartText
 
 var level_instance : Node2D
 var puzzle_instance : Node2D
@@ -39,9 +42,11 @@ func _input(event):
 	
 	if Global.state == STATE.TITLE:
 		if event.is_action_pressed("gameboy_start") or event.is_action_pressed("gameboy_a"):
-			Global.state = STATE.CHANGING_LEVEL
-			current_level_num = 0 # this will increase to 1 at end of transition
-			Events.emit_signal("fade_to_dark_request")
+			Global.InputActive = false
+			pressStartText.visible = false
+			Events.emit_signal("play_audio", "explosion")
+			titleTimer.start()
+			paletteShader.titleExplodeTimer.start()
 	
 	if event.is_action_pressed("ui_cancel"):
 		unload_level()
@@ -172,6 +177,11 @@ func _on_restart_game():
 	paletteShader.SetInvert(false)
 	Global.state = STATE.RESTARTING_FROM_DEATH
 	_on_fade_to_dark_complete()
+
+func _on_TitleTimer_timeout(): #start game
+	Global.state = STATE.CHANGING_LEVEL
+	current_level_num = 0 # this will increase to 1 at end of transition
+	Events.emit_signal("fade_to_dark_request")
 
 # func _on_restart_game():
 # 	timeLimit.stop()

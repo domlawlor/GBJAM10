@@ -37,7 +37,7 @@ func _on_play_audio(name):
 			Cut.play()
 		"navigate":
 			Navigate.play()
-		"_":
+		_:
 			assert(false, "audio event does not exist")
 
 func _on_wire_cut():

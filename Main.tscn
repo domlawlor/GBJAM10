@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://TransitionManager.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
@@ -9,6 +9,19 @@
 [ext_resource path="res://BombPuzzle.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Art/TitleScreen.png" type="Texture" id=8]
 [ext_resource path="res://AudioManager.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Art/TitleScreenPressStart.png" type="Texture" id=10]
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 10 )
+region = Rect2( 0, 0, 160, 144 )
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ SubResource( 3 ), SubResource( 3 ), null ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 3 )
@@ -27,10 +40,21 @@ shader_param/invert = null
 [node name="Main" type="Node2D"]
 script = ExtResource( 2 )
 
+[node name="TitleTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
 [node name="AudioManager" parent="." instance=ExtResource( 9 )]
 
 [node name="TitleScreen" type="Sprite" parent="."]
 texture = ExtResource( 8 )
+centered = false
+
+[node name="PressStartText" type="AnimatedSprite" parent="TitleScreen"]
+frames = SubResource( 4 )
+frame = 2
+speed_scale = 0.4
+playing = true
 centered = false
 
 [node name="Main2D" type="Node2D" parent="."]
@@ -227,6 +251,11 @@ script = ExtResource( 4 )
 wait_time = 2.0
 one_shot = true
 
+[node name="TitleExplodeTimer" type="Timer" parent="TopLayer/PaletteShader"]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="timeout" from="TitleTimer" to="." method="_on_TitleTimer_timeout"]
 [connection signal="pressed" from="DebugLayer/Menu/LevelList/LoadLevel1" to="." method="_on_LoadLevel1_pressed"]
 [connection signal="pressed" from="DebugLayer/Menu/LevelList/LoadLevel2" to="." method="_on_LoadLevel2_pressed"]
 [connection signal="pressed" from="DebugLayer/Menu/LevelList/LoadLevel3" to="." method="_on_LoadLevel3_pressed"]
@@ -249,3 +278,4 @@ one_shot = true
 [connection signal="pressed" from="DebugLayer/Menu/PuzzleList/VBoxContainer3/LoadPuzzle4-7" to="." method="_on_LoadPuzzle47_pressed"]
 [connection signal="pressed" from="DebugLayer/Menu/PuzzleList/VBoxContainer3/LoadPuzzle4-8" to="." method="_on_LoadPuzzle48_pressed"]
 [connection signal="timeout" from="TopLayer/PaletteShader/ExplodeTimer" to="TopLayer/PaletteShader" method="_on_ExplodeTimer_timeout"]
+[connection signal="timeout" from="TopLayer/PaletteShader/TitleExplodeTimer" to="TopLayer/PaletteShader" method="_on_TitleExplodeTimer_timeout"]
