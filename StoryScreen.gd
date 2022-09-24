@@ -10,7 +10,7 @@ onready var ExplodeTimer = $ExplodeTimer
 var textNum = 1
 
 func _input(event):
-	if !visible or Global.state != STATE.STORYSCREEN:
+	if !visible or Global.state != STATE.STORYSCREEN or !Global.InputActive:
 		return
 	
 	if event.is_action_pressed("gameboy_a"):
