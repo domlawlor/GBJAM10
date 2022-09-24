@@ -11,6 +11,7 @@
 
 [node name="Level3" type="Node2D"]
 script = ExtResource( 6 )
+m_levelBombTimeSecond = 240.0
 m_wallDoorBombOpenNum = 4
 
 [node name="Background" type="TileMap" parent="."]
