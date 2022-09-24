@@ -100,22 +100,22 @@ puzzleName = "4-11"
 bombOrderNumber = 10
 
 [node name="Bomb12" parent="Bombs" instance=ExtResource( 2 )]
-position = Vector2( 408, 104 )
+position = Vector2( 280, 104 )
 puzzleName = "4-12"
 bombOrderNumber = 11
 
 [node name="Bomb13" parent="Bombs" instance=ExtResource( 2 )]
-position = Vector2( 344, 40 )
+position = Vector2( 344, 168 )
 puzzleName = "4-13"
 bombOrderNumber = 12
 
 [node name="Bomb14" parent="Bombs" instance=ExtResource( 2 )]
-position = Vector2( 280, 104 )
+position = Vector2( 408, 104 )
 puzzleName = "4-14"
 bombOrderNumber = 13
 
 [node name="Bomb15" parent="Bombs" instance=ExtResource( 2 )]
-position = Vector2( 344, 168 )
+position = Vector2( 344, 40 )
 puzzleName = "4-15"
 bombOrderNumber = 14
 
