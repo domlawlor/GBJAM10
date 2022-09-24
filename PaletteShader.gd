@@ -36,6 +36,48 @@ var List = [
 		"light" : { "r" : 96, "g" : 143, "b" : 207 },
 		"lightest" : { "r" : 139, "g" : 229, "b" : 255 },
 	},
+	{
+		"name" : "demichrome",
+		"darkest" : { "r" : 33, "g" : 30, "b" : 32 },
+		"dark" : { "r" : 85, "g" : 85, "b" : 104 },
+		"light" : { "r" : 160, "g" : 160, "b" : 139 },
+		"lightest" : { "r" : 233, "g" : 239, "b" : 236 },
+	},
+	{
+		"name" : "crimson",
+		"darkest" : { "r" : 27, "g" : 3, "b" : 38 },
+		"dark" : { "r" : 122, "g" : 28, "b" : 75 },
+		"light" : { "r" : 186, "g" : 80, "b" : 68 },
+		"lightest" : { "r" : 239, "g" : 249, "b" : 214 },
+	},
+	{
+		"name" : "galactic_pizza",
+		"darkest" : { "r" : 58, "g" : 0, "b" : 65 },
+		"dark" : { "r" : 196, "g" : 119, "b" : 162 },
+		"light" : { "r" : 242, "g" : 241, "b" : 139 },
+		"lightest" : { "r" : 255, "g" : 255, "b" : 255 },
+	},
+	{
+		"name" : "cherry_melon",
+		"darkest" : { "r" : 1, "g" : 40, "b" : 36 },
+		"dark" : { "r" : 38, "g" : 89, "b" : 53 },
+		"light" : { "r" : 255, "g" : 77, "b" : 109 },
+		"lightest" : { "r" : 252, "g" : 222, "b" : 234 },
+	},
+	{
+		"name" : "warm_light",
+		"darkest" : { "r" : 33, "g" : 30, "b" : 32 },
+		"dark" : { "r" : 102, "g" : 96, "b" : 92 },
+		"light" : { "r" : 255, "g" : 146, "b" : 79 },
+		"lightest" : { "r" : 255, "g" : 209, "b" : 145 },
+	},
+	{
+		"name" : "matrix",
+		"darkest" : { "r" : 13, "g" : 26, "b" : 26 },
+		"dark" : { "r" : 91, "g" : 140, "b" : 124 },
+		"light" : { "r" : 173, "g" : 217, "b" : 188 },
+		"lightest" : { "r" : 242, "g" : 255, "b" : 242 },
+	},
 ]
 
 var DEF_DARKEST : Color
