@@ -41,10 +41,6 @@ shader_param/invert = null
 [node name="Main" type="Node2D"]
 script = ExtResource( 2 )
 
-[node name="TitleTimer" type="Timer" parent="."]
-wait_time = 1.5
-one_shot = true
-
 [node name="AudioManager" parent="." instance=ExtResource( 9 )]
 
 [node name="FullPageScreens" type="Node2D" parent="."]
@@ -260,7 +256,6 @@ one_shot = true
 wait_time = 2.0
 one_shot = true
 
-[connection signal="timeout" from="TitleTimer" to="." method="_on_TitleTimer_timeout"]
 [connection signal="pressed" from="DebugLayer/Menu/LevelList/LoadLevel1" to="." method="_on_LoadLevel1_pressed"]
 [connection signal="pressed" from="DebugLayer/Menu/LevelList/LoadLevel2" to="." method="_on_LoadLevel2_pressed"]
 [connection signal="pressed" from="DebugLayer/Menu/LevelList/LoadLevel3" to="." method="_on_LoadLevel3_pressed"]

@@ -1,5 +1,7 @@
 extends Node
 
+signal end_of_story()
+
 signal bomb_timer_start(waitTime)
 signal bomb_timer_pause(setPaused)
 signal bomb_timer_stop()

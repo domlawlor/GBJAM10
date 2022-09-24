@@ -49,6 +49,7 @@ var m_invert : bool = false
 func _ready():
 	Events.connect("bomb_explode", self, "_on_bomb_explode")
 	Events.connect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
+	Events.connect("end_of_story", self, "_on_end_of_story")
 
 	DEF_DARKEST = Color()
 	DEF_DARKEST.r8 = List[0].darkest.r
@@ -73,6 +74,11 @@ func _ready():
 	material.set_shader_param("default_lightest", DEF_LIGHTEST)
 	
 	SetColoursByPaletteIndex(DefaultColorPaletteIndex)
+
+func _exit():
+	Events.disconnect("bomb_explode", self, "_on_bomb_explode")
+	Events.disconnect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
+	Events.disconnect("end_of_story", self, "_on_end_of_story")
 
 func _process(_delta):
 	if !explodeTimer.is_stopped():
@@ -144,4 +150,6 @@ func _on_fade_to_dark_complete():
 
 func _on_TitleExplodeTimer_timeout():
 	SetInvert(false)
-	
+
+func _on_end_of_story():
+	titleExplodeTimer.start()

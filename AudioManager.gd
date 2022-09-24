@@ -8,18 +8,22 @@ onready var OpenDoor = $OpenDoor
 onready var Cut = $Cut
 onready var Navigate = $Navigate
 onready var GameplayNormal = $GameplayNormal
+onready var Title = $Title
 
 func _ready():
 	Events.connect("play_audio", self, "_on_play_audio")
 	Events.connect("wire_cut", self, "_on_wire_cut")
 	Events.connect("bomb_explode", self, "_on_bomb_explode")
 	Events.connect("fade_from_dark_complete", self, "_on_fade_from_dark_complete")
+	Events.connect("end_of_story", self, "_on_end_of_story")
+	Title.play()
 	
 func _exit():
 	Events.disconnect("play_audio", self, "_on_play_audio")
 	Events.disconnect("wire_cut", self, "_on_wire_cut")
 	Events.disconnect("bomb_explode", self, "_on_bomb_explode")
 	Events.disconnect("fade_from_dark_complete", self, "_on_fade_from_dark_complete")
+	Events.disconnect("end_of_story", self, "_on_end_of_story")
 
 func PlayGameplayNormal():
 	if !GameplayNormal.playing:
@@ -52,3 +56,6 @@ func _on_fade_from_dark_complete():
 		PlayGameplayNormal()
 	elif Global.state == STATE.RESTARTING_FROM_DEATH:
 		PlayGameplayNormal()
+
+func _on_end_of_story():
+	Title.stop()
