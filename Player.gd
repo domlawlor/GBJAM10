@@ -119,6 +119,7 @@ func _physics_process(delta):
 		canMove = move_and_collide(moveVec, true, true, isTestOnly) == null
 	
 	if canMove:
+		print("Moving to targetPos - ", targetPos)
 		m_lerpStartVec = position
 		m_lerpEndVec = targetPos
 		m_lerpTime = 0.0
