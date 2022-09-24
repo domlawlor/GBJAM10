@@ -68,25 +68,21 @@ bombIsInTheDark = true
 position = Vector2( 272, 224 )
 puzzleName = "3-6"
 bombOrderNumber = 5
-bombIsInTheDark = true
 
 [node name="Bomb7" parent="Bombs" instance=ExtResource( 2 )]
 position = Vector2( 128, 200 )
 puzzleName = "3-7"
 bombOrderNumber = 6
-bombIsInTheDark = true
 
 [node name="Bomb8" parent="Bombs" instance=ExtResource( 2 )]
 position = Vector2( 168, 168 )
 puzzleName = "3-8"
 bombOrderNumber = 7
-bombIsInTheDark = true
 
 [node name="Bomb9" parent="Bombs" instance=ExtResource( 2 )]
 position = Vector2( 200, 216 )
 puzzleName = "3-9"
 bombOrderNumber = 8
-bombIsInTheDark = true
 
 [node name="Bomb10" parent="Bombs" instance=ExtResource( 2 )]
 position = Vector2( 264, 184 )
