@@ -64,6 +64,8 @@ func _on_bomb_puzzle_complete():
 	if m_nextBombNum == m_bombTotalCount:
 		print("Level Complete!")
 		Events.emit_signal("bomb_timer_pause", true)
+		if m_wallDoorBombOpenNum == 7:
+			m_exitDoor.m_finalDoor = true
 		m_exitDoor.OpenDoor()
 
 func _on_restart_from_death():

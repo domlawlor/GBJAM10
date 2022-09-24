@@ -6,6 +6,8 @@ onready var doorCollision : StaticBody2D = $DoorCollision
 onready var delayTimer : Timer = $DelayTimer
 onready var audioTimer : Timer = $AudioTimer
 
+var m_finalDoor = false
+
 func _ready():
 	Events.connect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
 
@@ -29,3 +31,5 @@ func _on_DelayTimer_timeout():
 
 func _on_AudioTimer_timeout():
 	Events.emit_signal("play_audio", "opendoor")
+	if m_finalDoor:
+		Events.emit_signal("trigger_final_music")

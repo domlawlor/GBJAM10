@@ -10,7 +10,7 @@ onready var ExplodeTimer = $ExplodeTimer
 var textNum = 1
 
 func _input(event):
-	if !visible or Global.state != STATE.STORYSCREEN or !Global.InputActive:
+	if !visible or Global.state != STATE.WINSCREEN or !Global.InputActive:
 		return
 	
 	if event.is_action_pressed("gameboy_a"):
@@ -22,7 +22,7 @@ func _input(event):
 		elif textNum == 4:
 			Events.emit_signal("play_audio", "explosion")
 			ExplodeTimer.start()
-			Events.emit_signal("end_of_story")
+			Events.emit_signal("end_of_win")
 
 func Reset():
 	visible = false
@@ -32,4 +32,4 @@ func Reset():
 
 func _on_ExplodeTimer_timeout():
 	Events.emit_signal("fade_to_dark_request")
-	Global.state = STATE.CHANGING_LEVEL
+	Global.state = STATE.TITLE

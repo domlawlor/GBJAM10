@@ -1,6 +1,9 @@
 extends Node
 
 signal end_of_story()
+signal end_of_win()
+signal trigger_title_music()
+signal trigger_final_music()
 
 signal bomb_timer_start(waitTime)
 signal bomb_timer_pause(setPaused)

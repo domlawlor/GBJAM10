@@ -15,15 +15,20 @@ func _ready():
 	Events.connect("wire_cut", self, "_on_wire_cut")
 	Events.connect("bomb_explode", self, "_on_bomb_explode")
 	Events.connect("fade_from_dark_complete", self, "_on_fade_from_dark_complete")
+	Events.connect("trigger_title_music", self, "_on_trigger_title_music")
 	Events.connect("end_of_story", self, "_on_end_of_story")
-	Title.play()
+	Events.connect("end_of_win", self, "_on_end_of_win")
+	Events.connect("trigger_final_music", self, "_on_trigger_final_music")
 	
 func _exit():
 	Events.disconnect("play_audio", self, "_on_play_audio")
 	Events.disconnect("wire_cut", self, "_on_wire_cut")
 	Events.disconnect("bomb_explode", self, "_on_bomb_explode")
 	Events.disconnect("fade_from_dark_complete", self, "_on_fade_from_dark_complete")
+	Events.disconnect("trigger_title_music", self, "_on_trigger_title_music")
 	Events.disconnect("end_of_story", self, "_on_end_of_story")
+	Events.disconnect("end_of_win", self, "_on_end_of_win")
+	Events.disconnect("trigger_final_music", self, "_on_trigger_final_music")
 
 func PlayGameplayNormal():
 	if !GameplayNormal.playing:
@@ -59,3 +64,13 @@ func _on_fade_from_dark_complete():
 
 func _on_end_of_story():
 	Title.stop()
+
+func _on_end_of_win():
+	Title.stop()
+
+func _on_trigger_title_music():
+	Title.play()
+	
+func _on_trigger_final_music():
+	GameplayNormal.stop()
+	Title.play()

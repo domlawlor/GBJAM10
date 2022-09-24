@@ -17,6 +17,7 @@ onready var bombTimer : Node2D = $UILayer/BombTimer
 onready var paletteShader = $TopLayer/PaletteShader
 onready var pressStartText = $FullPageScreens/TitleScreen/PressStartText
 onready var storyScreen = $FullPageScreens/StoryScreen
+onready var winScreen = $FullPageScreens/WinScreen
 
 var level_instance : Node2D
 var puzzle_instance : Node2D
@@ -28,6 +29,7 @@ func _ready():
 	Events.connect("restart_game", self, "_on_restart_game")
 	
 	SetResolution()
+	Reset()
 	puzzle_instance = bombPuzzleScene.instance()
 
 func _exit():
@@ -42,7 +44,6 @@ func _input(event):
 	if Global.state == STATE.TITLE:
 		if event.is_action_pressed("gameboy_start") or event.is_action_pressed("gameboy_a"):
 			Global.state = STATE.STORYSCREEN
-			current_level_num = 0 # this will increase to 1 at end of transition
 			Events.emit_signal("fade_to_dark_request")
 	
 	if event.is_action_pressed("ui_cancel"):
@@ -87,6 +88,12 @@ func load_puzzle(level_name : String):
 	
 func SetDebugMenuVisibility(show : bool):
 	debugMenu.visible = show
+
+func Reset():
+	Events.emit_signal("trigger_title_music")
+	storyScreen.Reset()
+	winScreen.Reset()
+	current_level_num = 0 # this will increase to 1 at end of transition
 
 func _on_LoadLevel1_pressed():
 	current_level_num = 1
@@ -140,6 +147,10 @@ func _on_LoadPuzzle48_pressed():
 	load_puzzle("4-8")	
 
 func _on_fade_to_dark_complete():
+	if Global.state == STATE.TITLE:
+		Reset()
+		Events.emit_signal("fade_from_dark_request")
+		
 	if Global.state == STATE.STORYSCREEN:
 		storyScreen.visible = true
 		Events.emit_signal("fade_from_dark_request")
@@ -168,6 +179,11 @@ func _on_fade_to_dark_complete():
 				load_level("Level3")
 			3:
 				load_level("Level4")
+			4:
+				unload_level()
+				bombTimer.visible = false
+				winScreen.visible = true
+				Global.state = STATE.WINSCREEN
 		Events.emit_signal("fade_from_dark_request")
 
 func _on_bomb_explode():

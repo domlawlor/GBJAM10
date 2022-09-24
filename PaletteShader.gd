@@ -4,6 +4,7 @@ var STATE = Global.State
 
 onready var explodeTimer : Timer = $ExplodeTimer
 onready var titleExplodeTimer : Timer = $TitleExplodeTimer
+onready var winExplodeTimer : Timer = $WinExplodeTimer
 
 export var DefaultColorPaletteIndex : int = 1 
 
@@ -92,6 +93,7 @@ func _ready():
 	Events.connect("bomb_explode", self, "_on_bomb_explode")
 	Events.connect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
 	Events.connect("end_of_story", self, "_on_end_of_story")
+	Events.connect("end_of_win", self, "_on_end_of_win")
 
 	DEF_DARKEST = Color()
 	DEF_DARKEST.r8 = List[0].darkest.r
@@ -121,6 +123,7 @@ func _exit():
 	Events.disconnect("bomb_explode", self, "_on_bomb_explode")
 	Events.disconnect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
 	Events.disconnect("end_of_story", self, "_on_end_of_story")
+	Events.disconnect("end_of_win", self, "_on_end_of_win")
 
 func _process(_delta):
 	if !explodeTimer.is_stopped():
@@ -130,6 +133,10 @@ func _process(_delta):
 	elif !titleExplodeTimer.is_stopped():
 		var FLASH_INTERVAL = 0.12
 		var steps : int = floor(titleExplodeTimer.time_left / FLASH_INTERVAL)
+		SetInvert(steps % 2 == 0)
+	elif !winExplodeTimer.is_stopped():
+		var FLASH_INTERVAL = 0.08
+		var steps : int = floor(winExplodeTimer.time_left / FLASH_INTERVAL)
 		SetInvert(steps % 2 == 0)
 
 func _input(event):
@@ -189,9 +196,17 @@ func _on_ExplodeTimer_timeout():
 func _on_fade_to_dark_complete():
 	if Global.state == STATE.EXPLOSION:
 		Global.state = STATE.DEAD
+	elif Global.state == STATE.TITLE:
+		SetInvert(false)
 
 func _on_TitleExplodeTimer_timeout():
 	SetInvert(false)
 
 func _on_end_of_story():
 	titleExplodeTimer.start()
+
+func _on_end_of_win():
+	winExplodeTimer.start()
+
+func _on_WinExplodeTimer_timeout():
+	SetInvert(true)
