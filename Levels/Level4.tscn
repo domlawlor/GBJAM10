@@ -123,6 +123,7 @@ bombOrderNumber = 14
 position = Vector2( 192, 200 )
 puzzleName = "4-16"
 bombOrderNumber = 15
+bombIsInTheDark = true
 
 [node name="Player" parent="." instance=ExtResource( 5 )]
 position = Vector2( 224, 128 )
