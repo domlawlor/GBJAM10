@@ -80,6 +80,8 @@ func _on_restart_from_death():
 	else:
 		m_player.position = m_exitDoor.position
 		m_player.position.y += 16
+		m_nextBombNum = 0
+		Events.emit_signal("reset_bombs", -1)
 		
 	Events.emit_signal("bomb_timer_start", restartBombTimer)
 
