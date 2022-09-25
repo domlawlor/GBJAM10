@@ -69,7 +69,7 @@ tile_data = PoolIntArray( 0, 22, 0, 1, 22, 0, 2, 22, 0, 3, 22, 0, 4, 22, 0, 5, 2
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 8, 8 )
 format = 1
-tile_data = PoolIntArray( 131081, 84, 0, 131082, 85, 0, 196617, 86, 0, 196618, 87, 0 )
+tile_data = PoolIntArray( 131074, 536871061, 0, 131078, 147, 0, 131081, 84, 0, 131082, 85, 0, 131087, 147, 0, 196610, 536871060, 0, 196613, 149, 0, 196614, 151, 0, 196617, 86, 0, 196618, 87, 0, 196623, 148, 0 )
 
 [node name="WallShadows" type="TileMap" parent="."]
 tile_set = SubResource( 1 )
