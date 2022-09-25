@@ -79,6 +79,62 @@ var List = [
 		"light" : { "r" : 173, "g" : 217, "b" : 188 },
 		"lightest" : { "r" : 242, "g" : 255, "b" : 242 },
 	},
+#	{
+#		"name" : "barbie",
+#		"darkest" : { "r" : 0, "g" : 0, "b" : 0 },
+#		"dark" : { "r" : 0x6e, "g" : 0x1f, "b" : 0xb1 },
+#		"light" : { "r" : 0xcc, "g" : 0x33, "b" : 0x85 },
+#		"lightest" : { "r" : 0xf8, "g" : 0xfb, "b" : 0xf3 },
+#	},
+#	{
+#		"name" : "bits-neon",
+#		"darkest" : { "r" : 0x22, "g" : 0x23, "b" : 0x23 },
+#		"dark" : { "r" : 0xff, "g" : 0x4a, "b" : 0xdc },
+#		"light" : { "r" : 0x3d, "g" : 0xff, "b" : 0x98 },
+#		"lightest" : { "r" : 0xf0, "g" : 0xf6, "b" : 0xf0 },
+#	},
+	{
+		"name" : "blood-crow",
+		"darkest" : { "r" : 0x19, "g" : 0x00, "b" : 0x00 },
+		"dark" : { "r" : 0x56, "g" : 0x09, "b" : 0x09 },
+		"light" : { "r" : 0xad, "g" : 0x20, "b" : 0x20 },
+		"lightest" : { "r" : 0xf2, "g" : 0xe6, "b" : 0xe6 },
+	},
+	{
+		"name" : "dusty4",
+		"darkest" : { "r" : 0x37, "g" : 0x2a, "b" : 0x51 },
+		"dark" : { "r" : 0x3a, "g" : 0x50, "b" : 0x68 },
+		"light" : { "r" : 0x5a, "g" : 0x8f, "b" : 0x78 },
+		"lightest" : { "r" : 0xf5, "g" : 0xf6, "b" : 0xdf },
+	},
+#	{
+#		"name" : "fiery-plague",
+#		"darkest" : { "r" : 0x1a, "g" : 0x21, "b" : 0x29 },
+#		"dark" : { "r" : 0x31, "g" : 0x21, "b" : 0x37 },
+#		"light" : { "r" : 0x51, "g" : 0x28, "b" : 0x39 },
+#		"lightest" : { "r" : 0x71, "g" : 0x31, "b" : 0x41 },
+#	},
+#	{
+#		"name" : "pong4",
+#		"darkest" : { "r" : 0x5c, "g" : 0x4b, "b" : 0xff },
+#		"dark" : { "r" : 0xfd, "g" : 0xff, "b" : 0xf2 },
+#		"light" : { "r" : 0x14, "g" : 0xe1, "b" : 0xff },
+#		"lightest" : { "r" : 0xff, "g" : 0x7a, "b" : 0xd6 },
+#	},
+	{
+		"name" : "pumpkin",
+		"darkest" : { "r" : 0x14, "g" : 0x2b, "b" : 0x23 },
+		"dark" : { "r" : 0x19, "g" : 0x69, "b" : 0x2c },
+		"light" : { "r" : 0xe0, "g" : 0x6e, "b" : 0x16 },
+		"lightest" : { "r" : 0xf7, "g" : 0xdb, "b" : 0x7e },
+	},
+	{
+		"name" : "red-blood",
+		"darkest" : { "r" : 0x12, "g" : 0x0a, "b" : 0x19 },
+		"dark" : { "r" : 0x5e, "g" : 0x40, "b" : 0x69 },
+		"light" : { "r" : 0x7e, "g" : 0x1f, "b" : 0x23 },
+		"lightest" : { "r" : 0xc4, "g" : 0x18, "b" : 0x1f },
+	},
 ]
 
 var DEF_DARKEST : Color
@@ -158,6 +214,8 @@ func SetColoursByPaletteIndex(index):
 	if index < 0 or index > List.size():
 		push_error("Palette Index outside range of colours")
 		return
+	
+	print("Palette Set to ", List[index].name)
 	
 	m_index = index
 	var new_darkest = Color()
