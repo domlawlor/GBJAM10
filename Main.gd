@@ -23,19 +23,23 @@ var level_instance : Node2D
 var puzzle_instance : Node2D
 
 func _ready():
+	Events.connect("start_game", self, "_on_start_game")
 	Events.connect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
 	Events.connect("exit_level_door", self, "_on_exit_level_door")
 	Events.connect("bomb_explode", self, "_on_bomb_explode")
 	Events.connect("restart_game", self, "_on_restart_game")
 	
 	SetResolution()
-	Reset()
 	puzzle_instance = bombPuzzleScene.instance()
 
 func _exit():
+	Events.disconnect("start_game", self, "_on_start_game")
 	Events.disconnect("fade_to_dark_complete", self, "_on_fade_to_dark_complete")
 	Events.disconnect("exit_level_door", self, "_on_exit_level_door")
 	Events.disconnect("bomb_explode", self, "_on_bomb_explode")
+
+func _on_start_game():
+	Reset()
 
 func _input(event):
 	if !Global.InputActive:
@@ -99,6 +103,7 @@ func Reset():
 	storyScreen.Reset()
 	winScreen.Reset()
 	current_level_num = 0 # this will increase to 1 at end of transition
+	Global.InputActive = true
 
 func _on_LoadLevel1_pressed():
 	current_level_num = 1

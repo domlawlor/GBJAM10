@@ -3,6 +3,7 @@ extends Node
 const LOGICAL_RES = Vector2(160, 144)
 
 enum State {
+	INTRO_LOGO,
 	TITLE,
 	STORYSCREEN,
 	RESTARTING_FROM_DEATH,
@@ -17,7 +18,7 @@ enum State {
 	WINSCREEN,
 	PUZZLE_EDIT,
 }
-var state = State.TITLE
+var state = State.INTRO_LOGO
 
 var SCALE = 1
 
@@ -28,7 +29,7 @@ var LOGICGRID_HEIGHT = 8
 var HIGHLIGHTGRID_WIDTH = 8
 var HIGHLIGHTGRID_HEIGHT = 6
 
-var InputActive = true
+var InputActive = false
 
 func USecToMSec(usec : float):
 	return usec / 1000.0

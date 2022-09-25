@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Gameboy Startup Sound (128 kbps).mp3-b01adc9d68de6d02d32c999e9b9d8055.mp3str"
+
+[deps]
+
+source_file="res://Audio/Gameboy Startup Sound (128 kbps).mp3"
+dest_files=[ "res://.import/Gameboy Startup Sound (128 kbps).mp3-b01adc9d68de6d02d32c999e9b9d8055.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

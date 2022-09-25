@@ -1,5 +1,6 @@
 extends Node
 
+signal start_game()
 signal end_of_story()
 signal end_of_win()
 signal trigger_title_music()
