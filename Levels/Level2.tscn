@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://ExitDoor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Bomb.tscn" type="PackedScene" id=2]
@@ -8,6 +8,53 @@
 [ext_resource path="res://Level.gd" type="Script" id=6]
 [ext_resource path="res://WallDoorForeground.tscn" type="PackedScene" id=7]
 [ext_resource path="res://BookPage.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Art/WallShadowLeft.png" type="Texture" id=9]
+[ext_resource path="res://Art/WallShadowCorner.png" type="Texture" id=10]
+[ext_resource path="res://Art/WallShadow.png" type="Texture" id=11]
+
+[sub_resource type="TileSet" id=1]
+0/name = "WallShadow.png 0"
+0/texture = ExtResource( 11 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 8, 8 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+1/name = "WallShadowCorner.png 1"
+1/texture = ExtResource( 10 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 0, 0, 16, 16 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+2/name = "WallShadowLeft.png 2"
+2/texture = ExtResource( 9 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 0, 0, 8, 8 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0
 
 [node name="Level2" type="Node2D"]
 script = ExtResource( 6 )
@@ -25,6 +72,13 @@ tile_set = ExtResource( 4 )
 cell_size = Vector2( 8, 8 )
 format = 1
 tile_data = PoolIntArray( 131092, 131, 0, 131093, 132, 0, 131094, 133, 0, 131097, 89, 0, 131098, 90, 0, 131099, 91, 0, 131103, 84, 0, 131104, 85, 0, 131107, 32, 0, 131108, 33, 0, 131111, 32, 0, 131112, 33, 0, 196628, 134, 0, 196629, 135, 0, 196630, 136, 0, 196633, 92, 0, 196634, 94, 0, 196635, 95, 0, 196639, 86, 0, 196640, 87, 0, 196643, 34, 0, 196644, 35, 0, 196647, 34, 0, 196648, 35, 0, 262179, 36, 0, 262180, 37, 0, 262183, 36, 0, 262184, 37, 0, 327715, 38, 0, 327716, 39, 0, 327719, 38, 0, 327720, 39, 0, 589835, 137, 0, 589836, 138, 0, 589837, 139, 0, 589838, 140, 0, 655371, 141, 0, 655372, 142, 0, 655373, 143, 0, 655374, 144, 0, 655379, 32, 0, 655380, 33, 0, 655383, 32, 0, 655384, 33, 0, 720915, 34, 0, 720916, 35, 0, 720919, 34, 0, 720920, 35, 0, 786451, 36, 0, 786452, 37, 0, 786455, 36, 0, 786456, 37, 0, 851987, 38, 0, 851988, 39, 0, 851991, 38, 0, 851992, 39, 0 )
+
+[node name="WallShadows" type="TileMap" parent="."]
+tile_set = SubResource( 1 )
+cell_size = Vector2( 8, 8 )
+cell_quadrant_size = 8
+format = 1
+tile_data = PoolIntArray( 262163, 1, 0, 262165, 0, 0, 262166, 0, 0, 262167, 0, 0, 262168, 0, 0, 262169, 0, 0, 262170, 0, 0, 262171, 0, 0, 262172, 0, 0, 262173, 0, 0, 262174, 0, 0, 262177, 0, 0, 262178, 0, 0, 262179, 0, 0, 262180, 0, 0, 262181, 0, 0, 262182, 0, 0, 262183, 0, 0, 262184, 0, 0, 393235, 2, 0, 458771, 2, 0, 524307, 2, 0, 720906, 1, 0, 720908, 0, 0, 720909, 0, 0, 720910, 0, 0, 720911, 0, 0, 720915, 1, 0, 720917, 0, 0, 720918, 0, 0, 720919, 0, 0, 720920, 0, 0, 720923, 0, 0, 851978, 2, 0, 851987, 2, 0 )
 
 [node name="BookPage" parent="." instance=ExtResource( 8 )]
 position = Vector2( 232, 40 )
