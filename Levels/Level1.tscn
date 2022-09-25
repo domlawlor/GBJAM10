@@ -58,6 +58,7 @@
 
 [node name="Level1" type="Node2D"]
 script = ExtResource( 6 )
+m_levelBombTimeSecond = 90.0
 
 [node name="Background" type="TileMap" parent="."]
 tile_set = ExtResource( 4 )
