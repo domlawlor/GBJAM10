@@ -6,7 +6,7 @@ onready var explodeTimer : Timer = $ExplodeTimer
 onready var titleExplodeTimer : Timer = $TitleExplodeTimer
 onready var winExplodeTimer : Timer = $WinExplodeTimer
 
-export var DefaultColorPaletteIndex : int = 1 
+export var DefaultColorPaletteIndex : int = 2 
 
 var List = [
 	{
