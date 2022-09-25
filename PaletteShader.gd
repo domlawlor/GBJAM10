@@ -17,6 +17,13 @@ var List = [
 		"lightest" : { "r" : 155, "g" : 188, "b" : 15 },
 	},
 	{
+		"name" : "demichrome",
+		"darkest" : { "r" : 33, "g" : 30, "b" : 32 },
+		"dark" : { "r" : 85, "g" : 85, "b" : 104 },
+		"light" : { "r" : 160, "g" : 160, "b" : 139 },
+		"lightest" : { "r" : 233, "g" : 239, "b" : 236 },
+	},
+	{
 		"name" : "green_with_more_contrast",
 		"darkest" : { "r" : 0, "g" : 19, "b" : 26 },
 		"dark" : { "r" : 61, "g" : 128, "b" : 38 },
@@ -36,13 +43,6 @@ var List = [
 		"dark" : { "r" : 117, "g" : 80, "b" : 232 },
 		"light" : { "r" : 96, "g" : 143, "b" : 207 },
 		"lightest" : { "r" : 139, "g" : 229, "b" : 255 },
-	},
-	{
-		"name" : "demichrome",
-		"darkest" : { "r" : 33, "g" : 30, "b" : 32 },
-		"dark" : { "r" : 85, "g" : 85, "b" : 104 },
-		"light" : { "r" : 160, "g" : 160, "b" : 139 },
-		"lightest" : { "r" : 233, "g" : 239, "b" : 236 },
 	},
 	{
 		"name" : "crimson",
