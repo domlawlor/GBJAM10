@@ -1,7 +1,7 @@
 extends Sprite
 
 var STATE = Global.State
-	
+
 onready var doorCollision : StaticBody2D = $DoorCollision
 onready var delayTimer : Timer = $DelayTimer
 onready var audioTimer : Timer = $AudioTimer
