@@ -54,10 +54,10 @@ func _input(event):
 			Global.state = STATE.STORYSCREEN
 			Events.emit_signal("fade_to_dark_request")
 	
-	if event.is_action_pressed("ui_cancel"):
-		unload_level()
-		unload_puzzle()
-		SetDebugMenuVisibility(true)
+#	if event.is_action_pressed("ui_cancel"):
+#		unload_level()
+#		unload_puzzle()
+#		SetDebugMenuVisibility(true)
 
 func SetResolution():
 	var native_screen = OS.get_screen_size()
