@@ -6,9 +6,9 @@ onready var pageNumTextLabel : RichTextLabel = $PageNumLabel
 var pagesText = {
 	0 : """\n\n\nThose who have but one path to choose shall fear not the reaper\n\nAnd remember, the vigilant servants of heaven will always take action before the sinful prisoners of hell""",
 	1 : """\n\nOn the first day, god created the light and destroyed the sun\n\nOn the second day, god created the sky and destroyed the moon\n\nOn the third day, god created the plants and destroyed the stars""",
-	2: """\nThe path to righteousness begins in the light and ends in darkness\n\nThose touched by the book of god shall remain unsullied\n\nBut the lord can be petulant. Be there no sacrifices offered, He shall crush the heart of life""",
-	3: """\n\n\nWhen the path is unclear, salvation is found moving backwards through time\n\n\nAs the suns holy light covered the entire land, Gods divine rays blinded those that see""",
-	4: """\n\n\nWhen the devil saw two, he bore his wroth upon the almighty Hand of God\n\nAnd then when the devil saw four, the forces of madness compelled him to sever his own weapon in twain""",
+	2: """\nThe path to righteousness begins in the light and ends in darkness\n\nThose touched by the book of god shall remain unsullied\n\nBut the lord can be petulant. When all are protected, He shall crush the heart of life""",
+	3: """\n\n\nWhen the path is unclear, salvation is found moving backwards through time\n\n\nAs the suns holy light covered the entire land, Gods divine rays instantly blinded those that see""",
+	4: """\n\n\nWhen the devil saw five, he bore his wroth upon the almighty Hand of God\n\nAnd then when the devil saw four, the forces of madness compelled him to sever his own weapon in twain""",
 }
 
 var m_unlockedPages = []

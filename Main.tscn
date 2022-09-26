@@ -53,6 +53,7 @@ centered = false
 
 [node name="PressStartText" type="AnimatedSprite" parent="FullPageScreens/TitleScreen"]
 frames = SubResource( 4 )
+frame = 1
 speed_scale = 0.4
 playing = true
 centered = false
