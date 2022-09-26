@@ -13,7 +13,7 @@ func _input(event):
 	if !visible or Global.state != STATE.STORYSCREEN or !Global.InputActive:
 		return
 	
-	if event.is_action_pressed("gameboy_a"):
+	if event.is_action_pressed("gameboy_a") or event.is_action_pressed("gameboy_start"):
 		textNum += 1
 		if textNum == 2:
 			Text02.visible = true
