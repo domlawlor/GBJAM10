@@ -2,7 +2,7 @@
 
 ![GameTitleScreenImage](Screenshots/title.png)
 ![Level1Image](Screenshots/level1.png)
-![BombImage](Screenshots/exploring.png)
+![BombImage](Screenshots/bomb.png)
 ![Level2Image](Screenshots/level2.png)
 
 Playable at - https://bronxtaco.itch.io/biblical-bomb-squad
