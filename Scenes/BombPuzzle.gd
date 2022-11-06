@@ -2,7 +2,7 @@ extends Node2D
 
 var STATE = Global.State
 
-var wireLayer = preload("res://WireLayer.tscn")
+var wireLayer = preload("res://Scenes/WireLayer.tscn")
 
 onready var WireLayers = $WireLayers
 onready var GridHighlight = $GridHighlight

@@ -4,7 +4,7 @@
 [ext_resource path="res://Art/StoryScreen01Text01.png" type="Texture" id=2]
 [ext_resource path="res://Art/StoryScreen01Text02.png" type="Texture" id=3]
 [ext_resource path="res://Art/StoryScreen01Text03.png" type="Texture" id=4]
-[ext_resource path="res://StoryScreen.gd" type="Script" id=5]
+[ext_resource path="res://Scenes/StoryScreen.gd" type="Script" id=5]
 
 [node name="StoryScreen" type="Sprite"]
 texture = ExtResource( 1 )

@@ -6,7 +6,7 @@ export var start_level_num : int = 1
 
 onready var current_level_num = start_level_num
 
-var bombPuzzleScene = preload("res://BombPuzzle.tscn")
+var bombPuzzleScene = preload("res://Scenes/BombPuzzle.tscn")
 
 onready var debugMenu = $DebugLayer/Menu
 onready var main_2d : Node2D = $Main2D

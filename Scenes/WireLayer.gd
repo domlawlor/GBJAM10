@@ -7,7 +7,7 @@ func get_class():
 func is_class(value):
 	return value == "WireLayer"
 
-var sprite = preload("res://WireSprite.tscn")
+var sprite = preload("res://Scenes/WireSprite.tscn")
 var spriteTextureNormal = preload("res://Art/Wire_Light.png")
 var spriteTextureCoated = preload("res://Art/Wire_Coated.png")
 

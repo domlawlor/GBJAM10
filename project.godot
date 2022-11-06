@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "WireLayer",
 "language": "GDScript",
-"path": "res://WireLayer.gd"
+"path": "res://Scenes/WireLayer.gd"
 } ]
 _global_script_class_icons={
 "WireLayer": ""

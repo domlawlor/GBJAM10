@@ -1,10 +1,10 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://BombPuzzle.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/BombPuzzle.gd" type="Script" id=1]
 [ext_resource path="res://Art/gridHighlight.png" type="Texture" id=2]
 [ext_resource path="res://Art/background.png" type="Texture" id=3]
 [ext_resource path="res://Art/foreground.png" type="Texture" id=4]
-[ext_resource path="res://SymbolSprite.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/SymbolSprite.tscn" type="PackedScene" id=5]
 
 [sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 2 )
